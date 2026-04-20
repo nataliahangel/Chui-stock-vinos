@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHUI — Alertas de Stock</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0f0e0c; --surface:#1a1815; --card:#211f1b; --border:#2e2b25; --red:#c0392b; --amber:#d4a017; --green:#4a7c59; --blue:#4a6fa5; --text:#e8e0d0; --muted:#7a7060; --dim:#4a4538; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:'DM Mono',monospace; font-weight:300; min-height:100vh; padding:40px 24px; }
+  body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events:none; z-index:999; opacity:0.6; }
+  header { max-width:900px; margin:0 auto 48px; display:flex; align-items:flex-end; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:24px; }
+  .logo { font-family:'Playfair Display',serif; font-size:42px; font-style:italic; letter-spacing:-1px; line-height:1; }
+  .header-meta { text-align:right; color:var(--muted); font-size:11px; letter-spacing:0.1em; line-height:1.8; }
+  .stats-row { max-width:900px; margin:0 auto 40px; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  .stat-box { background:var(--surface); border:1px solid var(--border); padding:18px 20px; border-radius:2px; }
+  .stat-box .num { font-family:'Playfair Display',serif; font-size:36px; line-height:1; margin-bottom:6px; }
+  .stat-box .label { font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); }
+  .stat-box.red .num { color:var(--red); } .stat-box.amber .num { color:var(--amber); } .stat-box.green .num { color:var(--green); } .stat-box.blue .num { color:var(--blue); }
+  .filters { max-width:900px; margin:0 auto 28px; display:flex; gap:8px; flex-wrap:wrap; }
+  .filter-btn { background:var(--surface); border:1px solid var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.08em; padding:7px 14px; border-radius:2px; cursor:pointer; text-transform:uppercase; transition:all 0.2s; }
+  .filter-btn:hover,.filter-btn.active { background:var(--card); color:var(--text); border-color:var(--muted); }
+  .filter-btn.red.active { border-color:var(--red); color:var(--red); }
+  .filter-btn.amber.active { border-color:var(--amber); color:var(--amber); }
+  .section { max-width:900px; margin:0 auto 32px; }
+  .section-title { font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+  .section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+  .alert-card { background:var(--card); border:1px solid var(--border); border-left:3px solid; padding:16px 20px; margin-bottom:8px; border-radius:0 2px 2px 0; display:grid; grid-template-columns:1fr auto; gap:12px; align-items:start; animation:fadeIn 0.4s ease forwards; opacity:0; }
+  @keyframes fadeIn { to { opacity:1; } }
+  .alert-card.critica { border-left-color:var(--red); } .alert-card.alerta { border-left-color:var(--amber); } .alert-card.ok { border-left-color:var(--green); }
+  .wine-name { font-family:'Playfair Display',serif; font-size:17px; margin-bottom:6px; line-height:1.2; }
+  .wine-meta { font-size:11px; color:var(--muted); display:flex; gap:16px; flex-wrap:wrap; margin-bottom:8px; }
+  .contact-info { font-size:11px; color:var(--muted); margin-top:6px; padding-top:8px; border-top:1px solid var(--border); display:flex; gap:16px; flex-wrap:wrap; }
+  .contact-info a { color:var(--amber); text-decoration:none; }
+  .historial { margin-top:8px; padding-top:8px; border-top:1px solid var(--border); display:flex; gap:12px; flex-wrap:wrap; font-size:11px; color:var(--muted); }
+  .right-panel { text-align:right; min-width:130px; }
+  .badge { display:inline-block; font-size:10px; letter-spacing:0.1em; padding:3px 8px; border-radius:2px; text-transform:uppercase; margin-bottom:10px; }
+  .badge.critica { background:rgba(192,57,43,0.2); color:var(--red); border:1px solid rgba(192,57,43,0.4); }
+  .badge.alerta { background:rgba(212,160,23,0.15); color:var(--amber); border:1px solid rgba(212,160,23,0.35); }
+  .stock-display { font-size:28px; font-family:'Playfair Display',serif; line-height:1; margin-bottom:2px; }
+  .stock-label { font-size:10px; color:var(--muted); letter-spacing:0.08em; }
+  .pedido-tag { margin-top:10px; font-size:11px; color:var(--dim); background:var(--surface); padding:4px 8px; border-radius:2px; display:inline-block; }
+  .pedido-tag strong { color:var(--text); font-weight:500; }
+  .obs-tag { display:inline-block; font-size:10px; color:var(--blue); background:rgba(74,111,165,0.1); border:1px solid rgba(74,111,165,0.25); padding:2px 7px; border-radius:2px; margin-top:4px; margin-right:4px; }
+  .pendiente-tag { display:inline-block; font-size:10px; color:var(--blue); background:rgba(74,111,165,0.1); border:1px solid rgba(74,111,165,0.4); padding:2px 7px; border-radius:2px; margin-top:4px; margin-right:4px; }
+  .wa-fab { position:fixed; bottom:32px; right:32px; background:#25D366; color:#fff; border:none; border-radius:2px; font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; padding:14px 22px; cursor:pointer; z-index:100; box-shadow:0 4px 24px rgba(0,0,0,0.4); transition:transform 0.2s,box-shadow 0.2s; display:flex; align-items:center; gap:10px; }
+  .wa-fab:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,0,0,0.5); }
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:200; backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:20px; }
+  .modal-overlay.open { display:flex; }
+  .modal { background:var(--surface); border:1px solid var(--border); border-radius:2px; width:100%; max-width:640px; max-height:85vh; display:flex; flex-direction:column; overflow:hidden; }
+  .modal-header { padding:20px 24px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+  .modal-title { font-family:'Playfair Display',serif; font-size:20px; font-style:italic; }
+  .modal-close { background:none; border:1px solid var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:11px; padding:5px 12px; cursor:pointer; border-radius:2px; }
+  .modal-close:hover { color:var(--text); border-color:var(--muted); }
+  .modal-body { overflow-y:auto; padding:20px 24px; display:flex; flex-direction:column; gap:14px; }
+  .wa-filter-row { display:flex; gap:8px; }
+  .wa-filter-btn { background:var(--surface); border:1px solid var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.08em; padding:5px 12px; border-radius:2px; cursor:pointer; text-transform:uppercase; transition:all 0.2s; }
+  .wa-filter-btn.active,.wa-filter-btn:hover { background:var(--card); color:var(--text); border-color:var(--muted); }
+  .wa-provider-card { background:var(--card); border:1px solid var(--border); border-radius:2px; overflow:hidden; }
+  .wa-provider-header { padding:12px 16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); gap:10px; }
+  .wa-provider-name { font-family:'Playfair Display',serif; font-size:16px; }
+  .wa-provider-contact { font-size:11px; color:var(--muted); }
+  .wa-provider-actions { display:flex; gap:8px; }
+  .wa-btn { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; padding:6px 12px; border-radius:2px; cursor:pointer; border:none; transition:opacity 0.2s; }
+  .wa-btn:hover { opacity:0.85; }
+  .wa-btn.copy { background:var(--border); color:var(--text); }
+  .wa-btn.send { background:#25D366; color:#fff; }
+  .wa-btn.copied { background:var(--green); color:#fff; }
+  .wa-message-preview { padding:12px 16px; font-size:12px; line-height:1.8; color:var(--muted); white-space:pre-wrap; font-family:'DM Mono',monospace; background:rgba(0,0,0,0.2); }
+  .wa-empty { text-align:center; color:var(--dim); font-size:12px; padding:30px; font-style:italic; }
+  footer { max-width:900px; margin:48px auto 0; padding-top:20px; border-top:1px solid var(--border); font-size:10px; color:var(--dim); letter-spacing:0.08em; display:flex; justify-content:space-between; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">chui</div>
+  <div class="header-meta">
+    <div>ALERTAS DE STOCK</div>
+    <div id="fecha"></div>
+    <div>DATOS: 08/04/2026</div>
+  </div>
+</header>
+
+<div class="stats-row">
+  <div class="stat-box red"><div class="num" id="cnt-critica">0</div><div class="label">Criticas — pedir ya</div></div>
+  <div class="stat-box amber"><div class="num" id="cnt-alerta">0</div><div class="label">En alerta</div></div>
+  <div class="stat-box green"><div class="num" id="cnt-ok">0</div><div class="label">Stock OK</div></div>
+  <div class="stat-box blue"><div class="num" id="cnt-sin">0</div><div class="label">Sin proveedor</div></div>
+</div>
+
+<div class="filters">
+  <button class="filter-btn active" onclick="filter('all',this)">Todos</button>
+  <button class="filter-btn red" onclick="filter('critica',this)">Criticas</button>
+  <button class="filter-btn amber" onclick="filter('alerta',this)">En alerta</button>
+  <button class="filter-btn" onclick="filter('ok',this)">Stock OK</button>
+</div>
+
+<div style="max-width:900px;margin:0 auto 28px;display:flex;gap:8px;flex-wrap:wrap">
+  <input id="search-input" type="text" placeholder="Buscar por vino, proveedor o bodega..." oninput="applySearch()" style="flex:1;min-width:200px;background:#1a1815;border:1px solid #2e2b25;color:#e8e0d0;font-family:'DM Mono',monospace;font-size:12px;padding:8px 14px;border-radius:2px;outline:none;letter-spacing:0.05em">
+  <button onclick="clearSearch()" style="background:#1a1815;border:1px solid #2e2b25;color:#7a7060;font-family:'DM Mono',monospace;font-size:11px;padding:8px 14px;border-radius:2px;cursor:pointer;letter-spacing:0.08em;text-transform:uppercase">✕ Limpiar</button>
+</div>
+
+<div id="main-content"></div>
+
+<footer>
+  <span>CHUI — Sistema de alertas de stock</span>
+  <span>Generado automaticamente</span>
+</footer>
+
+<button class="wa-fab" onclick="openWAModal()">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+  Pedidos por proveedor
+</button>
+
+<div class="modal-overlay" id="waModal" onclick="closeOnOverlay(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Pedidos por proveedor</div>
+      <button class="modal-close" onclick="closeWAModal()">X Cerrar</button>
+    </div>
+    <div class="modal-body" id="waModalBody"></div>
+  </div>
+</div>
+
+<script>
+var items = [
+  {nombre:"Laborum Torrontes",categoria:"Blancos",stockUnidades:48,minimo:10,pedido:"5c",asesor:"Daniela Davila",contacto:"+54 9 11 3039-1384",razon:"Uvas del Valle",obs:"5+1 copa dia",pendiente:null,ultimoPedido:"06/04",ultimoCant:"6c",entregado:"6c"},
+  {nombre:"La Marchigiana Moscatel",categoria:"Blancos",stockUnidades:3,minimo:null,pedido:"-",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Electrico SB-Chardonnay",categoria:"Blancos",stockUnidades:30,minimo:8,pedido:"3c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"1c",entregado:"1c (14/04)"},
+  {nombre:"Antro Chardonnay",categoria:"Blancos",stockUnidades:48,minimo:15,pedido:"5c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"8c",entregado:"8c (14/04)"},
+  {nombre:"Esperando a Los Barbaros SB",categoria:"Blancos",stockUnidades:23,minimo:8,pedido:"3c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"1c",entregado:"1c (14/04)"},
+  {nombre:"Humberto Canale Riesling",categoria:"Blancos",stockUnidades:54,minimo:12,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Humberto Canale",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"3c",entregado:"3c (15/04)"},
+  {nombre:"Poligonos Verdejo",categoria:"Blancos",stockUnidades:9,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Contra Corriente Chardonnay",categoria:"Blancos",stockUnidades:17,minimo:1,pedido:"3c",asesor:"Juan Molano Mesa",contacto:"+54 9 11 2842-4015",razon:"Patagonia River Guides",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Livvera Chenin",categoria:"Blancos",stockUnidades:27,minimo:6,pedido:"2c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Paso a Paso Criolla Blanco",categoria:"Blancos",stockUnidades:12,minimo:null,pedido:"2c",asesor:"Micaela Baum",contacto:"+54 9 11 5823-6823",razon:"Aurea",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"2c",entregado:"2c (07/04)"},
+  {nombre:"Verum Chardonnay Naranjo",categoria:"Naranjos",stockUnidades:29,minimo:12,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Verum",obs:null,pendiente:null,ultimoPedido:"07/04",ultimoCant:"4c",entregado:"4c (07/04)"},
+  {nombre:"Solito Va Naranjo",categoria:"Naranjos",stockUnidades:29,minimo:15,pedido:"6c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"6c",entregado:"6c x 4u = 24u"},
+  {nombre:"Petit Mara Naranjo 375ml",categoria:"Naranjos",stockUnidades:45,minimo:10,pedido:"24u",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Livvera Malvasia Naranjo",categoria:"Naranjos",stockUnidades:6,minimo:3,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"1c",entregado:"1c (07/04)"},
+  {nombre:"Paso a Paso Orange",categoria:"Naranjos",stockUnidades:11,minimo:null,pedido:"2c",asesor:"Micaela Baum",contacto:"+54 9 11 5823-6823",razon:"Aurea",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"2c",entregado:"2c (07/04)"},
+  {nombre:"L.I.A.P. Flower Merlot",categoria:"Rosados",stockUnidades:5,minimo:4,pedido:"4c",asesor:"Mauro Villarejo",contacto:"+54 9 2616 10-5500",razon:"?",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"1c",entregado:"1c (08/04)"},
+  {nombre:"LIAP Noir de Blanc",categoria:"Rosados",stockUnidades:4,minimo:4,pedido:"1c",asesor:"Mauro Villarejo",contacto:"+54 9 2616 10-5500",razon:"?",obs:"Vino nuevo",pendiente:null,ultimoPedido:"06/04",ultimoCant:"1c",entregado:"1c (08/04)"},
+  {nombre:"Rocamadre Pinot Noir Rose",categoria:"Rosados",stockUnidades:43,minimo:12,pedido:"5c",asesor:"Emilia",contacto:"vinosrocamadre@gmail.com",razon:"Rocamadre",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"El Afinador Rose CF",categoria:"Rosados",stockUnidades:37,minimo:15,pedido:"5c",asesor:"Carolina Biga",contacto:"+54 9 3472 55-0464",razon:"Don Agustin",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Inconsciente Merlot Rose",categoria:"Rosados",stockUnidades:28,minimo:15,pedido:"5c",asesor:"Juan Cano",contacto:"+54 9 11 4563-4899",razon:"Sophenia",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Humberto Canale Rose Noir",categoria:"Rosados",stockUnidades:20,minimo:6,pedido:"2c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Humberto Canale",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Humberto Canale Old Vineyard Rose",categoria:"Rosados",stockUnidades:30,minimo:null,pedido:"-",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Humberto Canale",obs:"Vino nuevo",pendiente:null,ultimoPedido:"08/04",ultimoCant:"30u",entregado:"30u (08/04)"},
+  {nombre:"Araucana Malbec Rose",categoria:"Rosados",stockUnidades:13,minimo:4,pedido:"3c",asesor:"Juan Pablo Flores",contacto:"+54 9 11 3566-7785",razon:"Casa Pirque",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Cara Sur Pergolas Criollas Tintas",categoria:"Tintos",stockUnidades:37,minimo:18,pedido:"6c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"3c",entregado:"3c (14/04)"},
+  {nombre:"Elephant Gun Malbec",categoria:"Tintos",stockUnidades:53,minimo:20,pedido:"7c",asesor:"Felipe Azcona",contacto:"+54 9 2645 64-8795",razon:"Azcona",obs:null,pendiente:null,ultimoPedido:"10/04",ultimoCant:"7c",entregado:"7c (14/04)"},
+  {nombre:"Ver Sacrum Monastrell",categoria:"Tintos",stockUnidades:28,minimo:8,pedido:"4c",asesor:"Micaela Baum",contacto:"+54 9 11 5823-6823",razon:"Aurea",obs:"Combinar con PAP Naranjo",pendiente:null,ultimoPedido:"06/04",ultimoCant:"4c",entregado:"4c (07/04)"},
+  {nombre:"Nat Cool Bonarda",categoria:"Tintos",stockUnidades:19,minimo:12,pedido:"5c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"La Voja Pinot Noir",categoria:"Tintos",stockUnidades:23,minimo:12,pedido:"5c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Aper",obs:null,pendiente:null,ultimoPedido:"07/04",ultimoCant:"5c",entregado:"5c (08/04)"},
+  {nombre:"Negra Margen Bonarda",categoria:"Tintos",stockUnidades:25,minimo:12,pedido:"4c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"4c",entregado:"4c (08/04)"},
+  {nombre:"Les Astronautes Malbec",categoria:"Tintos",stockUnidades:42,minimo:20,pedido:"5c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Tino Slow",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"7c",entregado:"7c (14/04)"},
+  {nombre:"Naciente CF y M",categoria:"Tintos",stockUnidades:20,minimo:12,pedido:"3c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"2c",entregado:"2c (14/04)"},
+  {nombre:"El Raro Nebbiolo",categoria:"Tintos",stockUnidades:14,minimo:3,pedido:"3c",asesor:"Gabriel Campana",contacto:"+54 9 3525 64-4693",razon:"Campana",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Angelica Zapata CF",categoria:"Tintos",stockUnidades:12,minimo:6,pedido:"4c",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"A Lisa Malbec",categoria:"Tintos",stockUnidades:15,minimo:5,pedido:"3c",asesor:"Belen Fretes",contacto:"+54 9 2984 66-1071",razon:"Noemia",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Chacra 55 Pinot Noir",categoria:"Tintos",stockUnidades:4,minimo:1,pedido:"1c",asesor:"Rodrigo Calderon",contacto:"+54 9 11 6901-2375",razon:"Calderon",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Las Cuerdas Cota 1500",categoria:"Tintos",stockUnidades:5,minimo:3,pedido:"2c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Petit Maremmano Syrah-CS 375ml",categoria:"Tintos",stockUnidades:24,minimo:15,pedido:"12u",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"12u",entregado:"12u (14/04)"},
+  {nombre:"Vertebrado Pinot Noir",categoria:"Tintos",stockUnidades:6,minimo:3,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"15/04",ultimoCant:"1c",entregado:"1c (15/04)"},
+  {nombre:"Verum Malbec",categoria:"Evento",stockUnidades:24,minimo:null,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Verum",obs:"Evento",pendiente:null,ultimoPedido:"13/04",ultimoCant:"4c",entregado:"4c (14/04)"},
+  {nombre:"Electrico Rosado",categoria:"Evento",stockUnidades:6,minimo:null,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:"Evento",pendiente:null,ultimoPedido:"13/04",ultimoCant:"1c",entregado:"1c (14/04)"},
+  {nombre:"Nox Malbec",categoria:"Espumosos",stockUnidades:8,minimo:4,pedido:"3c",asesor:"Alma Cabral",contacto:"+54 9 11 3357-8389",razon:"Punto Novisa",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Alma 4 Pinot-Chardonnay",categoria:"Espumosos",stockUnidades:44,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"4c",entregado:"5c (15/04)"},
+  {nombre:"Alma Negra Chardonnay",categoria:"Espumosos",stockUnidades:26,minimo:4,pedido:"3c",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Zuccardi Blanc de Blancs",categoria:"Espumosos",stockUnidades:25,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"3c",entregado:"3c (15/04)"},
+  {nombre:"Animal Extra Brut",categoria:"Espumosos",stockUnidades:13,minimo:2,pedido:"2c",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Terrazas Petit Manseng",categoria:"Dulce",stockUnidades:4,minimo:4,pedido:"3c",asesor:"Camila Pacheco",contacto:"+54 9 11 5035-8041",razon:"Chandon",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Mara de Uco Bonarda",categoria:"Casa",stockUnidades:69,minimo:18,pedido:"3+3c",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:"1+1",pendiente:null,ultimoPedido:"13/04",ultimoCant:"6c",entregado:"6c (14/04)"},
+  {nombre:"Elephant Gun Merlot",categoria:"Casa",stockUnidades:67,minimo:15,pedido:"3c",asesor:"Felipe Azcona",contacto:"+54 9 2645 64-8795",razon:"Azcona",obs:null,pendiente:null,ultimoPedido:"10/04",ultimoCant:"3c",entregado:"3c (14/04)"},
+  {nombre:"Elephant Gun Rose",categoria:"Casa",stockUnidades:36,minimo:20,pedido:"3c",asesor:"Felipe Azcona",contacto:"+54 9 2645 64-8795",razon:"Azcona",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Tilia Chardonnay",categoria:"Casa",stockUnidades:46,minimo:18,pedido:"3+3c",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:"1+1",pendiente:null,ultimoPedido:"06/04",ultimoCant:"6c",entregado:"6c (3c 07/04 + 3c 08/04)"},
+  {nombre:"UMC Malbec",categoria:"Casa",stockUnidades:66,minimo:15,pedido:"8c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Vistalba",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"8c",entregado:"8c"},
+  {nombre:"UMC Blanco",categoria:"Casa",stockUnidades:30,minimo:6,pedido:"2c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Vistalba",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"2c->3c",entregado:"3c"},
+  {nombre:"Kombucha",categoria:"Otros",stockUnidades:36,minimo:30,pedido:"7p",asesor:"Elda",contacto:"+54 9 11 5596-7259",razon:"Sueno Verde",obs:"min. 7p",pendiente:null,ultimoPedido:"06/04",ultimoCant:"3 packs",entregado:"3 packs = 36u (08/04)"},
+  {nombre:"Jugo de Tomate (Bloody)",categoria:"Otros",stockUnidades:24,minimo:6,pedido:"3p",asesor:"Adriana",contacto:"+54 9 11 6558-1113",razon:"-",obs:"min y max 3p",pendiente:null,ultimoPedido:"06/04",ultimoCant:"3 packs",entregado:"3 packs = 24u (08/04)"},
+  {nombre:"Cafe Samba",categoria:"Otros",stockUnidades:6,minimo:3,pedido:"6kg",asesor:null,contacto:"tostadero@cuervocafe.com",razon:"Cuervo",obs:"min. 6kg",pendiente:null,ultimoPedido:"14/04",ultimoCant:"6kg",entregado:"6kg (14/04)"},
+];
+
+var currentFilter = 'all';
+var currentSearch = '';
+
+function applySearch() {
+  currentSearch = document.getElementById('search-input').value.toLowerCase().trim();
+  renderItems(currentFilter);
+}
+
+function clearSearch() {
+  document.getElementById('search-input').value = '';
+  currentSearch = '';
+  renderItems(currentFilter);
+}
+
+function matchesSearch(item) {
+  if (!currentSearch) return true;
+  return item.nombre.toLowerCase().includes(currentSearch) ||
+         (item.asesor && item.asesor.toLowerCase().includes(currentSearch)) ||
+         (item.razon && item.razon.toLowerCase().includes(currentSearch));
+}
+
+function clasificar(item) {
+  if (item.minimo === null) return "sin-minimo";
+  if (item.stockUnidades === 0) return "critica";
+  if (item.stockUnidades <= item.minimo) return "critica";
+  if (item.stockUnidades <= item.minimo * 1.4) return "alerta";
+  return "ok";
+}
+
+function renderItems(filterStatus) {
+  var container = document.getElementById('main-content');
+  container.innerHTML = '';
+  var categorias = [];
+  items.forEach(function(i) { if (categorias.indexOf(i.categoria) === -1) categorias.push(i.categoria); });
+  var cC=0,cA=0,cO=0,cS=0;
+  items.forEach(function(i) { var s=clasificar(i); if(s==='critica')cC++; else if(s==='alerta')cA++; else if(s==='ok')cO++; else cS++; });
+  document.getElementById('cnt-critica').textContent=cC;
+  document.getElementById('cnt-alerta').textContent=cA;
+  document.getElementById('cnt-ok').textContent=cO;
+  document.getElementById('cnt-sin').textContent=cS;
+
+  categorias.forEach(function(cat) {
+    var catItems = items.filter(function(i) {
+      if (i.categoria !== cat) return false;
+      if (!matchesSearch(i)) return false;
+      if (filterStatus === 'all') return true;
+      return clasificar(i) === filterStatus;
+    }).sort(function(a,b) {
+      var ord = {critica:0,alerta:1,ok:2,'sin-minimo':3};
+      return ord[clasificar(a)] - ord[clasificar(b)];
+    });
+    if (catItems.length === 0) return;
+
+    var section = document.createElement('div'); section.className='section';
+    var title = document.createElement('div'); title.className='section-title'; title.textContent=cat.toUpperCase();
+    section.appendChild(title);
+
+    catItems.forEach(function(item, idx) {
+      var estado = clasificar(item);
+      var card = document.createElement('div');
+      card.className = 'alert-card ' + (estado==='sin-minimo' ? 'ok' : estado);
+      card.style.animationDelay = (idx*0.05)+'s';
+
+      var col = estado==='critica' ? '#c0392b' : estado==='alerta' ? '#d4a017' : '#4a7c59';
+      var badge = estado==='critica' ? '<div class="badge critica">Pedir ya</div>' : estado==='alerta' ? '<div class="badge alerta">En alerta</div>' : '';
+
+      var ct = '';
+      if (item.asesor) ct += '<span>👤 '+item.asesor+'</span>';
+      if (item.contacto) {
+        var isEm = item.contacto.indexOf('@') !== -1;
+        ct += '<span>'+(isEm?'✉':'📱')+' <a href="'+(isEm?'mailto:':'https://wa.me/')+item.contacto.replace(/[\s\+\-]/g,'')+'">'+item.contacto+'</a></span>';
+      }
+      if (item.razon && item.razon!=='?' && item.razon!=='-') ct += '<span>🏢 '+item.razon+'</span>';
+
+      var obsH = item.obs ? '<span class="obs-tag">'+item.obs+'</span>' : '';
+      var penH = item.pendiente ? '<span class="pendiente-tag">🚚 '+item.pendiente+'</span>' : '';
+      var minL = item.minimo !== null ? 'min: '+item.minimo+'u' : 'sin minimo';
+      var pedH = item.pedido !== '-' ? '<div class="pedido-tag">Pedir: <strong>'+item.pedido+'</strong></div>' : '';
+
+      var histH = '';
+      if (item.ultimoPedido) {
+        var entH = item.entregado ? '<span>✅ <strong style="color:#4a7c59">'+item.entregado+'</strong></span>' : '<span style="color:#d4a017">⏳ Pendiente</span>';
+        histH = '<div class="historial"><span>🗓 '+item.ultimoPedido+'</span><span>📋 '+item.ultimoCant+'</span>'+entH+'</div>';
+      }
+
+      card.innerHTML =
+        '<div>'+
+          '<div class="wine-name">'+item.nombre+'</div>'+
+          '<div class="wine-meta"><span>📦 '+minL+'</span><span>🗂 '+item.categoria+'</span></div>'+
+          obsH+penH+
+          '<div class="contact-info">'+ct+'</div>'+
+          histH+
+        '</div>'+
+        '<div class="right-panel">'+
+          badge+
+          '<div class="stock-display" style="color:'+col+'">'+item.stockUnidades+'</div>'+
+          '<div class="stock-label">'+(item.stockUnidades===0?'SIN STOCK':'unidades')+'</div>'+
+          pedH+
+        '</div>';
+
+      section.appendChild(card);
+    });
+    container.appendChild(section);
+  });
+}
+
+function filter(status, btn) {
+  currentFilter = status;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  renderItems(status);
+}
+
+var waFilter = 'urgente';
+
+function buildWAMessage(asesor, productos) {
+  var fecha = new Date().toLocaleDateString('es-AR',{day:'numeric',month:'long',year:'numeric'});
+  var msg = 'Hola '+(asesor||'')+'! 👋\n\nTe escribimos desde *CHUI* para hacer un pedido ('+fecha+'):\n\n';
+  productos.forEach(function(p) {
+    msg += '• *'+p.nombre+'*'+(clasificar(p)==='critica'?' ⚠️':'')+' — '+p.pedido+'\n';
+    if (p.obs) msg += '  _('+p.obs+')_\n';
+  });
+  msg += '\nMuchas gracias!';
+  return msg;
+}
+
+function openWAModal() { waFilter='urgente'; renderWAModal(); document.getElementById('waModal').classList.add('open'); }
+function closeWAModal() { document.getElementById('waModal').classList.remove('open'); }
+function closeOnOverlay(e) { if(e.target===document.getElementById('waModal'))closeWAModal(); }
+
+function setWAFilter(f,btn) {
+  waFilter=f;
+  document.querySelectorAll('.wa-filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  renderWAModal();
+}
+
+function renderWAModal() {
+  var body = document.getElementById('waModalBody');
+  body.innerHTML='';
+  var fr = document.createElement('div'); fr.className='wa-filter-row';
+  fr.innerHTML='<button class="wa-filter-btn '+(waFilter==='urgente'?'active':'')+'" onclick="setWAFilter(\'urgente\',this)">Solo urgentes</button><button class="wa-filter-btn '+(waFilter==='all'?'active':'')+'" onclick="setWAFilter(\'all\',this)">Todos</button>';
+  body.appendChild(fr);
+
+  var porAsesor={};
+  items.forEach(function(item) {
+    if(item.pedido==='-') return;
+    var estado=clasificar(item);
+    if(waFilter==='urgente' && estado!=='critica' && estado!=='alerta') return;
+    var key=item.asesor||item.contacto||'Sin contacto';
+    if(!porAsesor[key]) porAsesor[key]={asesor:item.asesor,contacto:item.contacto,productos:[]};
+    porAsesor[key].productos.push(item);
+  });
+
+  var asesores=Object.keys(porAsesor);
+  if(asesores.length===0){
+    var em=document.createElement('div'); em.className='wa-empty';
+    em.textContent=waFilter==='urgente'?'No hay pedidos urgentes.':'No hay pedidos.';
+    body.appendChild(em); return;
+  }
+
+  asesores.sort(function(a,b){
+    return porAsesor[b].productos.filter(function(p){return clasificar(p)==='critica';}).length -
+           porAsesor[a].productos.filter(function(p){return clasificar(p)==='critica';}).length;
+  });
+
+  asesores.forEach(function(key) {
+    var d=porAsesor[key];
+    var mensaje=buildWAMessage(d.asesor,d.productos);
+    var isEm=d.contacto&&d.contacto.indexOf('@')!==-1;
+    var ph=d.contacto?d.contacto.replace(/[\s\+\-]/g,''):null;
+    var waL=!isEm&&ph?'https://wa.me/'+ph+'?text='+encodeURIComponent(mensaje):null;
+    var cC=d.productos.filter(function(p){return clasificar(p)==='critica';}).length;
+    var cA=d.productos.filter(function(p){return clasificar(p)==='alerta';}).length;
+    var ub=cC>0?'<span style="color:#c0392b;font-size:10px">⚠ '+cC+' critico'+(cC>1?'s':'')+'</span>':cA>0?'<span style="color:#d4a017;font-size:10px">↓ '+cA+' en alerta</span>':'';
+    var card=document.createElement('div'); card.className='wa-provider-card';
+    var btnWA=waL?'<button class="wa-btn send" onclick="window.open(\''+waL+'\',\'_blank\')">Abrir WA</button>':'<button class="wa-btn send" onclick="window.open(\'mailto:'+d.contacto+'\',\'_blank\')">Email</button>';
+    var msgE=mensaje.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    var msgJ=JSON.stringify(mensaje);
+    card.innerHTML='<div class="wa-provider-header" style="background:#211f1b;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #2e2b25;gap:10px"><div><div style="font-family:Playfair Display,serif;font-size:16px;color:#e8e0d0">'+(d.asesor||key)+'</div><div style="font-size:11px;color:#7a7060;margin-top:2px">'+(d.contacto||'')+' '+ub+'</div></div><div style="display:flex;gap:8px"><button style="font-family:DM Mono,monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:6px 12px;border-radius:2px;cursor:pointer;border:none;background:#2e2b25;color:#e8e0d0" onclick="copyMsg(this,'+msgJ+')">Copiar</button>'+btnWA+'</div></div><div style="padding:12px 16px;font-size:12px;line-height:1.8;color:#7a7060;white-space:pre-wrap;font-family:DM Mono,monospace;background:rgba(0,0,0,0.3)">'+msgE+'</div>';
+    body.appendChild(card);
+  });
+}
+
+function copyMsg(btn,msg) {
+  navigator.clipboard.writeText(msg).then(function(){
+    btn.textContent='✓ Copiado'; btn.classList.add('copied');
+    setTimeout(function(){btn.textContent='Copiar';btn.classList.remove('copied');},2000);
+  });
+}
+
+document.getElementById('fecha').textContent=new Date().toLocaleDateString('es-AR',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).toUpperCase();
+renderItems('all');
+</script>
+
+</body>
+</html>
