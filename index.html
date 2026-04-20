@@ -184,6 +184,51 @@ var items = [
   {nombre:"Cafe Samba",categoria:"Otros",stockUnidades:6,minimo:3,pedido:"6kg",asesor:null,contacto:"tostadero@cuervocafe.com",razon:"Cuervo",obs:"min. 6kg",pendiente:null,ultimoPedido:"14/04",ultimoCant:"6kg",entregado:"6kg (14/04)"},
 ];
 
+var precios = {
+  "Laborum Torrontes": {costo:14000, venta:39200},
+  "La Marchigiana Moscatel": {costo:10500, venta:29400},
+  "Electrico SB-Chardonnay": {costo:13750, venta:38500},
+  "Antro Chardonnay": {costo:9400, venta:28200},
+  "Esperando a Los Barbaros SB": {costo:12500, venta:35000},
+  "Humberto Canale Riesling": {costo:15750, venta:44100},
+  "Poligonos Verdejo": {costo:18000, venta:46800},
+  "Contra Corriente Chardonnay": {costo:20873, venta:54270},
+  "Livvera Chenin": {costo:14750, venta:41300},
+  "Verum Chardonnay Naranjo": {costo:13500, venta:37800},
+  "Solito Va Naranjo": {costo:13260, venta:37128},
+  "Petit Mara Naranjo 375ml": {costo:7000, venta:21000},
+  "Livvera Malvasia Naranjo": {costo:14750, venta:41300},
+  "L.I.A.P. Flower Merlot": {costo:15000, venta:42000},
+  "Rocamadre Pinot Noir Rose": {costo:16335, venta:42471},
+  "El Afinador Rose CF": {costo:10000, venta:30000},
+  "Inconsciente Merlot Rose": {costo:9500, venta:28500},
+  "Araucana Malbec Rose": {costo:21000, venta:54600},
+  "Humberto Canale Rose Noir": {costo:11500, venta:32200},
+  "Cara Sur Pergolas Criollas Tintas": {costo:10000, venta:30000},
+  "Elephant Gun Malbec": {costo:6000, venta:18000},
+  "Ver Sacrum Monastrell": {costo:16000, venta:44800},
+  "Nat Cool Bonarda": {costo:11550, venta:32340},
+  "La Voja Pinot Noir": {costo:18000, venta:46800},
+  "Negra Margen Bonarda": {costo:12500, venta:35000},
+  "Les Astronautes Malbec": {costo:8600, venta:25800},
+  "Naciente CF y M": {costo:16000, venta:44800},
+  "El Raro Nebbiolo": {costo:25000, venta:65000},
+  "Angelica Zapata CF": {costo:19850, venta:51610},
+  "A Lisa Malbec": {costo:26406, venta:63374},
+  "Chacra 55 Pinot Noir": {costo:59500, venta:119000},
+  "Las Cuerdas Cota 1500": {costo:24000, venta:62400},
+  "Petit Maremmano Syrah-CS 375ml": {costo:7000, venta:21000},
+  "Nox Malbec": {costo:15500, venta:43400},
+  "Alma 4 Pinot-Chardonnay": {costo:14750, venta:41300},
+  "Alma Negra Chardonnay": {costo:18000, venta:46800},
+  "Zuccardi Blanc de Blancs": {costo:27000, venta:64800},
+  "Terrazas Petit Manseng": {costo:18815, venta:48919},
+};
+
+function formatPesos(n) {
+  return '$' + Math.round(n).toLocaleString('es-AR');
+}
+
 var currentFilter = 'all';
 var currentSearch = '';
 
@@ -269,6 +314,18 @@ function renderItems(filterStatus) {
         histH = '<div class="historial"><span>🗓 '+item.ultimoPedido+'</span><span>📋 '+item.ultimoCant+'</span>'+entH+'</div>';
       }
 
+      var precioH = '';
+      var p = precios[item.nombre];
+      if (p) {
+        var margen = Math.round((p.venta - p.costo) / p.venta * 100);
+        var mColor = margen >= 65 ? '#4a7c59' : margen >= 60 ? '#d4a017' : '#c0392b';
+        precioH = '<div style="margin-top:8px;padding-top:8px;border-top:1px solid #2e2b25;display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#7a7060">'
+          + '<span>💰 Costo: <strong style="color:#e8e0d0">'+formatPesos(p.costo)+'</strong></span>'
+          + '<span>🏷️ Venta: <strong style="color:#e8e0d0">'+formatPesos(p.venta)+'</strong></span>'
+          + '<span>📈 Margen: <strong style="color:'+mColor+'">'+margen+'%</strong></span>'
+          + '</div>';
+      }
+
       card.innerHTML =
         '<div>'+
           '<div class="wine-name">'+item.nombre+'</div>'+
@@ -276,6 +333,7 @@ function renderItems(filterStatus) {
           obsH+penH+
           '<div class="contact-info">'+ct+'</div>'+
           histH+
+          precioH+
         '</div>'+
         '<div class="right-panel">'+
           badge+
