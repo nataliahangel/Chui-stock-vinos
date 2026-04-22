@@ -15,7 +15,8 @@
   .logo { font-family:'Playfair Display',serif; font-size:42px; font-style:italic; letter-spacing:-1px; line-height:1; }
   .header-meta { text-align:right; color:var(--muted); font-size:11px; letter-spacing:0.1em; line-height:1.8; }
   .stats-row { max-width:900px; margin:0 auto 40px; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
-  .stat-box { background:var(--surface); border:1px solid var(--border); padding:18px 20px; border-radius:2px; }
+  .stat-box { background:var(--surface); border:1px solid var(--border); padding:18px 20px; border-radius:2px; transition: border-color 0.2s, transform 0.1s; }
+  .stat-box:hover { border-color: var(--muted); transform: translateY(-1px); }
   .stat-box .num { font-family:'Playfair Display',serif; font-size:36px; line-height:1; margin-bottom:6px; }
   .stat-box .label { font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); }
   .stat-box.red .num { color:var(--red); } .stat-box.amber .num { color:var(--amber); } .stat-box.green .num { color:var(--green); } .stat-box.blue .num { color:var(--blue); }
@@ -37,6 +38,10 @@
   .contact-info { font-size:11px; color:var(--muted); margin-top:6px; padding-top:8px; border-top:1px solid var(--border); display:flex; gap:16px; flex-wrap:wrap; }
   .contact-info a { color:var(--amber); text-decoration:none; }
   .historial { margin-top:8px; padding-top:8px; border-top:1px solid var(--border); display:flex; gap:12px; flex-wrap:wrap; font-size:11px; color:var(--muted); }
+  .precio-section { overflow:hidden; max-height:0; transition: max-height 0.3s ease, opacity 0.3s ease; opacity:0; }
+  .precio-section.open { max-height:80px; opacity:1; }
+  .expand-btn { margin-top:8px; background:none; border:1px solid var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.08em; padding:4px 10px; border-radius:2px; cursor:pointer; text-transform:uppercase; transition:all 0.2s; display:inline-block; }
+  .expand-btn:hover { color:var(--text); border-color:var(--muted); }
   .right-panel { text-align:right; min-width:130px; }
   .badge { display:inline-block; font-size:10px; letter-spacing:0.1em; padding:3px 8px; border-radius:2px; text-transform:uppercase; margin-bottom:10px; }
   .badge.critica { background:rgba(192,57,43,0.2); color:var(--red); border:1px solid rgba(192,57,43,0.4); }
@@ -78,7 +83,7 @@
 <body>
 
 <header>
-  <div class="logo">chui</div>
+  <div class="logo">chuí</div>
   <div class="header-meta">
     <div>ALERTAS DE STOCK</div>
     <div id="fecha"></div>
@@ -87,10 +92,18 @@
 </header>
 
 <div class="stats-row">
-  <div class="stat-box red"><div class="num" id="cnt-critica">0</div><div class="label">Criticas — pedir ya</div></div>
-  <div class="stat-box amber"><div class="num" id="cnt-alerta">0</div><div class="label">En alerta</div></div>
-  <div class="stat-box green"><div class="num" id="cnt-ok">0</div><div class="label">Stock OK</div></div>
-  <div class="stat-box blue"><div class="num" id="cnt-sin">0</div><div class="label">Sin proveedor</div></div>
+  <div class="stat-box red" onclick="filterFromStat('critica')" style="cursor:pointer">
+    <div class="num" id="cnt-critica">0</div><div class="label">Criticas — pedir ya</div>
+  </div>
+  <div class="stat-box amber" onclick="filterFromStat('alerta')" style="cursor:pointer">
+    <div class="num" id="cnt-alerta">0</div><div class="label">En alerta</div>
+  </div>
+  <div class="stat-box green" onclick="filterFromStat('ok')" style="cursor:pointer">
+    <div class="num" id="cnt-ok">0</div><div class="label">Stock OK</div>
+  </div>
+  <div class="stat-box blue" onclick="filterFromStat('all')" style="cursor:pointer">
+    <div class="num" id="cnt-sin">0</div><div class="label">Sin proveedor</div>
+  </div>
 </div>
 
 <div class="filters">
@@ -246,6 +259,35 @@ var currentFilter = 'all';
 var currentSearch = '';
 var currentCat = 'all';
 
+function togglePrecio(id, btn) {
+  var el = document.getElementById(id);
+  if (el.classList.contains('open')) {
+    el.classList.remove('open');
+    btn.textContent = '💲 Ver precios';
+  } else {
+    el.classList.add('open');
+    btn.textContent = '💲 Ocultar precios';
+  }
+}
+
+function filterFromStat(status) {
+  currentFilter = status;
+  currentCat = 'all';
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
+  // Activate matching filter button
+  document.querySelectorAll('.filter-btn').forEach(function(b){
+    if ((status === 'all' && b.textContent.trim() === 'Todos') ||
+        (status === 'critica' && b.textContent.includes('Criticas')) ||
+        (status === 'alerta' && b.textContent.includes('alerta')) ||
+        (status === 'ok' && b.textContent.includes('OK'))) {
+      b.classList.add('active');
+    }
+  });
+  document.querySelectorAll('.cat-btn')[0].classList.add('active');
+  renderItems(status);
+}
+
 function filterCat(cat, btn) {
   currentCat = cat;
   document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
@@ -341,11 +383,14 @@ function renderItems(filterStatus) {
       if (p) {
         var margen = Math.round((p.venta - p.costo) / p.venta * 100);
         var mColor = margen >= 65 ? '#4a7c59' : margen >= 60 ? '#d4a017' : '#c0392b';
-        precioH = '<div style="margin-top:8px;padding-top:8px;border-top:1px solid #2e2b25;display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#7a7060">'
-          + '<span>💰 Costo: <strong style="color:#e8e0d0">'+formatPesos(p.costo)+'</strong></span>'
-          + '<span>🏷️ Venta: <strong style="color:#e8e0d0">'+formatPesos(p.venta)+'</strong></span>'
-          + '<span>📈 Margen: <strong style="color:'+mColor+'">'+margen+'%</strong></span>'
-          + '</div>';
+        var uid = 'precio-' + idx + '-' + cat.replace(/\s/g,'');
+        precioH = '<button class="expand-btn" onclick="togglePrecio(\'' + uid + '\', this)">💲 Ver precios</button>'
+          + '<div class="precio-section" id="' + uid + '">'
+          + '<div style="margin-top:8px;padding-top:8px;border-top:1px solid #2e2b25;display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#7a7060">'
+          + '<span>💰 Costo: <strong style="color:#e8e0d0">' + formatPesos(p.costo) + '</strong></span>'
+          + '<span>🏷️ Venta: <strong style="color:#e8e0d0">' + formatPesos(p.venta) + '</strong></span>'
+          + '<span>📈 Margen: <strong style="color:' + mColor + '">' + margen + '%</strong></span>'
+          + '</div></div>';
       }
 
       card.innerHTML =
