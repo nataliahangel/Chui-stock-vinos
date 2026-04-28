@@ -111,6 +111,7 @@
   <button class="filter-btn red" onclick="filter('critica',this)">Criticas</button>
   <button class="filter-btn amber" onclick="filter('alerta',this)">En alerta</button>
   <button class="filter-btn" onclick="filter('ok',this)">Stock OK</button>
+  <button class="filter-btn" style="border-color:#4a6fa5;color:#4a6fa5" onclick="filterPedidos(this)">🚚 Pedidos</button>
 </div>
 
 <div style="max-width:900px;margin:0 auto 20px;display:flex;gap:6px;flex-wrap:wrap">
@@ -157,16 +158,16 @@ var items = [
   {nombre:"La Marchigiana Moscatel",categoria:"Blancos",stockUnidades:1,minimo:null,pedido:"-",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Electrico SB-Chardonnay",categoria:"Blancos",stockUnidades:27,minimo:8,pedido:"3c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"1c",entregado:"1c (14/04)"},
   {nombre:"Antro Chardonnay",categoria:"Blancos",stockUnidades:33,minimo:15,pedido:"5c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"8c",entregado:"8c (14/04)"},
-  {nombre:"Esperando a Los Barbaros SB",categoria:"Blancos",stockUnidades:15,minimo:8,pedido:"3c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"1c",entregado:"1c (14/04)"},
+  {nombre:"Esperando a Los Barbaros SB",categoria:"Blancos",stockUnidades:15,minimo:8,pedido:"3c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:"1c en camino",ultimoPedido:"28/04",ultimoCant:"1c",entregado:"1c (14/04)"},
   {nombre:"Humberto Canale Riesling",categoria:"Blancos",stockUnidades:33,minimo:12,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Humberto Canale",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"3c",entregado:"3c (15/04)"},
   {nombre:"Poligonos Verdejo",categoria:"Blancos",stockUnidades:7,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Contra Corriente Chardonnay",categoria:"Blancos",stockUnidades:15,minimo:1,pedido:"3c",asesor:"Juan Molano Mesa",contacto:"+54 9 11 2842-4015",razon:"Patagonia River Guides",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Livvera Chenin",categoria:"Blancos",stockUnidades:23,minimo:6,pedido:"2c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Paso a Paso Criolla Blanco",categoria:"Blancos",stockUnidades:12,minimo:null,pedido:"2c",asesor:"Micaela Baum",contacto:"+54 9 11 5823-6823",razon:"Aurea",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"2c",entregado:"2c (07/04)"},
   {nombre:"Verum Chardonnay Naranjo",categoria:"Naranjos",stockUnidades:33,minimo:12,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Verum",obs:null,pendiente:null,ultimoPedido:"07/04",ultimoCant:"4c",entregado:"4c (07/04)"},
-  {nombre:"Solito Va Naranjo",categoria:"Naranjos",stockUnidades:19,minimo:15,pedido:"6c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"6c",entregado:"6c x 4u = 24u"},
+  {nombre:"Solito Va Naranjo",categoria:"Naranjos",stockUnidades:19,minimo:15,pedido:"6c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:"3c en camino",ultimoPedido:"28/04",ultimoCant:"3c",entregado:"6c x 4u = 24u"},
   {nombre:"Petit Mara Naranjo 375ml",categoria:"Naranjos",stockUnidades:25,minimo:10,pedido:"24u",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Livvera Malvasia Naranjo",categoria:"Naranjos",stockUnidades:1,minimo:3,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"1c",entregado:"1c (07/04)"},
+  {nombre:"Livvera Malvasia Naranjo",categoria:"Naranjos",stockUnidades:1,minimo:3,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:"1c en camino",ultimoPedido:"28/04",ultimoCant:"1c",entregado:"1c (07/04)"},
   {nombre:"Paso a Paso Orange",categoria:"Naranjos",stockUnidades:0,minimo:null,pedido:"2c",asesor:"Micaela Baum",contacto:"+54 9 11 5823-6823",razon:"Aurea",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"2c",entregado:"2c (07/04)"},
   {nombre:"L.I.A.P. Flower Merlot",categoria:"Rosados",stockUnidades:5,minimo:4,pedido:"4c",asesor:"Mauro Villarejo",contacto:"+54 9 2616 10-5500",razon:"?",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"1c",entregado:"1c (08/04)"},
   {nombre:"LIAP Noir de Blanc",categoria:"Rosados",stockUnidades:4,minimo:4,pedido:"1c",asesor:"Mauro Villarejo",contacto:"+54 9 2616 10-5500",razon:"?",obs:"Vino nuevo",pendiente:null,ultimoPedido:"06/04",ultimoCant:"1c",entregado:"1c (08/04)"},
@@ -176,21 +177,21 @@ var items = [
   {nombre:"Humberto Canale Rose Noir",categoria:"Rosados",stockUnidades:37,minimo:6,pedido:"2c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Humberto Canale",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Humberto Canale Old Vineyard Rose",categoria:"Rosados",stockUnidades:9,minimo:null,pedido:"-",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Humberto Canale",obs:"Vino nuevo",pendiente:null,ultimoPedido:"08/04",ultimoCant:"30u",entregado:"30u (08/04)"},
   {nombre:"Araucana Malbec Rose",categoria:"Rosados",stockUnidades:16,minimo:4,pedido:"3c",asesor:"Juan Pablo Flores",contacto:"+54 9 11 3566-7785",razon:"Casa Pirque",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Cara Sur Pergolas Criollas Tintas",categoria:"Tintos",stockUnidades:3,minimo:18,pedido:"6c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"3c",entregado:"3c (14/04)"},
-  {nombre:"Elephant Gun Malbec",categoria:"Tintos",stockUnidades:22,minimo:20,pedido:"7c",asesor:"Felipe Azcona",contacto:"+54 9 2645 64-8795",razon:"Azcona",obs:null,pendiente:null,ultimoPedido:"10/04",ultimoCant:"7c",entregado:"7c (14/04)"},
+  {nombre:"Cara Sur Pergolas Criollas Tintas",categoria:"Tintos",stockUnidades:3,minimo:18,pedido:"6c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:"5c en camino",ultimoPedido:"28/04",ultimoCant:"5c",entregado:"3c (14/04)"},
+  {nombre:"Elephant Gun Malbec",categoria:"Tintos",stockUnidades:22,minimo:20,pedido:"7c",asesor:"Felipe Azcona",contacto:"+54 9 2645 64-8795",razon:"Azcona",obs:null,pendiente:"6c en camino",ultimoPedido:"28/04",ultimoCant:"6c",entregado:"7c (14/04)"},
   {nombre:"Ver Sacrum Monastrell",categoria:"Tintos",stockUnidades:16,minimo:8,pedido:"4c",asesor:"Micaela Baum",contacto:"+54 9 11 5823-6823",razon:"Aurea",obs:"Combinar con PAP Naranjo",pendiente:null,ultimoPedido:"06/04",ultimoCant:"4c",entregado:"4c (07/04)"},
-  {nombre:"Nat Cool Bonarda",categoria:"Tintos",stockUnidades:3,minimo:12,pedido:"5c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"La Voja Pinot Noir",categoria:"Tintos",stockUnidades:0,minimo:12,pedido:"5c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Aper",obs:null,pendiente:null,ultimoPedido:"07/04",ultimoCant:"5c",entregado:"5c (08/04)"},
-  {nombre:"Negra Margen Bonarda",categoria:"Tintos",stockUnidades:23,minimo:12,pedido:"4c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"4c",entregado:"4c (08/04)"},
-  {nombre:"Les Astronautes Malbec",categoria:"Tintos",stockUnidades:8,minimo:20,pedido:"5c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Tino Slow",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"7c",entregado:"7c (14/04)"},
-  {nombre:"Naciente CF y M",categoria:"Tintos",stockUnidades:11,minimo:12,pedido:"3c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"2c",entregado:"2c (14/04)"},
+  {nombre:"Nat Cool Bonarda",categoria:"Tintos",stockUnidades:3,minimo:12,pedido:"5c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:"5c en camino",ultimoPedido:"28/04",ultimoCant:"5c",entregado:null},
+  {nombre:"La Voja Pinot Noir",categoria:"Tintos",stockUnidades:0,minimo:12,pedido:"5c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Aper",obs:null,pendiente:"5c en camino",ultimoPedido:"28/04",ultimoCant:"4+1c",entregado:"5c (08/04)"},
+  {nombre:"Negra Margen Bonarda",categoria:"Tintos",stockUnidades:23,minimo:12,pedido:"4c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:"1c en camino",ultimoPedido:"28/04",ultimoCant:"1c",entregado:"4c (08/04)"},
+  {nombre:"Les Astronautes Malbec",categoria:"Tintos",stockUnidades:8,minimo:20,pedido:"5c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Tino Slow",obs:null,pendiente:"7c en camino",ultimoPedido:"28/04",ultimoCant:"6+1c",entregado:"7c (14/04)"},
+  {nombre:"Naciente CF y M",categoria:"Tintos",stockUnidades:11,minimo:12,pedido:"3c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:"3c en camino",ultimoPedido:"28/04",ultimoCant:"3c",entregado:"2c (14/04)"},
   {nombre:"El Raro Nebbiolo",categoria:"Tintos",stockUnidades:13,minimo:3,pedido:"3c",asesor:"Gabriel Campana",contacto:"+54 9 3525 64-4693",razon:"Campana",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Angelica Zapata CF",categoria:"Tintos",stockUnidades:10,minimo:6,pedido:"4c",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"A Lisa Malbec",categoria:"Tintos",stockUnidades:12,minimo:5,pedido:"3c",asesor:"Belen Fretes",contacto:"+54 9 2984 66-1071",razon:"Noemia",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Chacra 55 Pinot Noir",categoria:"Tintos",stockUnidades:4,minimo:1,pedido:"1c",asesor:"Rodrigo Calderon",contacto:"+54 9 11 6901-2375",razon:"Calderon",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Las Cuerdas Cota 1500",categoria:"Tintos",stockUnidades:4,minimo:3,pedido:"2c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Petit Maremmano Syrah-CS 375ml",categoria:"Tintos",stockUnidades:24,minimo:15,pedido:"12u",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"12u",entregado:"12u (14/04)"},
-  {nombre:"Vertebrado Pinot Noir",categoria:"Tintos",stockUnidades:0,minimo:3,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"15/04",ultimoCant:"1c",entregado:"1c (15/04)"},
+  {nombre:"Vertebrado Pinot Noir",categoria:"Tintos",stockUnidades:0,minimo:3,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:"2c en camino",ultimoPedido:"28/04",ultimoCant:"2c",entregado:"1c (15/04)"},
   {nombre:"Verum Malbec",categoria:"Tintos",stockUnidades:19,minimo:null,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Verum",obs:"Evento",pendiente:null,ultimoPedido:"13/04",ultimoCant:"4c",entregado:"4c (14/04)"},
   {nombre:"Electrico Rosado",categoria:"Rosados",stockUnidades:3,minimo:null,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:"Evento",pendiente:null,ultimoPedido:"13/04",ultimoCant:"1c",entregado:"1c (14/04)"},
   {nombre:"Nox Malbec",categoria:"Espumosos",stockUnidades:6,minimo:4,pedido:"3c",asesor:"Alma Cabral",contacto:"+54 9 11 3357-8389",razon:"Punto Novisa",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
@@ -205,7 +206,7 @@ var items = [
   {nombre:"Tilia Chardonnay",categoria:"Casa",stockUnidades:31,minimo:18,pedido:"3+3c",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:"1+1",pendiente:null,ultimoPedido:"06/04",ultimoCant:"6c",entregado:"6c (3c 07/04 + 3c 08/04)"},
   {nombre:"UMC Malbec",categoria:"Casa",stockUnidades:66,minimo:15,pedido:"8c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Vistalba",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"8c",entregado:"8c"},
   {nombre:"UMC Blanco",categoria:"Casa",stockUnidades:30,minimo:6,pedido:"2c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Vistalba",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"2c->3c",entregado:"3c"},
-  {nombre:"Kombucha",categoria:"Otros",stockUnidades:47,minimo:30,pedido:"7p",asesor:"Elda",contacto:"+54 9 11 5596-7259",razon:"Sueno Verde",obs:"min. 7p",pendiente:null,ultimoPedido:"06/04",ultimoCant:"3 packs",entregado:"3 packs = 36u (08/04)"},
+  {nombre:"Kombucha",categoria:"Otros",stockUnidades:47,minimo:30,pedido:"7p",asesor:"Elda",contacto:"+54 9 11 5596-7259",razon:"Sueno Verde",obs:"min. 7p",pendiente:"7p en camino",ultimoPedido:"28/04",ultimoCant:"7p",entregado:"3 packs = 36u (08/04)"},
   {nombre:"Jugo de Tomate (Bloody)",categoria:"Otros",stockUnidades:24,minimo:6,pedido:"3p",asesor:"Adriana",contacto:"+54 9 11 6558-1113",razon:"-",obs:"min y max 3p",pendiente:null,ultimoPedido:"06/04",ultimoCant:"3 packs",entregado:"3 packs = 24u (08/04)"},
   {nombre:"Cafe Samba",categoria:"Otros",stockUnidades:6,minimo:3,pedido:"6kg",asesor:null,contacto:"tostadero@cuervocafe.com",razon:"Cuervo",obs:"min. 6kg",pendiente:null,ultimoPedido:"14/04",ultimoCant:"6kg",entregado:"6kg (14/04)"},
 ];
@@ -270,7 +271,87 @@ function togglePrecio(id, btn) {
   }
 }
 
+var pedidosMode = false;
+
+function filterPedidos(btn) {
+  pedidosMode = true;
+  currentCat = 'all';
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.querySelectorAll('.cat-btn')[0].classList.add('active');
+  renderPedidos();
+}
+
+function renderPedidos() {
+  var container = document.getElementById('main-content');
+  container.innerHTML = '';
+
+  var pendientes = items.filter(function(i) { return i.pendiente && i.pendiente !== null; });
+
+  if (pendientes.length === 0) {
+    var empty = document.createElement('div');
+    empty.style.cssText = 'max-width:900px;margin:40px auto;text-align:center;color:#4a4538;font-size:13px;font-style:italic';
+    empty.textContent = 'No hay pedidos pendientes.';
+    container.appendChild(empty);
+    return;
+  }
+
+  // Group by asesor
+  var porAsesor = {};
+  pendientes.forEach(function(item) {
+    var key = item.asesor || 'Sin contacto';
+    if (!porAsesor[key]) porAsesor[key] = { asesor: item.asesor, contacto: item.contacto, razon: item.razon, items: [] };
+    porAsesor[key].items.push(item);
+  });
+
+  // Header
+  var header = document.createElement('div');
+  header.style.cssText = 'max-width:900px;margin:0 auto 24px;font-size:11px;color:#7a7060;letter-spacing:0.1em';
+  header.textContent = pendientes.length + ' PEDIDO' + (pendientes.length > 1 ? 'S' : '') + ' PENDIENTE' + (pendientes.length > 1 ? 'S' : '');
+  container.appendChild(header);
+
+  Object.keys(porAsesor).sort().forEach(function(key) {
+    var grupo = porAsesor[key];
+    var section = document.createElement('div');
+    section.className = 'section';
+
+    var title = document.createElement('div');
+    title.className = 'section-title';
+    title.textContent = (grupo.razon && grupo.razon !== '-' ? grupo.razon : key).toUpperCase();
+    section.appendChild(title);
+
+    grupo.items.forEach(function(item, idx) {
+      var card = document.createElement('div');
+      card.style.cssText = 'background:#211f1b;border:1px solid #2e2b25;border-left:3px solid #4a6fa5;padding:14px 20px;margin-bottom:8px;border-radius:0 2px 2px 0;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;animation:fadeIn 0.3s ease forwards;opacity:0';
+      card.style.animationDelay = (idx * 0.05) + 's';
+
+      var isEmail = grupo.contacto && grupo.contacto.indexOf('@') !== -1;
+      var contactHTML = grupo.contacto
+        ? '<a href="' + (isEmail ? 'mailto:' : 'https://wa.me/') + grupo.contacto.replace(/[\s\+\-]/g,'') + '" style="color:#d4a017;text-decoration:none">' + grupo.contacto + '</a>'
+        : '';
+
+      card.innerHTML =
+        '<div>' +
+          '<div style="font-family:Playfair Display,serif;font-size:17px;color:#e8e0d0;margin-bottom:4px">' + item.nombre + '</div>' +
+          '<div style="font-size:11px;color:#7a7060">' + (grupo.asesor || '') + ' &nbsp; ' + contactHTML + '</div>' +
+        '</div>' +
+        '<div style="text-align:right">' +
+          '<div style="font-size:10px;color:#4a6fa5;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px">🚚 En camino</div>' +
+          '<div style="font-family:Playfair Display,serif;font-size:22px;color:#e8e0d0">' + item.ultimoCant + '</div>' +
+          '<div style="font-size:10px;color:#7a7060">pedido ' + item.ultimoPedido + '</div>' +
+          '<div style="font-size:11px;color:#4a4538;margin-top:4px">Stock actual: ' + item.stockUnidades + 'u</div>' +
+        '</div>';
+
+      section.appendChild(card);
+    });
+
+    container.appendChild(section);
+  });
+}
+
 function filterFromStat(status) {
+  pedidosMode = false;
   currentFilter = status;
   currentCat = 'all';
   document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
@@ -289,6 +370,7 @@ function filterFromStat(status) {
 }
 
 function filterCat(cat, btn) {
+  pedidosMode = false;
   currentCat = cat;
   document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
@@ -416,6 +498,7 @@ function renderItems(filterStatus) {
 }
 
 function filter(status, btn) {
+  pedidosMode = false;
   currentFilter = status;
   document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
