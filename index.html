@@ -509,6 +509,9 @@ function renderItems(filterStatus) {
           + '<div style="margin-top:8px;padding:8px 12px;background:rgba(212,160,23,0.08);border:1px solid rgba(212,160,23,0.2);border-radius:2px;font-size:11px;color:#e8e0d0;line-height:1.6">' + reco + '</div>'
           + '</div>';
       }
+
+      var precioH = '';
+      var p = precios[item.nombre];
       if (p) {
         var margen = Math.round((p.venta - p.costo) / p.venta * 100);
         var mColor = margen >= 65 ? '#4a7c59' : margen >= 60 ? '#d4a017' : '#c0392b';
