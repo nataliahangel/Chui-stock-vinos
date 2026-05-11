@@ -87,7 +87,7 @@
   <div class="header-meta">
     <div>ALERTAS DE STOCK</div>
     <div id="fecha"></div>
-    <div>DATOS: 30/04/2026</div>
+    <div>DATOS: 07/05/2026</div>
   </div>
 </header>
 
@@ -154,61 +154,72 @@
 
 <script>
 var items = [
-  {nombre:"Un Mundo Chiquito Malbec",categoria:"Casa",stockUnidades:44,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Un Mundo Chiquito C y CB",categoria:"Casa",stockUnidades:30,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Un Mundo Chiquito Malbec",categoria:"Casa",stockUnidades:38,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Un Mundo Chiquito C y CB",categoria:"Casa",stockUnidades:28,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Un Mundo Chiquito Rose",categoria:"Casa",stockUnidades:12,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Animal Extra Brut",categoria:"Espumosos",stockUnidades:12,minimo:2,pedido:"2c",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Mara Semillon",categoria:"Blancos",stockUnidades:14,minimo:null,pedido:"-",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:"Nuevo",pendiente:null,ultimoPedido:"28/04",ultimoCant:"3c",entregado:"3c (28/04)"},
-  {nombre:"Laborum Torrontes",categoria:"Blancos",stockUnidades:26,minimo:10,pedido:"5c",asesor:"Daniela Davila",contacto:"+54 9 11 3039-1384",razon:"Uvas del Valle",obs:"5+1 copa dia",pendiente:null,ultimoPedido:"06/04",ultimoCant:"6c",entregado:"6c"},
+  {nombre:"Ribera del Cuarzo Merlot",categoria:"Tintos",stockUnidades:2,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Cara Sur Criolla Chica",categoria:"Tintos",stockUnidades:1,minimo:null,pedido:"-",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"La Marchigiana Bonarda",categoria:"Tintos",stockUnidades:3,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Tilia Malbec",categoria:"Tintos",stockUnidades:20,minimo:null,pedido:"-",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"El Raro Sauvignon Blanc",categoria:"Blancos",stockUnidades:2,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Poligonos Semillon",categoria:"Blancos",stockUnidades:19,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"La Marchigiana Chardonnay",categoria:"Blancos",stockUnidades:8,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Cara Sur Moscatel Blanco",categoria:"Blancos",stockUnidades:3,minimo:null,pedido:"-",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Verum Chardonnay",categoria:"Blancos",stockUnidades:9,minimo:null,pedido:"-",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Tino Slow",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"La Marchigiana Rose",categoria:"Rosados",stockUnidades:18,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"N7",categoria:"Espumosos",stockUnidades:12,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Mara Semillon",categoria:"Blancos",stockUnidades:23,minimo:null,pedido:"-",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:"Nuevo",pendiente:null,ultimoPedido:"28/04",ultimoCant:"3c",entregado:"3c (28/04)"},
+  {nombre:"Laborum Torrontes",categoria:"Blancos",stockUnidades:25,minimo:10,pedido:"5c",asesor:"Daniela Davila",contacto:"+54 9 11 3039-1384",razon:"Uvas del Valle",obs:"5+1 copa dia",pendiente:null,ultimoPedido:"06/04",ultimoCant:"6c",entregado:"6c"},
   {nombre:"La Marchigiana Moscatel",categoria:"Blancos",stockUnidades:1,minimo:null,pedido:"-",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Electrico SB-Chardonnay",categoria:"Blancos",stockUnidades:28,minimo:8,pedido:"3c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"1c",entregado:"1c (14/04)"},
-  {nombre:"Antro Chardonnay",categoria:"Blancos",stockUnidades:22,minimo:40,pedido:"5c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:"4c en camino",ultimoPedido:"04/05",ultimoCant:"4c"},
-  {nombre:"Esperando a Los Barbaros SB",categoria:"Blancos",stockUnidades:18,minimo:8,pedido:"3c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"1c",entregado:"1c (28/04)"},
+  {nombre:"Antro Chardonnay",categoria:"Blancos",stockUnidades:20,minimo:15,pedido:"5c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:"4c en camino",ultimoPedido:"04/05",ultimoCant:"4c"},
+  {nombre:"Esperando a Los Barbaros SB",categoria:"Blancos",stockUnidades:15,minimo:8,pedido:"3c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"1c",entregado:"1c (28/04)"},
   {nombre:"Humberto Canale Riesling",categoria:"Blancos",stockUnidades:29,minimo:12,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Humberto Canale",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"3c",entregado:"3c (15/04)"},
-  {nombre:"Poligonos Verdejo",categoria:"Blancos",stockUnidades:7,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Poligonos Verdejo",categoria:"Blancos",stockUnidades:6,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Contra Corriente Chardonnay",categoria:"Blancos",stockUnidades:15,minimo:1,pedido:"3c",asesor:"Juan Molano Mesa",contacto:"+54 9 11 2842-4015",razon:"Patagonia River Guides",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Livvera Chenin",categoria:"Blancos",stockUnidades:21,minimo:6,pedido:"2c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Livvera Chenin",categoria:"Blancos",stockUnidades:22,minimo:6,pedido:"2c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Paso a Paso Criolla Blanco",categoria:"Blancos",stockUnidades:12,minimo:null,pedido:"2c",asesor:"Micaela Baum",contacto:"+54 9 11 5823-6823",razon:"Aurea",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"2c",entregado:"2c (07/04)"},
-  {nombre:"Verum Chardonnay Naranjo",categoria:"Naranjos",stockUnidades:20,minimo:12,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Verum",obs:null,pendiente:null,ultimoPedido:"07/04",ultimoCant:"4c",entregado:"4c (07/04)"},
-  {nombre:"Solito Va Naranjo",categoria:"Naranjos",stockUnidades:9,minimo:15,pedido:"6c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:"6c en camino",ultimoPedido:"04/05",ultimoCant:"6c"},
-  {nombre:"Petit Mara Naranjo 375ml",categoria:"Naranjos",stockUnidades:40,minimo:10,pedido:"24u",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Livvera Malvasia Naranjo",categoria:"Naranjos",stockUnidades:5,minimo:3,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:"3c en camino",ultimoPedido:"04/05",ultimoCant:"3c"},
-  {nombre:"Paso a Paso Orange",categoria:"Naranjos",stockUnidades:0,minimo:null,pedido:"2c",asesor:"Micaela Baum",contacto:"+54 9 11 5823-6823",razon:"Aurea",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"2c",entregado:"2c (07/04)"},
-  {nombre:"L.I.A.P. Flower Merlot",categoria:"Rosados",stockUnidades:4,minimo:4,pedido:"4c",asesor:"Mauro Villarejo",contacto:"+54 9 2616 10-5500",razon:"?",obs:null,pendiente:"1c en camino",ultimoPedido:"04/05",ultimoCant:"1c"},
-  {nombre:"L.I.A.P. Power Merlot",categoria:"Tintos",stockUnidades:0,minimo:null,pedido:"3c",asesor:"Mauro Villarejo",contacto:"+54 9 2616 10-5500",razon:"?",obs:"Vino nuevo",pendiente:"3c en camino",ultimoPedido:"04/05",ultimoCant:"3c",entregado:null},
+  {nombre:"Verum Chardonnay Naranjo",categoria:"Naranjos",stockUnidades:16,minimo:12,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Verum",obs:null,pendiente:null,ultimoPedido:"07/04",ultimoCant:"4c",entregado:"4c (07/04)"},
+  {nombre:"Solito Va Naranjo",categoria:"Naranjos",stockUnidades:7,minimo:15,pedido:"6c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:"6c en camino",ultimoPedido:"04/05",ultimoCant:"6c"},
+  {nombre:"Petit Mara Naranjo 375ml",categoria:"Naranjos",stockUnidades:36,minimo:10,pedido:"24u",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:"quiebre bodega"},
+  {nombre:"Livvera Malvasia Naranjo",categoria:"Naranjos",stockUnidades:23,minimo:3,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:"3c en camino",ultimoPedido:"04/05",ultimoCant:"3c"},
+  {nombre:"Paso a Paso Orange",categoria:"Naranjos",stockUnidades:0,minimo:null,pedido:"2c",asesor:"Micaela Baum",contacto:"+54 9 11 5823-6823",razon:"Aurea",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"2c",entregado:"3c (04/05)"},
+  {nombre:"L.I.A.P. Flower Merlot",categoria:"Rosados",stockUnidades:34,minimo:4,pedido:"4c",asesor:"Mauro Villarejo",contacto:"+54 9 2616 10-5500",razon:"LIAP",obs:null,pendiente:"1c en camino",ultimoPedido:"04/05",ultimoCant:"1c"},
+  {nombre:"L.I.A.P. Power Merlot",categoria:"Tintos",stockUnidades:18,minimo:null,pedido:"3c",asesor:"Mauro Villarejo",contacto:"+54 9 2616 10-5500",razon:"LIAP",obs:"Vino nuevo",pendiente:null,ultimoPedido:"04/05",ultimoCant:"3c",entregado:"1c (04/05)"},
   {nombre:"LIAP Noir de Blanc",categoria:"Rosados",stockUnidades:4,minimo:4,pedido:"1c",asesor:"Mauro Villarejo",contacto:"+54 9 2616 10-5500",razon:"?",obs:"Vino nuevo",pendiente:null,ultimoPedido:"06/04",ultimoCant:"1c",entregado:"1c (08/04)"},
   {nombre:"Rocamadre Pinot Noir Rose",categoria:"Rosados",stockUnidades:30,minimo:12,pedido:"5c",asesor:"Emilia",contacto:"vinosrocamadre@gmail.com",razon:"Rocamadre",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"El Afinador Rose CF",categoria:"Rosados",stockUnidades:19,minimo:15,pedido:"5c",asesor:"Carolina Biga",contacto:"+54 9 3472 55-0464",razon:"Don Agustin",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Inconsciente Merlot Rose",categoria:"Rosados",stockUnidades:18,minimo:15,pedido:"5c",asesor:"Juan Cano",contacto:"+54 9 11 4563-4899",razon:"Sophenia",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Humberto Canale Rose",categoria:"Rosados",stockUnidades:35,minimo:6,pedido:"2c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Humberto Canale",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Inconsciente Merlot Rose",categoria:"Rosados",stockUnidades:17,minimo:15,pedido:"5c",asesor:"Juan Cano",contacto:"+54 9 11 4563-4899",razon:"Sophenia",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Humberto Canale Rose",categoria:"Rosados",stockUnidades:31,minimo:6,pedido:"2c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Humberto Canale",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Araucana Malbec Rose",categoria:"Rosados",stockUnidades:16,minimo:4,pedido:"3c",asesor:"Juan Pablo Flores",contacto:"+54 9 11 3566-7785",razon:"Casa Pirque",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Cara Sur Pergolas Criollas Tintas",categoria:"Tintos",stockUnidades:15,minimo:25,pedido:"6c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:"2c en camino",ultimoPedido:"04/05",ultimoCant:"2c"},
-  {nombre:"Elephant Gun Malbec",categoria:"Tintos",stockUnidades:8,minimo:20,pedido:"7c",asesor:"Felipe Azcona",contacto:"+54 9 2645 64-8795",razon:"Azcona",obs:null,pendiente:"6c en camino",ultimoPedido:"27/04",ultimoCant:"6c"},
-  {nombre:"Ver Sacrum Monastrell",categoria:"Tintos",stockUnidades:6,minimo:8,pedido:"4c",asesor:"Micaela Baum",contacto:"+54 9 11 5823-6823",razon:"Aurea",obs:"Combinar con PAP Naranjo",pendiente:null,ultimoPedido:"06/04",ultimoCant:"4c",entregado:"4c (07/04)"},
+  {nombre:"Cara Sur Pergolas Criollas Tintas",categoria:"Tintos",stockUnidades:32,minimo:18,pedido:"6c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:"2c en camino",ultimoPedido:"04/05",ultimoCant:"2c"},
+  {nombre:"Elephant Gun Malbec",categoria:"Tintos",stockUnidades:33,minimo:20,pedido:"7c",asesor:"Felipe Azcona",contacto:"+54 9 2645 64-8795",razon:"Azcona",obs:null,pendiente:"6c en camino",ultimoPedido:"27/04",ultimoCant:"6c"},
+  {nombre:"Ver Sacrum Monastrell",categoria:"Tintos",stockUnidades:0,minimo:8,pedido:"4c",asesor:"Micaela Baum",contacto:"+54 9 11 5823-6823",razon:"Aurea",obs:"Combinar con PAP Naranjo",pendiente:null,ultimoPedido:"06/04",ultimoCant:"4c",entregado:"6c (04/05)"},
   {nombre:"Nat Cool Bonarda",categoria:"Tintos",stockUnidades:0,minimo:12,pedido:"5c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:"5c en camino",ultimoPedido:"04/05",ultimoCant:"5c"},
-  {nombre:"La Voja Pinot Noir",categoria:"Tintos",stockUnidades:26,minimo:18,pedido:"5c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Aper",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"4+1c",entregado:"5c (30/04)"},
-  {nombre:"Negra Margen Bonarda",categoria:"Tintos",stockUnidades:15,minimo:12,pedido:"4c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"1c",entregado:"1c (28/04)"},
-  {nombre:"Les Astronautes Malbec",categoria:"Tintos",stockUnidades:33,minimo:30,pedido:"5c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Tino Slow",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"6+1c",entregado:"7c (28/04)"},
-  {nombre:"Naciente CF y M",categoria:"Tintos",stockUnidades:19,minimo:20,pedido:"3c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:"2c en camino",ultimoPedido:"04/05",ultimoCant:"2c"},
-  {nombre:"El Raro Nebbiolo",categoria:"Tintos",stockUnidades:13,minimo:3,pedido:"3c",asesor:"Gabriel Campana",contacto:"+54 9 3525 64-4693",razon:"Campana",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Angelica Zapata CF",categoria:"Tintos",stockUnidades:8,minimo:6,pedido:"4c",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"A Lisa Malbec",categoria:"Tintos",stockUnidades:11,minimo:5,pedido:"3c",asesor:"Belen Fretes",contacto:"+54 9 2984 66-1071",razon:"Noemia",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Chacra 55 Pinot Noir",categoria:"Tintos",stockUnidades:4,minimo:1,pedido:"1c",asesor:"Rodrigo Calderon",contacto:"+54 9 11 6901-2375",razon:"Calderon",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Las Cuerdas Cota 1500",categoria:"Tintos",stockUnidades:0,minimo:3,pedido:"2c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:"3c en camino",ultimoPedido:"04/05",ultimoCant:"3c"},
-  {nombre:"Petit Maremmano Syrah-CS 375ml",categoria:"Tintos",stockUnidades:23,minimo:15,pedido:"12u",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"12u",entregado:"12u (14/04)"},
-  {nombre:"Vertebrado Pinot Noir",categoria:"Tintos",stockUnidades:9,minimo:8,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:"2c en camino",ultimoPedido:"04/05",ultimoCant:"2c"},
-  {nombre:"Verum Malbec",categoria:"Tintos",stockUnidades:1,minimo:null,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Verum",obs:"Evento",pendiente:null,ultimoPedido:"13/04",ultimoCant:"4c",entregado:"4c (14/04)"},
-  {nombre:"Electrico Rosado",categoria:"Rosados",stockUnidades:3,minimo:null,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:"Evento",pendiente:"2c en camino",ultimoPedido:"04/05",ultimoCant:"2c"},
-  {nombre:"Nox Malbec",categoria:"Espumosos",stockUnidades:5,minimo:4,pedido:"3c",asesor:"Alma Cabral",contacto:"+54 9 11 3357-8389",razon:"Punto Novisa",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"La Voja Pinot Noir",categoria:"Tintos",stockUnidades:24,minimo:12,pedido:"5c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Aper",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"4+1c",entregado:"5c (30/04)"},
+  {nombre:"Negra Margen Bonarda",categoria:"Tintos",stockUnidades:6,minimo:12,pedido:"4c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"1c",entregado:"1c (28/04)"},
+  {nombre:"Les Astronautes Malbec",categoria:"Tintos",stockUnidades:30,minimo:20,pedido:"5c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Tino Slow",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"6+1c",entregado:"7c (28/04)"},
+  {nombre:"Naciente CF y M",categoria:"Tintos",stockUnidades:18,minimo:12,pedido:"3c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:"2c en camino",ultimoPedido:"04/05",ultimoCant:"2c"},
+  {nombre:"El Raro Nebbiolo",categoria:"Tintos",stockUnidades:13,minimo:3,pedido:"3c",asesor:"Gabriel Campana",contacto:"+54 9 3525 64-4693",razon:"Campana",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:"2c (04/05)"},
+  {nombre:"Angelica Zapata CF",categoria:"Tintos",stockUnidades:7,minimo:6,pedido:"4c",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"A Lisa Malbec",categoria:"Tintos",stockUnidades:12,minimo:5,pedido:"3c",asesor:"Belen Fretes",contacto:"+54 9 2984 66-1071",razon:"Noemia",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Chacra 55 Pinot Noir",categoria:"Tintos",stockUnidades:3,minimo:1,pedido:"1c",asesor:"Rodrigo Calderon",contacto:"+54 9 11 6901-2375",razon:"Calderon",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Las Cuerdas Cota 1500",categoria:"Tintos",stockUnidades:3,minimo:3,pedido:"2c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:"3c en camino",ultimoPedido:"04/05",ultimoCant:"3c"},
+  {nombre:"Petit Maremmano Syrah-CS 375ml",categoria:"Tintos",stockUnidades:22,minimo:15,pedido:"12u",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"12u",entregado:"3c (04/05)"},
+  {nombre:"Vertebrado Pinot Noir",categoria:"Tintos",stockUnidades:3,minimo:8,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:"2c en camino",ultimoPedido:"04/05",ultimoCant:"2c"},
+  {nombre:"Verum Malbec",categoria:"Tintos",stockUnidades:19,minimo:null,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Verum",obs:"Evento",pendiente:null,ultimoPedido:"13/04",ultimoCant:"4c",entregado:"2c (04/05)"},
+  {nombre:"Electrico Rosado",categoria:"Rosados",stockUnidades:16,minimo:null,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:"Evento",pendiente:"2c en camino",ultimoPedido:"04/05",ultimoCant:"2c"},
+  {nombre:"Nox Malbec",categoria:"Espumosos",stockUnidades:5,minimo:4,pedido:"3c",asesor:"Alma Cabral",contacto:"+54 9 11 3357-8389",razon:"Punto Novisa",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:"2c (04/05)"},
   {nombre:"Alma 4 Pinot-Chardonnay",categoria:"Espumosos",stockUnidades:27,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"4c",entregado:"5c (15/04)"},
   {nombre:"Alma Negra Chardonnay",categoria:"Espumosos",stockUnidades:24,minimo:4,pedido:"3c",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Zuccardi Blanc de Blancs",categoria:"Espumosos",stockUnidades:18,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"3c",entregado:"3c (15/04)"},
+  {nombre:"Zuccardi Blanc de Blancs",categoria:"Espumosos",stockUnidades:21,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"3c",entregado:"3c (15/04)"},
   {nombre:"Animal Extra Brut",categoria:"Espumosos",stockUnidades:13,minimo:2,pedido:"2c",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Terrazas Petit Manseng",categoria:"Dulce",stockUnidades:2,minimo:4,pedido:"3c",asesor:"Camila Pacheco",contacto:"+54 9 11 5035-8041",razon:"Chandon",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Mara de Uco Bonarda",categoria:"Casa",stockUnidades:36,minimo:18,pedido:"3+3c",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:"1+1",pendiente:null,ultimoPedido:"13/04",ultimoCant:"6c",entregado:"8c (28/04)"},
-  {nombre:"Elephant Gun Merlot Rose",categoria:"Casa",stockUnidades:50,minimo:20,pedido:"3c",asesor:"Felipe Azcona",contacto:"+54 9 2645 64-8795",razon:"Azcona",obs:null,pendiente:null,ultimoPedido:"10/04",ultimoCant:"3c",entregado:"3c (14/04)"},
-  {nombre:"Tilia Chardonnay",categoria:"Casa",stockUnidades:21,minimo:18,pedido:"3+3c",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:"1+1",pendiente:"3c en camino",ultimoPedido:"04/05",ultimoCant:"3c"},
-  {nombre:"UMC Malbec",categoria:"Casa",stockUnidades:66,minimo:15,pedido:"8c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Vistalba",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"8c",entregado:"8c"},
+  {nombre:"Mara de Uco Bonarda",categoria:"Casa",stockUnidades:47,minimo:18,pedido:"3+3c",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:"1+1",pendiente:null,ultimoPedido:"13/04",ultimoCant:"6c",entregado:"8c (28/04)"},
+  {nombre:"Elephant Gun Merlot Rose",categoria:"Casa",stockUnidades:51,minimo:15,pedido:"3c",asesor:"Felipe Azcona",contacto:"+54 9 2645 64-8795",razon:"Azcona",obs:null,pendiente:null,ultimoPedido:"10/04",ultimoCant:"3c",entregado:"3c (14/04)"},
+  {nombre:"Tilia Chardonnay",categoria:"Casa",stockUnidades:59,minimo:18,pedido:"3+3c",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:"1+1",pendiente:"3c en camino",ultimoPedido:"04/05",ultimoCant:"3c"},
+  {nombre:"UMC Malbec",categoria:"Casa",stockUnidades:66,minimo:15,pedido:"8c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Vistalba",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"8c",entregado:"6c (04/05)"},
   {nombre:"UMC Blanco",categoria:"Casa",stockUnidades:30,minimo:6,pedido:"2c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Vistalba",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"2c->3c",entregado:"3c"},
   {nombre:"Kombucha",categoria:"Otros",stockUnidades:131,minimo:30,pedido:"7p",asesor:"Elda",contacto:"+54 9 11 5596-7259",razon:"Sueno Verde",obs:"min. 7p",pendiente:null,ultimoPedido:"28/04",ultimoCant:"7p",entregado:"7p (28/04)"},
   {nombre:"Jugo de Tomate (Bloody)",categoria:"Otros",stockUnidades:24,minimo:6,pedido:"3p",asesor:"Adriana",contacto:"+54 9 11 6558-1113",razon:"-",obs:"min y max 3p",pendiente:null,ultimoPedido:"06/04",ultimoCant:"3 packs",entregado:"3 packs = 24u (08/04)"},
@@ -263,6 +274,145 @@ function formatPesos(n) {
 var currentFilter = 'all';
 var currentSearch = '';
 var currentCat = 'all';
+
+var descripciones = {
+  "Laborum Torrontes": {zona:"Finca El Retiro, Cafayate, Salta · 1.650 msnm",perfil:"Torrontés de viñedos viejos (1945), de baja intervención",notas:"Flores, frutas tropicales, cítricos y notas herbales. Suelo arenoso que regula el vigor de las vides. Boca fresca, de acidez jugosa, textura suave y final persistente. Proyecto familiar El Porvenir de Cafayate, bajo la dirección de Lucía Romero Marcuzzi y el enólogo Paco Puga."},
+  "La Marchigiana Moscatel": {zona:"Mendoza",perfil:"Moscatel de Alejandría, perfil dulce natural",notas:"Flores blancas, miel, durazno. Ligero dulzor natural, baja acidez. Proyecto de Catena Zapata para el segmento de acceso."},
+  "Electrico SB-Chardonnay": {zona:"Mendoza · Vinos Andinos",perfil:"Blend fresco de Sauvignon Blanc y Chardonnay",notas:"Cítricos, pasto cortado, manzana verde. Sin paso por roble. Seco, mineral y vibrante. Parte de la línea Eléctrico de Vinos Andinos, distribuidora curada por Camila Sciaini."},
+  "Antro Chardonnay": {zona:"Altamira, Valle de Uco, Mendoza · Suelos calcáreos · 1.200-1.300 msnm",perfil:"Chardonnay de mínima intervención · Tutu Wines / Leo Erazo",notas:"Fermentado con levaduras indígenas, parcialmente con contacto con pieles, en huevos de cemento. Sin corrección de acidez. Austero en entrada, concentrado y con gran impacto en retrogusto. Largo, vertical y mineral."},
+  "Esperando a Los Barbaros SB": {zona:"Patagonia · Vinos Andinos",perfil:"Sauvignon Blanc patagónico",notas:"Pomelo, maracuyá, hierbas frescas. Acidez alta, cuerpo medio. La Patagonia aporta frescura natural y notas herbáceas propias del clima frío."},
+  "Humberto Canale Riesling": {zona:"General Roca, Río Negro · Patagonia",perfil:"Riesling patagónico seco y mineral",notas:"Durazno blanco, lima, ligera petricidad. Seco, acidez refrescante. Bodega pionera en Río Negro desde 1909. La frescura patagónica es ideal para Riesling de estilo alsaciano."},
+  "Poligonos Verdejo": {zona:"Valle de Uco, Mendoza · La Agrícola / Zuccardi",perfil:"Verdejo de alta montaña inspirado en Rueda",notas:"Hinojo, hierba fresca, lima. Fresco, mineral y con tensión. La alta altitud del Valle de Uco permite conservar la acidez natural de esta variedad española."},
+  "Contra Corriente Chardonnay": {zona:"Patagonia · Patagonia River Guides",perfil:"Chardonnay atlántico con paso por roble",notas:"Manzana golden, manteca sutil, vainilla leve. Paso breve por roble. Elegante y cremoso, reflejo del clima patagónico extremo."},
+  "Livvera Chenin": {zona:"Mendoza · Vinos Andinos",perfil:"Chenin Blanc naturalmente fermentado",notas:"Pera, manzana, notas de levadura. Textura untuosa, acidez viva. Elaboración de baja intervención con levaduras nativas."},
+  "Mara Semillon": {zona:"Valle de Uco, Mendoza · Nakbe / Joaquín Sastre",perfil:"Semillón de altura, sin madera",notas:"Pomelo blanco, hinojo, cera de abejas. Cuerpo medio, acidez fina, final mineral. Nakbe trabaja con viñedos orgánicos en el Valle de Uco."},
+  "El Raro Sauvignon Blanc": {zona:"Córdoba · Gabriel Campana",perfil:"Sauvignon Blanc de las sierras cordobesas",notas:"Pasto, lima, fruta de carozo blanca. Fresco y directo, con personalidad de terroir de altura cordobés."},
+  "Poligonos Semillon": {zona:"Valle de Uco, Mendoza · La Agrícola / Zuccardi",perfil:"Semillón moderno de altura",notas:"Miel, pera, flores amarillas. Textura sedosa y acidez delicada. Parte de la línea Polígonos que explora variedades alternativas en el Valle de Uco."},
+  "La Marchigiana Chardonnay": {zona:"Mendoza · Catena Zapata / Ornella Bresciani",perfil:"Chardonnay clásico accesible",notas:"Manzana, durazno, ligero tostado. Equilibrado, con buena frescura y final frutal."},
+  "Cara Sur Moscatel Blanco": {zona:"Valle de Uco, Mendoza · Vinos Andinos",perfil:"Moscatel Blanco seco de altura",notas:"Rosas, durazno, cítricos. Seco y aromático. Cara Sur trabaja con variedades alternativas y subestimadas del Valle de Uco."},
+  "Verum Chardonnay": {zona:"Valle de Uco, Mendoza · Verum / Catalina Uriburu",perfil:"Chardonnay de altura sin madera",notas:"Manzana verde, lima, flores. Sin roble, fermentado en frío. Preciso y mineral, con acidez vibrante."},
+  "Verum Chardonnay Naranjo": {zona:"Valle de Uco, Mendoza · Verum / Tino Slow",perfil:"Naranjo de Chardonnay con maceración de pieles",notas:"Fermentado con hollejos. Durazno, miel, taninos leves, color cobre. Textura amplia y muy versátil con comidas. Verum trabaja con baja intervención en el Valle de Uco."},
+  "Solito Va Naranjo": {zona:"El Cepillo, Valle de Uco, Mendoza · Jarilla Wines",perfil:"Naranjo de maceración carbónica",notas:"Rojo intenso con tintes negros. Nariz frutada y fresca, frutas rojas y negras, notas herbales. En boca expresivo y fluido, con buena textura. 100% Malbec, 3 meses en barricas de sexto uso."},
+  "Petit Mara Naranjo 375ml": {zona:"Valle de Uco, Mendoza · Nakbe / Joaquín Sastre",perfil:"Marsanne-Roussanne macerado en 375ml",notas:"Fruta amarilla, miel, pieles de cítricos. Maceración extendida con hollejos. Fresco y complejo. Nakbe trabaja con variedades poco comunes en el Valle de Uco."},
+  "Livvera Malvasia Naranjo": {zona:"Mendoza · Vinos Andinos",perfil:"Malvasía naranja de baja intervención",notas:"Flor de naranjo, durazno, hierbas. Maceración extendida con pieles. Color ámbar, taninos finos. Elaboración natural de mínima intervención."},
+  "Paso a Paso Orange": {zona:"Mendoza · Ver Sacrum / Micaela Baum",perfil:"Naranja de maceración",notas:"Manzana, piel de naranja, miel. Fermentación con hollejos. Seco, texturizado. Parte de la línea de Paso a Paso Criolla."},
+  "L.I.A.P. Flower Merlot": {zona:"Mendoza · Mauro Villarejo",perfil:"Rosado de Merlot fresco y aromático",notas:"Frutilla, frambuesa, pétalos de rosa. Fresco y liviano, sin paso por madera. Muy aromático. L.I.A.P. es el proyecto de Mauro Villarejo, enólogo mendocino."},
+  "Rocamadre Pinot Noir Rose": {zona:"Patagonia · Emilia / Rocamadre",perfil:"Rosado patagónico de Pinot Noir de viñedos viejos",notas:"Frambuesa, granada, flor de cerezo. Fino, seco y con buena acidez. Rocamadre trabaja con viñedos viejos de la Patagonia de mínima intervención."},
+  "El Afinador Rose CF": {zona:"Entre Ríos / Córdoba · Don Agustín / Carolina Biga",perfil:"Rosado de Cabernet Franc",notas:"Frutilla silvestre, pimienta rosa, hibisco. Seco, de acidez viva. Versátil para maridaje. Carolina Biga elabora vinos en Entre Ríos con uvas de terroirs poco convencionales."},
+  "Inconsciente Merlot Rose": {zona:"Mendoza · Sophenia / Juan Cano",perfil:"Rosado de Merlot, fresco y frutal",notas:"Sandía, frambuesa, pétalos. Refrescante, cuerpo liviano, final frutal y limpio. Sophenia es una bodega del Valle de Uco reconocida por sus vinos de alta gama."},
+  "Humberto Canale Rose": {zona:"General Roca, Río Negro · Patagonia",perfil:"Rosado patagónico de blend Pinot Noir-Malbec",notas:"Frutilla, durazno blanco, lima. Seco y fresco. El frío patagónico preserva la acidez y frescura del vino. Humberto Canale, bodega pionera desde 1909."},
+  "Araucana Malbec Rose": {zona:"Valle Colchagua, Chile · Casa Pirque / Juan Pablo Flores",perfil:"Rosado de Malbec chileno",notas:"Frambuesa, cereza, flor de sauco. Fresco, bien estructurado. Proyecto chileno de la familia Cueto en el Valle de Colchagua."},
+  "LIAP Noir de Blanc": {zona:"Mendoza · Mauro Villarejo",perfil:"Pétillant naturel de Malbec, rosado espumoso natural",notas:"Levadura, frutas rojas, brioche. Sin adición de azúcar ni SO2. Burbuja natural de segunda fermentación en botella. Proyecto de Mauro Villarejo."},
+  "Electrico Rosado": {zona:"Mendoza · Vinos Andinos",perfil:"Rosado fresco y directo",notas:"Frutilla, sandía, flor. Liviano, fresco y muy bebible. Parte de la línea Eléctrico de Vinos Andinos."},
+  "La Marchigiana Rose": {zona:"Mendoza · Catena Zapata",perfil:"Rosado de blend de variedades",notas:"Frutilla, pétalos, cítricos. Fresco, directo y fácil. Proyecto de Catena Zapata para el segmento más accesible."},
+  "Cara Sur Pergolas Criollas Tintas": {zona:"Valle de Uco, Mendoza · Vinos Andinos / Camila Sciaini",perfil:"Blend de uvas criollas (Cereza, Criolla Grande) de pérgola antigua",notas:"Cereza, pimienta, hierbas. Uvas criollas de parral de más de 60 años. Fermentación con racimo entero. Jugoso, fresco y de baja extracción. Maceración carbónica parcial."},
+  "Elephant Gun Malbec": {zona:"Mendoza · Azcona / Felipe Azcona",perfil:"Malbec clásico mendocino accesible",notas:"Ciruela, mora, vainilla sutil. Sin excesos, directo y muy tomable. Proyecto de la distribuidora Azcona, enfocado en vinos de relación calidad-precio."},
+  "Ver Sacrum Monastrell": {zona:"San Rafael, Mendoza · Aurea / Micaela Baum",perfil:"Monastrell del sur mendocino",notas:"Fruta oscura, especias, cuero. Uva española (Mourvèdre) adaptada al sur de Mendoza. Cuerpo medio, taninos firmes. Ver Sacrum trabaja variedades alternativas con baja intervención."},
+  "Nat Cool Bonarda": {zona:"Mendoza · Manos Negras / Jarilla Wines",perfil:"Bonarda natural en formato litro · Concepto Niepoort",notas:"Ciruela, violeta, fruta roja del bosque, moras negras. Fresca acidez y rica textura. Movimiento creado por Marco Niepoort e inspirado en el Lambrusco: ligero, sin sulfitos, muy fresco. En botella de 1,125L."},
+  "La Voja Pinot Noir": {zona:"Sierras de Nono, Córdoba · Aper / Catalina Uriburu",perfil:"Pinot Noir de altitude en las sierras cordobesas",notas:"Cereza ácida, tierra húmeda, hongos. Muy elegante para la zona. Baja graduación, larga persistencia. Las sierras cordobesas a más de 1.000 msnm producen Pinot Noir de perfil borgoñón."},
+  "Negra Margen Bonarda": {zona:"Mendoza · Meli Montse",perfil:"Bonarda oscura y concentrada",notas:"Mora, ciruela negra, café. Más estructurada que otros bonardas. Taninos firmes y final largo."},
+  "Les Astronautes Malbec": {zona:"Valle de Uco, Mendoza · Tino Slow / Catalina Uriburu",perfil:"Malbec de altura, fresco y mineral",notas:"Violeta, ciruela, frambuesa. Fresco, elegante y mineral. Del Valle de Uco a más de 1.000 msnm. Les Astronautes es el proyecto de winemakers apasionados que buscan expresar el terroir de altura."},
+  "Naciente CF y M": {zona:"Córdoba · Meli Montse",perfil:"Cabernet Franc y Malbec de las sierras cordobesas",notas:"Pimentón, cereza, especias. Blend interesante de la sierra cordobesa. Muy food-friendly. Proyecto artesanal de Córdoba."},
+  "El Raro Nebbiolo": {zona:"Córdoba · Gabriel Campana",perfil:"Nebbiolo cordobés de mínima intervención",notas:"Cereza ácida, rosa marchita, cuero. Uva piamontesa (Barolo) cultivada en las sierras de Córdoba. Taninos marcados, larga vida. Gabriel Campana es un referente del vino natural cordobés."},
+  "Angelica Zapata CF": {zona:"Mendoza · Catena Zapata / Ornella Bresciani",perfil:"Cabernet Franc de alta gama de Catena Zapata",notas:"Pimiento verde elegante, ciruela, grafito. Alta gama. Taninos sedosos, final largo. Uno de los Cabernet Franc más reconocidos de Argentina. Vino de guarda."},
+  "A Lisa Malbec": {zona:"Patagonia · Noemia / Belén Fretes",perfil:"Malbec patagónico premium de Noemia",notas:"Violeta, mora, especias. Noemia es el proyecto de Ann Colgin en Patagonia, produciendo Malbec de clase mundial. Elegante, fresco y con gran profundidad de fruta."},
+  "Chacra 55 Pinot Noir": {zona:"Río Negro, Patagonia · Chacra / Rodrigo Calderón",perfil:"Pinot Noir biodinámico de viñedos viejos de 1955",notas:"Cereza, tierra, hongos, especias. Viñedos plantados en 1955, manejo biodinámico. Proyecto de Piero Incisa della Rochetta. Uno de los grandes Pinot Noir de Argentina, de clase mundial."},
+  "Las Cuerdas Cota 1500": {zona:"Valle de Uco, Mendoza · 1.500 msnm · Meli Montse",perfil:"Malbec-Cabernet Franc de extrema altura",notas:"Violeta, fruta negra, mineral. A 1.500 msnm, uno de los viñedos más altos de Argentina. Fresco, tenso y con potencial de guarda. Perfil único por la amplitud térmica extrema."},
+  "Petit Maremmano Syrah-CS 375ml": {zona:"Córdoba · Nakbe / Joaquín Sastre",perfil:"Syrah-Cabernet Sauvignon en media botella",notas:"Pimienta negra, ciruela, cuero. Formato 375ml ideal para probar. Intenso y especiado, con el carácter mediterráneo de la Syrah."},
+  "Verum Malbec": {zona:"Valle de Uco, Mendoza · Verum / Catalina Uriburu",perfil:"Malbec de baja intervención de Verum",notas:"Ciruela, violeta, tierra. Baja intervención, sin filtrar. Vivo y expresivo. Verum trabaja con levaduras nativas y mínimo sulfitado en el Valle de Uco."},
+  "Vertebrado Pinot Noir": {zona:"Mendoza · Vinos Andinos / Camila Sciaini",perfil:"Pinot Noir de baja intervención",notas:"Frutilla silvestre, cereza, flores. Fresco, ligero y con estructura delicada. Sin madera. Parte de la línea natural de Vinos Andinos."},
+  "Ribera del Cuarzo Merlot": {zona:"Mendoza",perfil:"Merlot suave y frutal",notas:"Ciruela, chocolate, tabaco. Redondo, de taninos suaves. Muy agradable y accesible."},
+  "Cara Sur Criolla Chica": {zona:"Valle de Uco, Mendoza · Vinos Andinos / Camila Sciaini",perfil:"Criolla Chica de uva pura argentina",notas:"Frutilla, cereza, pimienta. Uva criolla de película fina, ancestral argentina. Fresco, ligero y muy expresivo. Cara Sur recupera el patrimonio vitícola criollo."},
+  "La Marchigiana Bonarda": {zona:"Mendoza · Catena Zapata",perfil:"Bonarda jugosa y directa",notas:"Mora, ciruela, especias. Bonarda jugosa y muy tomable. Proyecto de Catena Zapata con variedades tradicionales mendocinas."},
+  "Tilia Malbec": {zona:"Mendoza · Catena Zapata / Nakbe",perfil:"Malbec clásico accesible de Catena",notas:"Ciruela, violeta, vainilla. Clásico, redondo y bien equilibrado. Tilia es la línea de entrada de Catena Zapata, siempre consistente y de excelente relación calidad-precio."},
+  "L.I.A.P. Power Merlot": {zona:"Mendoza · Mauro Villarejo",perfil:"Merlot intenso y concentrado",notas:"Ciruela negra, cacao, especias. Hermano tinto del Flower Merlot. Más estructura y taninos presentes. Final largo e intenso. Proyecto de Mauro Villarejo."},
+  "Nox Malbec": {zona:"Mendoza · Punto Novisa / Alma Cabral",perfil:"Espumoso de Malbec método tradicional",notas:"Fruta roja, levadura, flores. Método tradicional (champenoise) con uva Malbec. Burbuja fina, seco y festivo. Punto Novisa es una distribuidora especializada en espumosos."},
+  "Alma 4 Pinot-Chardonnay": {zona:"Mendoza · La Agrícola / Gabriela Biscay",perfil:"Brut de alta gama, Pinot Noir y Chardonnay",notas:"Manzana, brioche, avellana. Blend clásico de Pinot Noir y Chardonnay. Elegante, con autolisis marcada. Uno de los espumosos de referencia de Argentina."},
+  "Alma Negra Chardonnay": {zona:"Valle de Uco, Mendoza · Nakbe / Joaquín Sastre",perfil:"Blanc de Blancs premium de altura",notas:"Limón, tostado, mineral. Solo Chardonnay de altura del Valle de Uco. Preciso, tenso y muy fino. Alma Negra es una de las etiquetas más reconocidas de espumosos argentinos."},
+  "Zuccardi Blanc de Blancs": {zona:"Valle de Uco, Mendoza · La Agrícola / Gabriela Biscay",perfil:"Extra Brut de Valle de Uco sin dosage",notas:"Manzana verde, cítricos, brioche. Sin dosage, muy seco y mineral. Larga persistencia. Zuccardi es referente mundial de la vitivinicultura de alta gama del Valle de Uco."},
+  "Animal Extra Brut": {zona:"Mendoza · Nakbe / Joaquín Sastre",perfil:"Extra Brut de muy buena relación calidad-precio",notas:"Manzana, pera, notas de levadura. Fresco y directo. Extra Brut seco y festivo, ideal para el aperitivo o maridaje con mariscos y quesos."},
+  "N7": {zona:"Mendoza",perfil:"Espumoso natural, sin adición de azúcar ni sulfitos",notas:"Levadura, manzana, hierbas. Pétillant naturel. Natural y vibrante, con burbuja espontánea."},
+  "Terrazas Petit Manseng": {zona:"Mendoza · Chandon / Camila Pacheco",perfil:"Late Harvest de Petit Manseng",notas:"Miel, durazno en almíbar, albaricoque. Dulzor elegante con acidez equilibrada que evita la pesadez. Petit Manseng es la uva del Jurançon francés, adaptada aquí para Late Harvest. Ideal con postres o quesos azules."},
+  "Mara de Uco Bonarda": {zona:"Valle de Uco, Mendoza · Nakbe / Joaquín Sastre",perfil:"Copa de la casa tinta · Bonarda joven y jugosa",notas:"Ciruela, violeta, fruta fresca. Bonarda sin madera de Nakbe. Elaborada con mínima intervención en el Valle de Uco. La copa tinta de CHUÍ. Fresca, directa y muy tomable."},
+  "Elephant Gun Merlot Rose": {zona:"Mendoza · Azcona / Felipe Azcona",perfil:"Copa de la casa rosada · Merlot Rosé",notas:"Frutilla, sandía, flor. Merlot Rosé fresco y directo. La copa rosada de CHUÍ. Fácil de beber y muy versátil con todo el menú."},
+  "Tilia Chardonnay": {zona:"Mendoza · Catena Zapata / Ornella Bresciani",perfil:"Copa de la casa blanca · Chardonnay sin madera",notas:"Manzana, pera, flores. Chardonnay sin paso por roble de Catena Zapata. Fresco y muy accesible. La copa blanca de CHUÍ. Consistente y de excelente relación calidad-precio."},
+  "Un Mundo Chiquito Malbec": {zona:"Valle de Uco, Mendoza · Vistalba / Catalina Uriburu",perfil:"Malbec de altura de Vistalba",notas:"Ciruela, mora, violeta. Malbec de altura frutal y accesible de la bodega Vistalba. Muy recomendable por copa."},
+  "Un Mundo Chiquito C y CB": {zona:"Valle de Uco, Mendoza · Vistalba / Catalina Uriburu",perfil:"Blend de Chardonnay y Chenin Blanc",notas:"Manzana, limón, flores. Blend refrescante sin madera. Ligero y muy fácil de beber. Vistalba explora blends poco convencionales del Valle de Uco."},
+  "Un Mundo Chiquito Rose": {zona:"Valle de Uco, Mendoza · Vistalba / Catalina Uriburu",perfil:"Rosado de Malbec de Vistalba",notas:"Frutilla, frambuesa, cítricos. Rosado seco y fresco. Muy accesible y versátil. Vistalba produce en el Valle de Uco a más de 1.000 msnm."},
+  "La Marchigiana Moscatel": {zona:"Mendoza",perfil:"Dulce natural, aromático",notas:"Uva moscatel, flores blancas, miel. Ligero dulzor natural, baja acidez, muy fácil de beber."},
+  "Electrico SB-Chardonnay": {zona:"Mendoza",perfil:"Fresco y mineral",notas:"Blend de Sauvignon Blanc y Chardonnay. Cítricos, pasto cortado, manzana verde. Seco, mineral y vibrante."},
+  "Antro Chardonnay": {zona:"Valle de Uco, Mendoza",perfil:"Chardonnay sin madera, fresco",notas:"Manzana, pera, flores blancas. Sin paso por roble. Acidez marcada, largo y persistente."},
+  "Esperando a Los Barbaros SB": {zona:"Patagonia",perfil:"Sauvignon Blanc patagónico",notas:"Pomelo, maracuyá, hierbas frescas. Acidez alta, cuerpo medio, final herbáceo y frutal."},
+  "Humberto Canale Riesling": {zona:"General Roca, Río Negro",perfil:"Riesling fresco y mineral",notas:"Durazno blanco, lima, ligera petricidad. Seco, acidez refrescante, mineral. Perfecto para mariscos."},
+  "Poligonos Verdejo": {zona:"Valle de Uco, Mendoza",perfil:"Verdejo de alta montaña",notas:"Hinojo, hierba fresca, lima. Fresco, mineral y con tensión. Inspirado en los verdejos castellanos."},
+  "Contra Corriente Chardonnay": {zona:"Patagonia",perfil:"Chardonnay atlántico",notas:"Manzana golden, manteca sutil, vainilla leve. Elegante, con paso breve por roble. Redondo y cremoso."},
+  "Livvera Chenin": {zona:"Mendoza",perfil:"Chenin Blanc naturalmente fermentado",notas:"Pera, manzana, notas de levadura. Textura untuosa, acidez viva. Vino natural de baja intervención."},
+  "Mara Semillon": {zona:"Valle de Uco, Mendoza",perfil:"Semillón de altura",notas:"Pomelo blanco, hinojo, cera de abejas. Cuerpo medio, acidez fina, final mineral y persistente."},
+  "El Raro Sauvignon Blanc": {zona:"Córdoba",perfil:"Sauvignon Blanc de sierra",notas:"Pasto, lima, fruta de carozo blanca. Fresco y directo, con personalidad cordobesa."},
+  "Poligonos Semillon": {zona:"Valle de Uco, Mendoza",perfil:"Semillón moderno",notas:"Miel, pera, flores amarillas. Textura sedosa y acidez delicada. Excelente relación calidad-precio."},
+  "La Marchigiana Chardonnay": {zona:"Mendoza",perfil:"Chardonnay clásico",notas:"Manzana, durazno, ligero tostado. Equilibrado, con buena frescura y final frutal."},
+  "Cara Sur Moscatel Blanco": {zona:"Valle de Uco, Mendoza",perfil:"Moscatel seco de altura",notas:"Rosas, durazno, cítricos. Seco y aromático. Diferente al moscatel dulce clásico."},
+  "Verum Chardonnay": {zona:"Valle de Uco, Mendoza",perfil:"Chardonnay de altura sin madera",notas:"Manzana verde, lima, flores. Sin roble. Preciso y mineral, con acidez vibrante."},
+  "Verum Chardonnay Naranjo": {zona:"Valle de Uco, Mendoza",perfil:"Naranja de Chardonnay",notas:"Fermentado con hollejos. Durazno, miel, taninos leves. Textura amplia, color cobre, muy versátil con comidas."},
+  "Solito Va Naranjo": {zona:"Córdoba",perfil:"Naranja natural de Jarilla Wines",notas:"Manzana oxidativa, cáscara de naranja, miel. Fermentación natural. Taninos suaves, buen cuerpo."},
+  "Petit Mara Naranjo 375ml": {zona:"Valle de Uco, Mendoza",perfil:"Naranjo en 375ml",notas:"Marsanne-Roussanne con maceración. Fruta amarilla, miel, pieles de cítricos. Fresco y complejo."},
+  "Livvera Malvasia Naranjo": {zona:"Mendoza",perfil:"Malvasía naranja natural",notas:"Flor de naranjo, durazno, hierbas. Maceración extendida. Taninos finos, color ámbar, baja intervención."},
+  "Paso a Paso Orange": {zona:"Mendoza",perfil:"Naranja de maceración",notas:"Manzana, piel de naranja, miel. Fermentación natural con hollejos. Seco, texturizado, interesante."},
+  "L.I.A.P. Flower Merlot": {zona:"Mendoza",perfil:"Rosado de Merlot",notas:"Frutilla, frambuesa, pétalos de rosa. Fresco y liviano, sin paso por madera. Muy aromático."},
+  "Rocamadre Pinot Noir Rose": {zona:"Patagonia",perfil:"Rosado patagónico de Pinot Noir",notas:"Frambuesa, granada, flor de cerezo. Fino, seco y con buena acidez. Elegante y mineral."},
+  "El Afinador Rose CF": {zona:"Entre Ríos / Córdoba",perfil:"Rosado de Cabernet Franc",notas:"Frutilla silvestre, pimienta rosa, hibisco. Seco, de acidez viva. Versátil para maridaje."},
+  "Inconsciente Merlot Rose": {zona:"Mendoza",perfil:"Rosado de Merlot Sophenia",notas:"Sandía, frambuesa, pétalos. Refrescante, cuerpo liviano, final frutal y limpio."},
+  "Humberto Canale Rose": {zona:"Río Negro, Patagonia",perfil:"Rosado patagónico",notas:"Frutilla, durazno blanco, lima. Seco y fresco. Del frío patagónico, ideal para el verano."},
+  "Araucana Malbec Rose": {zona:"Valle Colchagua, Chile",perfil:"Rosado de Malbec chileno",notas:"Frambuesa, cereza, flor de sauco. Fresco, bien estructurado. Perfil sudamericano con elegancia."},
+  "LIAP Noir de Blanc": {zona:"Mendoza",perfil:"Rosado espumoso natural",notas:"Levadura, frutas rojas, brioche. Pétillant naturel de Malbec. Sin adición de azúcar ni SO2."},
+  "Electrico Rosado": {zona:"Mendoza",perfil:"Rosado fresco y directo",notas:"Frutilla, sandía, flor. Liviano, fresco y muy bebible. Rosado de bar clásico de CHUÍ."},
+  "La Marchigiana Rose": {zona:"Mendoza",perfil:"Rosado de mezcla criolla",notas:"Frutilla, pétalos, cítricos. Fresco, directo y fácil. Muy buena relación calidad-precio."},
+  "Cara Sur Pergolas Criollas Tintas": {zona:"Valle de Uco, Mendoza",perfil:"Blend de uvas criollas",notas:"Cereza, pimienta, hierbas. Uvas criollas como Cereza y Criolla Grande. Jugoso, fresco y sin pretensiones."},
+  "Elephant Gun Malbec": {zona:"Mendoza",perfil:"Malbec clásico accesible",notas:"Ciruela, mora, vainilla sutil. Sin excesos, directo y muy tomable. Ideal para la copa de la casa."},
+  "Ver Sacrum Monastrell": {zona:"San Rafael, Mendoza",perfil:"Monastrell del sur mendocino",notas:"Fruta oscura, especias, cuero. Uva española adaptada a Mendoza. Cuerpo medio, taninos firmes."},
+  "Nat Cool Bonarda": {zona:"Mendoza",perfil:"Bonarda natural de baja intervención",notas:"Ciruela, violeta, pimienta. Fermentación sin sulfitos. Fresco, jugoso y frutal. Muy natural."},
+  "La Voja Pinot Noir": {zona:"Córdoba, Sierras de Nono",perfil:"Pinot Noir de altura cordobés",notas:"Cereza ácida, tierra húmeda, hongos. Muy elegante para la zona. Baja graduación, larga persistencia."},
+  "Negra Margen Bonarda": {zona:"Mendoza",perfil:"Bonarda oscura y concentrada",notas:"Mora, ciruela negra, café. Más estructurada que otros bonardas. Taninos firmes y final largo."},
+  "Les Astronautes Malbec": {zona:"Valle de Uco, Mendoza",perfil:"Malbec de altura con frescura",notas:"Violeta, ciruela, frambuesa. Fresco, elegante y mineral. Del Valle de Uco a más de 1000m."},
+  "Naciente CF y M": {zona:"Córdoba",perfil:"Cabernet Franc y Malbec cordobés",notas:"Pimentón, cereza, especias. Blend interesante de la sierra cordobesa. Muy food-friendly."},
+  "El Raro Nebbiolo": {zona:"Córdoba",perfil:"Nebbiolo cordobés",notas:"Cereza ácida, rosa marchita, cuero. Uva italiana en las sierras de Córdoba. Taninos marcados, larga vida."},
+  "Angelica Zapata CF": {zona:"Mendoza",perfil:"Cabernet Franc de Catena Zapata",notas:"Pimiento verde, ciruela, grafito. Alta gama. Taninos sedosos, final largo. Vino de guarda."},
+  "A Lisa Malbec": {zona:"Patagonia",perfil:"Malbec patagónico de Noemia",notas:"Violeta, mora, especias. De la bodega de Ann Colgin en Patagonia. Elegante, fresco y profundo."},
+  "Chacra 55 Pinot Noir": {zona:"Río Negro, Patagonia",perfil:"Pinot Noir patagónico premium",notas:"Cereza, tierra, hongos, especias. Viñedos viejos de 1955. Uno de los grandes Pinot de Argentina."},
+  "Las Cuerdas Cota 1500": {zona:"Valle de Uco, Mendoza",perfil:"Malbec-Cabernet Franc de altura",notas:"Violeta, fruta negra, mineral. A 1500 msnm. Fresco, tenso y con potencial de guarda."},
+  "Petit Maremmano Syrah-CS 375ml": {zona:"Córdoba",perfil:"Syrah-Cabernet Sauvignon 375ml",notas:"Pimienta negra, ciruela, cuero. Formato media botella. Intenso y especiado."},
+  "Verum Malbec": {zona:"Valle de Uco, Mendoza",perfil:"Malbec de bodega natural Verum",notas:"Ciruela, violeta, tierra. Baja intervención, sin filtrar. Vivo y expresivo."},
+  "Vertebrado Pinot Noir": {zona:"Mendoza",perfil:"Pinot Noir de baja intervención",notas:"Frutilla silvestre, cereza, flores. Fresco, ligero y con estructura delicada. Natural y sin madera."},
+  "Ribera del Cuarzo Merlot": {zona:"Mendoza",perfil:"Merlot suave y frutal",notas:"Ciruela, chocolate, tabaco. Redondo, de taninos suaves. Muy agradable y accesible."},
+  "Cara Sur Criolla Chica": {zona:"Valle de Uco, Mendoza",perfil:"Criolla Chica fresca",notas:"Frutilla, cereza, pimienta. Uva criolla de película fina. Fresco, ligero y muy expresivo."},
+  "La Marchigiana Bonarda": {zona:"Mendoza",perfil:"Bonarda de Catena Zapata",notas:"Mora, ciruela, especias. Bonarda jugosa y directa. Muy tomable y versátil."},
+  "Tilia Malbec": {zona:"Mendoza",perfil:"Malbec accesible de Catena",notas:"Ciruela, violeta, vainilla. Clásico, redondo y bien equilibrado. Entrada fácil al Malbec mendocino."},
+  "L.I.A.P. Power Merlot": {zona:"Mendoza",perfil:"Merlot intenso y concentrado",notas:"Ciruela negra, cacao, especias. Más estructura que el Flower. Taninos presentes y final largo."},
+  "Nox Malbec": {zona:"Mendoza",perfil:"Espumoso de Malbec",notas:"Fruta roja, levadura, flores. Método tradicional de Malbec. Burbuja fina, seco y festivo."},
+  "Alma 4 Pinot-Chardonnay": {zona:"Mendoza",perfil:"Brut de alta gama",notas:"Manzana, brioche, avellana. Blend de Pinot Noir y Chardonnay. Elegante, con autolisis marcada."},
+  "Alma Negra Chardonnay": {zona:"Valle de Uco, Mendoza",perfil:"Blanc de Blancs premium",notas:"Limón, tostado, mineral. Solo Chardonnay de altura. Preciso, tenso y muy fino."},
+  "Zuccardi Blanc de Blancs": {zona:"Valle de Uco, Mendoza",perfil:"Extra Brut de Valle de Uco",notas:"Manzana verde, cítricos, brioche. Sin dosage. Muy seco, mineral y de larga persistencia."},
+  "Animal Extra Brut": {zona:"Mendoza",perfil:"Extra Brut accesible",notas:"Manzana, pera, notas de levadura. Fresco y directo. Extra Brut de muy buena relación calidad-precio."},
+  "N7": {zona:"Mendoza",perfil:"Espumoso natural",notas:"Levadura, manzana, hierbas. Sin adición de azúcar ni sulfitos. Natural y vibrante."},
+  "Terrazas Petit Manseng": {zona:"Mendoza",perfil:"Late Harvest de Petit Manseng",notas:"Miel, durazno en almíbar, albaricoque. Dulzor elegante, acidez equilibrada. Ideal con postres o quesos azules."},
+  "Mara de Uco Bonarda": {zona:"Valle de Uco, Mendoza",perfil:"Copa de la casa tinta",notas:"Ciruela, violeta, fruta fresca. Bonarda joven y jugosa de Nakbe. Fresca, sin madera, muy tomable."},
+  "Elephant Gun Merlot Rose": {zona:"Mendoza",perfil:"Copa de la casa rosada",notas:"Frutilla, sandía, flor. Merlot Rosé fresco y directo. La copa rosada de CHUÍ."},
+  "Tilia Chardonnay": {zona:"Mendoza",perfil:"Copa de la casa blanca",notas:"Manzana, pera, flores. Chardonnay sin madera de Catena Zapata. Fresco y muy accesible. La copa blanca de CHUÍ."},
+  "Un Mundo Chiquito Malbec": {zona:"Valle de Uco, Mendoza",perfil:"Malbec de Vistalba",notas:"Ciruela, mora, violeta. Malbec de altura frutal y accesible. Muy recomendable por copa."},
+  "Un Mundo Chiquito C y CB": {zona:"Valle de Uco, Mendoza",perfil:"Chardonnay y Chenin Blanc",notas:"Manzana, limón, flores. Blend refrescante, sin madera. Ligero y muy fácil de beber."},
+  "Un Mundo Chiquito Rose": {zona:"Valle de Uco, Mendoza",perfil:"Rosado de Vistalba",notas:"Frutilla, frambuesa, cítricos. Rosado seco y fresco. Muy accesible y versátil."},
+};
+
+function toggleDesc(id, btn) {
+  var el = document.getElementById(id);
+  if (el.classList.contains('open')) {
+    el.classList.remove('open');
+    btn.textContent = '🍷 Ver ficha';
+  } else {
+    el.classList.add('open');
+    btn.textContent = '🍷 Cerrar ficha';
+  }
+}
 
 var recomendaciones = {
   "Cara Sur Pergolas Criollas Tintas": "⚡ Alta rotación — se quedó sin stock 3 veces en abril. Mínimo actualizado a 25u. Pedir siempre de a 6c.",
@@ -503,6 +653,19 @@ function renderItems(filterStatus) {
         histH = '<div class="historial"><span>🗓 '+item.ultimoPedido+'</span><span>📋 '+item.ultimoCant+'</span>'+entH+'</div>';
       }
 
+      var descH = '';
+      var desc = descripciones[item.nombre];
+      if (desc) {
+        var descId = 'desc-' + idx + '-' + cat.replace(/\s/g,'');
+        descH = '<button class="expand-btn" style="border-color:rgba(139,90,60,0.4);color:#a07050" onclick="toggleDesc(\'' + descId + '\', this)">🍷 Ver ficha</button>'
+          + '<div class="precio-section" id="' + descId + '">'
+          + '<div style="margin-top:8px;padding:10px 14px;background:rgba(139,90,60,0.06);border:1px solid rgba(139,90,60,0.2);border-radius:2px;font-size:11px;color:#c8b89a;line-height:1.8">'
+          + '<div style="margin-bottom:4px"><span style="color:#7a7060;text-transform:uppercase;letter-spacing:0.08em;font-size:10px">📍 Zona &nbsp;</span>' + desc.zona + '</div>'
+          + '<div style="margin-bottom:4px"><span style="color:#7a7060;text-transform:uppercase;letter-spacing:0.08em;font-size:10px">🧪 Perfil &nbsp;</span>' + desc.perfil + '</div>'
+          + '<div><span style="color:#7a7060;text-transform:uppercase;letter-spacing:0.08em;font-size:10px">👃 Notas &nbsp;</span>' + desc.notas + '</div>'
+          + '</div></div>';
+      }
+
       var recoH = '';
       var reco = recomendaciones[item.nombre];
       if (reco) {
@@ -535,6 +698,7 @@ function renderItems(filterStatus) {
           obsH+penH+
           '<div class="contact-info">'+ct+'</div>'+
           histH+
+          descH+
           recoH+
           precioH+
         '</div>'+
