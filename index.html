@@ -25,60 +25,104 @@
   .filter-btn:hover,.filter-btn.active { background:var(--card); color:var(--text); border-color:var(--muted); }
   .filter-btn.red.active { border-color:var(--red); color:var(--red); }
   .filter-btn.amber.active { border-color:var(--amber); color:var(--amber); }
-  .cat-btn { background:var(--surface); border:1px solid var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.06em; padding:6px 12px; border-radius:2px; cursor:pointer; transition:all 0.2s; }
-  .cat-btn:hover, .cat-btn.active { background:var(--card); color:var(--text); border-color:var(--text); }
-  .section { max-width:900px; margin:0 auto 32px; }
-  .section-title { font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
-  .section-title::after { content:''; flex:1; height:1px; background:var(--border); }
-  .alert-card { background:var(--card); border:1px solid var(--border); border-left:3px solid; padding:16px 20px; margin-bottom:8px; border-radius:0 2px 2px 0; display:grid; grid-template-columns:1fr auto; gap:12px; align-items:start; animation:fadeIn 0.4s ease forwards; opacity:0; }
-  @keyframes fadeIn { to { opacity:1; } }
-  .alert-card.critica { border-left-color:var(--red); } .alert-card.alerta { border-left-color:var(--amber); } .alert-card.ok { border-left-color:var(--green); }
-  .wine-name { font-family:'Playfair Display',serif; font-size:17px; margin-bottom:6px; line-height:1.2; }
-  .wine-meta { font-size:11px; color:var(--muted); display:flex; gap:16px; flex-wrap:wrap; margin-bottom:8px; }
-  .contact-info { font-size:11px; color:var(--muted); margin-top:6px; padding-top:8px; border-top:1px solid var(--border); display:flex; gap:16px; flex-wrap:wrap; }
-  .contact-info a { color:var(--amber); text-decoration:none; }
-  .historial { margin-top:8px; padding-top:8px; border-top:1px solid var(--border); display:flex; gap:12px; flex-wrap:wrap; font-size:11px; color:var(--muted); }
-  .precio-section { overflow:hidden; max-height:0; transition: max-height 0.3s ease, opacity 0.3s ease; opacity:0; }
-  .precio-section.open { max-height:80px; opacity:1; }
-  .expand-btn { margin-top:8px; background:none; border:1px solid var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.08em; padding:4px 10px; border-radius:2px; cursor:pointer; text-transform:uppercase; transition:all 0.2s; display:inline-block; }
-  .expand-btn:hover { color:var(--text); border-color:var(--muted); }
-  .right-panel { text-align:right; min-width:130px; }
-  .badge { display:inline-block; font-size:10px; letter-spacing:0.1em; padding:3px 8px; border-radius:2px; text-transform:uppercase; margin-bottom:10px; }
-  .badge.critica { background:rgba(192,57,43,0.2); color:var(--red); border:1px solid rgba(192,57,43,0.4); }
-  .badge.alerta { background:rgba(212,160,23,0.15); color:var(--amber); border:1px solid rgba(212,160,23,0.35); }
-  .stock-display { font-size:28px; font-family:'Playfair Display',serif; line-height:1; margin-bottom:2px; }
-  .stock-label { font-size:10px; color:var(--muted); letter-spacing:0.08em; }
-  .pedido-tag { margin-top:10px; font-size:11px; color:var(--dim); background:var(--surface); padding:4px 8px; border-radius:2px; display:inline-block; }
-  .pedido-tag strong { color:var(--text); font-weight:500; }
-  .obs-tag { display:inline-block; font-size:10px; color:var(--blue); background:rgba(74,111,165,0.1); border:1px solid rgba(74,111,165,0.25); padding:2px 7px; border-radius:2px; margin-top:4px; margin-right:4px; }
-  .pendiente-tag { display:inline-block; font-size:10px; color:var(--blue); background:rgba(74,111,165,0.1); border:1px solid rgba(74,111,165,0.4); padding:2px 7px; border-radius:2px; margin-top:4px; margin-right:4px; }
-  .wa-fab { position:fixed; bottom:32px; right:32px; background:#25D366; color:#fff; border:none; border-radius:2px; font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; padding:14px 22px; cursor:pointer; z-index:100; box-shadow:0 4px 24px rgba(0,0,0,0.4); transition:transform 0.2s,box-shadow 0.2s; display:flex; align-items:center; gap:10px; }
-  .wa-fab:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,0,0,0.5); }
-  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:200; backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:20px; }
-  .modal-overlay.open { display:flex; }
-  .modal { background:var(--surface); border:1px solid var(--border); border-radius:2px; width:100%; max-width:640px; max-height:85vh; display:flex; flex-direction:column; overflow:hidden; }
-  .modal-header { padding:20px 24px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
-  .modal-title { font-family:'Playfair Display',serif; font-size:20px; font-style:italic; }
-  .modal-close { background:none; border:1px solid var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:11px; padding:5px 12px; cursor:pointer; border-radius:2px; }
-  .modal-close:hover { color:var(--text); border-color:var(--muted); }
-  .modal-body { overflow-y:auto; padding:20px 24px; display:flex; flex-direction:column; gap:14px; }
-  .wa-filter-row { display:flex; gap:8px; }
-  .wa-filter-btn { background:var(--surface); border:1px solid var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.08em; padding:5px 12px; border-radius:2px; cursor:pointer; text-transform:uppercase; transition:all 0.2s; }
-  .wa-filter-btn.active,.wa-filter-btn:hover { background:var(--card); color:var(--text); border-color:var(--muted); }
-  .wa-provider-card { background:var(--card); border:1px solid var(--border); border-radius:2px; overflow:hidden; }
-  .wa-provider-header { padding:12px 16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); gap:10px; }
-  .wa-provider-name { font-family:'Playfair Display',serif; font-size:16px; }
-  .wa-provider-contact { font-size:11px; color:var(--muted); }
-  .wa-provider-actions { display:flex; gap:8px; }
-  .wa-btn { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; padding:6px 12px; border-radius:2px; cursor:pointer; border:none; transition:opacity 0.2s; }
-  .wa-btn:hover { opacity:0.85; }
-  .wa-btn.copy { background:var(--border); color:var(--text); }
-  .wa-btn.send { background:#25D366; color:#fff; }
-  .wa-btn.copied { background:var(--green); color:#fff; }
-  .wa-message-preview { padding:12px 16px; font-size:12px; line-height:1.8; color:var(--muted); white-space:pre-wrap; font-family:'DM Mono',monospace; background:rgba(0,0,0,0.2); }
-  .wa-empty { text-align:center; color:var(--dim); font-size:12px; padding:30px; font-style:italic; }
-  footer { max-width:900px; margin:48px auto 0; padding-top:20px; border-top:1px solid var(--border); font-size:10px; color:var(--dim); letter-spacing:0.08em; display:flex; justify-content:space-between; }
+
+/* BEVINCO TAB STYLES */
+#bevinco-view { display:none; max-width:900px; margin:0 auto; }
+#bevinco-view.active { display:block; }
+#main-content.hidden { display:none; }
+.bev-header { background:#fff; border-bottom:3px solid #8B1A1A; padding:20px; border-radius:2px; margin-bottom:16px; }
+.bev-tag { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:#8B1A1A; font-weight:600; margin-bottom:6px; font-family:‘DM Mono’,monospace; }
+.bev-title { font-family:‘Playfair Display’,serif; font-size:26px; color:#1C1008; margin-bottom:4px; }
+.bev-title span { color:#8B1A1A; }
+.bev-sub { font-size:11px; color:#7A6050; font-family:‘DM Mono’,monospace; }
+.bev-kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:#E0D8CC; margin-bottom:16px; }
+.bev-kpi { background:#fff; padding:14px 10px; text-align:center; }
+.bev-kpi-n { font-family:‘Playfair Display’,serif; font-size:32px; font-weight:700; line-height:1; }
+.bev-kpi-n.red { color:#8B1A1A; } .bev-kpi-n.amber { color:#B45309; } .bev-kpi-n.blue { color:#1E40AF; } .bev-kpi-n.dark { color:#1C1008; } .bev-kpi-n.green { color:#166534; }
+.bev-kpi-l { font-size:9px; letter-spacing:1px; text-transform:uppercase; color:#7A6050; margin-top:4px; font-weight:600; font-family:‘DM Mono’,monospace; }
+.bev-alert { margin:0 0 12px; padding:12px 14px; border-left:4px solid; border-radius:0 6px 6px 0; font-size:12px; line-height:1.5; font-family:‘DM Mono’,monospace; }
+.bev-alert.red { border-color:#8B1A1A; background:#FEF2F2; color:#7F1D1D; }
+.bev-alert.amb { border-color:#B45309; background:#FFFBEB; color:#78350F; }
+.bev-alert.blu { border-color:#1E40AF; background:#EFF6FF; color:#1E3A8A; }
+.bev-alert strong { display:block; font-size:10px; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; }
+.bev-sec { padding:12px 0 4px; }
+.bev-sec-title { font-size:13px; font-weight:700; color:#1C1008; padding-bottom:8px; border-bottom:2px solid #8B1A1A; margin-bottom:0; display:flex; justify-content:space-between; align-items:center; font-family:‘DM Mono’,monospace; }
+.bev-sec-title span { font-size:10px; font-weight:400; color:#7A6050; }
+.bev-tbl { overflow-x:auto; background:#fff; margin:0 0 4px; border-radius:2px; }
+.bev-tbl table { width:100%; border-collapse:collapse; min-width:420px; }
+.bev-tbl th { background:#1C1008; color:#F7F3EE; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; padding:8px 10px; text-align:left; font-weight:500; white-space:nowrap; font-family:‘DM Mono’,monospace; }
+.bev-tbl th.r { text-align:center; }
+.bev-tbl td { padding:9px 10px; border-bottom:1px solid #EDE6DA; vertical-align:middle; font-family:‘DM Mono’,monospace; font-size:12px; }
+.bev-tbl td.r { text-align:center; }
+.bev-tbl tr:last-child td { border-bottom:none; }
+.bev-tbl tr:hover td { background:#FBF8F3; }
+.bev-wname { font-weight:600; font-size:12px; color:#1C1008; }
+.bev-num { font-size:12px; font-weight:500; color:#1C1008; }
+.bev-num-m { color:#A89070; }
+.pill { display:inline-flex; align-items:center; padding:3px 8px; border-radius:20px; font-size:10px; font-weight:700; white-space:nowrap; font-family:‘DM Mono’,monospace; }
+.p-ok { background:#DCFCE7; color:#166534; } .p-red { background:#FEE2E2; color:#991B1B; } .p-amb { background:#FEF3C7; color:#92400E; } .p-blu { background:#DBEAFE; color:#1E40AF; } .p-gry { background:#F3F4F6; color:#6B7280; }
+.cau { display:inline-block; padding:2px 6px; border-radius:2px; font-size:9px; font-weight:600; letter-spacing:0.3px; text-transform:uppercase; border:1px solid; font-family:‘DM Mono’,monospace; }
+.c-ing { color:#1E40AF; border-color:#BFDBFE; background:#EFF6FF; } .c-nr { color:#92400E; border-color:#FDE68A; background:#FFFBEB; } .c-rev { color:#991B1B; border-color:#FECACA; background:#FEF2F2; } .c-ok { color:#166534; border-color:#BBF7D0; background:#F0FDF4; }
+.bev-cards { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:8px 0 16px; }
+.bev-card { background:#fff; border:1px solid #E0D8CC; border-left:3px solid #B45309; padding:10px 12px; border-radius:0 4px 4px 0; }
+.bev-card .bev-wname { font-size:11px; margin-bottom:2px; }
+.bev-card .bev-num { color:#B45309; }
+.bev-divider { height:12px; }
+.cat-btn { background:var(–surface); border:1px solid var(–border); color:var(–muted); font-family:‘DM Mono’,monospace; font-size:11px; letter-spacing:0.06em; padding:6px 12px; border-radius:2px; cursor:pointer; transition:all 0.2s; }
+.cat-btn:hover, .cat-btn.active { background:var(–card); color:var(–text); border-color:var(–text); }
+.section { max-width:900px; margin:0 auto 32px; }
+.section-title { font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(–muted); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+.section-title::after { content:’’; flex:1; height:1px; background:var(–border); }
+.alert-card { background:var(–card); border:1px solid var(–border); border-left:3px solid; padding:16px 20px; margin-bottom:8px; border-radius:0 2px 2px 0; display:grid; grid-template-columns:1fr auto; gap:12px; align-items:start; animation:fadeIn 0.4s ease forwards; opacity:0; }
+@keyframes fadeIn { to { opacity:1; } }
+.alert-card.critica { border-left-color:var(–red); } .alert-card.alerta { border-left-color:var(–amber); } .alert-card.ok { border-left-color:var(–green); }
+.wine-name { font-family:‘Playfair Display’,serif; font-size:17px; margin-bottom:6px; line-height:1.2; }
+.wine-meta { font-size:11px; color:var(–muted); display:flex; gap:16px; flex-wrap:wrap; margin-bottom:8px; }
+.contact-info { font-size:11px; color:var(–muted); margin-top:6px; padding-top:8px; border-top:1px solid var(–border); display:flex; gap:16px; flex-wrap:wrap; }
+.contact-info a { color:var(–amber); text-decoration:none; }
+.historial { margin-top:8px; padding-top:8px; border-top:1px solid var(–border); display:flex; gap:12px; flex-wrap:wrap; font-size:11px; color:var(–muted); }
+.precio-section { overflow:hidden; max-height:0; transition: max-height 0.3s ease, opacity 0.3s ease; opacity:0; }
+.precio-section.open { max-height:80px; opacity:1; }
+.expand-btn { margin-top:8px; background:none; border:1px solid var(–border); color:var(–muted); font-family:‘DM Mono’,monospace; font-size:10px; letter-spacing:0.08em; padding:4px 10px; border-radius:2px; cursor:pointer; text-transform:uppercase; transition:all 0.2s; display:inline-block; }
+.expand-btn:hover { color:var(–text); border-color:var(–muted); }
+.right-panel { text-align:right; min-width:130px; }
+.badge { display:inline-block; font-size:10px; letter-spacing:0.1em; padding:3px 8px; border-radius:2px; text-transform:uppercase; margin-bottom:10px; }
+.badge.critica { background:rgba(192,57,43,0.2); color:var(–red); border:1px solid rgba(192,57,43,0.4); }
+.badge.alerta { background:rgba(212,160,23,0.15); color:var(–amber); border:1px solid rgba(212,160,23,0.35); }
+.stock-display { font-size:28px; font-family:‘Playfair Display’,serif; line-height:1; margin-bottom:2px; }
+.stock-label { font-size:10px; color:var(–muted); letter-spacing:0.08em; }
+.pedido-tag { margin-top:10px; font-size:11px; color:var(–dim); background:var(–surface); padding:4px 8px; border-radius:2px; display:inline-block; }
+.pedido-tag strong { color:var(–text); font-weight:500; }
+.obs-tag { display:inline-block; font-size:10px; color:var(–blue); background:rgba(74,111,165,0.1); border:1px solid rgba(74,111,165,0.25); padding:2px 7px; border-radius:2px; margin-top:4px; margin-right:4px; }
+.pendiente-tag { display:inline-block; font-size:10px; color:var(–blue); background:rgba(74,111,165,0.1); border:1px solid rgba(74,111,165,0.4); padding:2px 7px; border-radius:2px; margin-top:4px; margin-right:4px; }
+.wa-fab { position:fixed; bottom:32px; right:32px; background:#25D366; color:#fff; border:none; border-radius:2px; font-family:‘DM Mono’,monospace; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; padding:14px 22px; cursor:pointer; z-index:100; box-shadow:0 4px 24px rgba(0,0,0,0.4); transition:transform 0.2s,box-shadow 0.2s; display:flex; align-items:center; gap:10px; }
+.wa-fab:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,0,0,0.5); }
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:200; backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:20px; }
+.modal-overlay.open { display:flex; }
+.modal { background:var(–surface); border:1px solid var(–border); border-radius:2px; width:100%; max-width:640px; max-height:85vh; display:flex; flex-direction:column; overflow:hidden; }
+.modal-header { padding:20px 24px; border-bottom:1px solid var(–border); display:flex; align-items:center; justify-content:space-between; }
+.modal-title { font-family:‘Playfair Display’,serif; font-size:20px; font-style:italic; }
+.modal-close { background:none; border:1px solid var(–border); color:var(–muted); font-family:‘DM Mono’,monospace; font-size:11px; padding:5px 12px; cursor:pointer; border-radius:2px; }
+.modal-close:hover { color:var(–text); border-color:var(–muted); }
+.modal-body { overflow-y:auto; padding:20px 24px; display:flex; flex-direction:column; gap:14px; }
+.wa-filter-row { display:flex; gap:8px; }
+.wa-filter-btn { background:var(–surface); border:1px solid var(–border); color:var(–muted); font-family:‘DM Mono’,monospace; font-size:10px; letter-spacing:0.08em; padding:5px 12px; border-radius:2px; cursor:pointer; text-transform:uppercase; transition:all 0.2s; }
+.wa-filter-btn.active,.wa-filter-btn:hover { background:var(–card); color:var(–text); border-color:var(–muted); }
+.wa-provider-card { background:var(–card); border:1px solid var(–border); border-radius:2px; overflow:hidden; }
+.wa-provider-header { padding:12px 16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(–border); gap:10px; }
+.wa-provider-name { font-family:‘Playfair Display’,serif; font-size:16px; }
+.wa-provider-contact { font-size:11px; color:var(–muted); }
+.wa-provider-actions { display:flex; gap:8px; }
+.wa-btn { font-family:‘DM Mono’,monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; padding:6px 12px; border-radius:2px; cursor:pointer; border:none; transition:opacity 0.2s; }
+.wa-btn:hover { opacity:0.85; }
+.wa-btn.copy { background:var(–border); color:var(–text); }
+.wa-btn.send { background:#25D366; color:#fff; }
+.wa-btn.copied { background:var(–green); color:#fff; }
+.wa-message-preview { padding:12px 16px; font-size:12px; line-height:1.8; color:var(–muted); white-space:pre-wrap; font-family:‘DM Mono’,monospace; background:rgba(0,0,0,0.2); }
+.wa-empty { text-align:center; color:var(–dim); font-size:12px; padding:30px; font-style:italic; }
+footer { max-width:900px; margin:48px auto 0; padding-top:20px; border-top:1px solid var(–border); font-size:10px; color:var(–dim); letter-spacing:0.08em; display:flex; justify-content:space-between; }
 </style>
+
 </head>
 <body>
 
@@ -112,6 +156,7 @@
   <button class="filter-btn amber" onclick="filter('alerta',this)">En alerta</button>
   <button class="filter-btn" onclick="filter('ok',this)">Stock OK</button>
   <button class="filter-btn" style="border-color:#4a6fa5;color:#4a6fa5" onclick="filterPedidos(this)">🚚 Pedidos</button>
+  <button class="filter-btn" style="border-color:#8B1A1A;color:#8B1A1A" onclick="showBevinco(this)">📊 Bevinco</button>
 </div>
 
 <div style="max-width:900px;margin:0 auto 20px;display:flex;gap:6px;flex-wrap:wrap">
@@ -128,6 +173,136 @@
 <div style="max-width:900px;margin:0 auto 28px;display:flex;gap:8px;flex-wrap:wrap">
   <input id="search-input" type="text" placeholder="Buscar por vino, proveedor o bodega..." oninput="applySearch()" style="flex:1;min-width:200px;background:#1a1815;border:1px solid #2e2b25;color:#e8e0d0;font-family:'DM Mono',monospace;font-size:12px;padding:8px 14px;border-radius:2px;outline:none;letter-spacing:0.05em">
   <button onclick="clearSearch()" style="background:#1a1815;border:1px solid #2e2b25;color:#7a7060;font-family:'DM Mono',monospace;font-size:11px;padding:8px 14px;border-radius:2px;cursor:pointer;letter-spacing:0.08em;text-transform:uppercase">✕ Limpiar</button>
+</div>
+
+<div id="bevinco-view">
+  <div class="bev-header">
+    <div class="bev-tag">Análisis de Inventario</div>
+    <div class="bev-title">Chuí <span>×</span> Bevinco</div>
+    <div class="bev-sub">Stock Chuí 07/05 vs Bevinco 27 Abr–10 May 2026</div>
+  </div>
+
+  <div class="bev-kpis">
+    <div class="bev-kpi"><div class="bev-kpi-n dark">47</div><div class="bev-kpi-l">Vinos analizados</div></div>
+    <div class="bev-kpi"><div class="bev-kpi-n red">18</div><div class="bev-kpi-l">Chuí &gt; Bevinco</div></div>
+    <div class="bev-kpi"><div class="bev-kpi-n amber">9</div><div class="bev-kpi-l">No en Bevinco</div></div>
+    <div class="bev-kpi"><div class="bev-kpi-n blue">10</div><div class="bev-kpi-l">Bevinco &gt; Chuí</div></div>
+    <div class="bev-kpi"><div class="bev-kpi-n amber">23</div><div class="bev-kpi-l">Con diferencia</div></div>
+    <div class="bev-kpi"><div class="bev-kpi-n green">15</div><div class="bev-kpi-l">Sin diferencia ✓</div></div>
+  </div>
+
+  <div class="bev-alert red"><strong>⚠ Ingresos no cargados por Bevinco</strong>18 vinos tienen más stock en Chuí. Las diferencias más críticas: <b>Cara Sur Pérgolas +16, Les Astronautes +14, Araucana Rosé +12, La Voja +8, Elephant Gun +7.</b></div>
+  <div class="bev-alert amb"><strong>⚡ Verificar en Chuí</strong>10 productos aparecen en Bevinco con stock que Chuí no refleja: Casa Tano Chardonnay/Naranjo, Rocamadre Blanco/Criolla, Pielihueso, Puercovin, Milagrosado, Tilia Malbec, Vertebrado CF.</div>
+
+  <div class="bev-divider"></div>
+
+  <div class="bev-sec"><div class="bev-sec-title">🟡 Blancos & 🟠 Naranjos <span>13 productos</span></div></div>
+  <div class="bev-tbl"><table>
+    <thead><tr><th>Producto</th><th class="r">Chuí</th><th class="r">Bev.</th><th class="r">Dif.</th><th class="r">Causa</th></tr></thead>
+    <tbody>
+      <tr><td class="bev-wname">Laborum Torrontes</td><td class="r bev-num">25</td><td class="r bev-num">25</td><td class="r"><span class="pill p-ok">✓ 0</span></td><td class="r"><span class="cau c-ok">OK</span></td></tr>
+      <tr><td class="bev-wname">Eléctrico SB-Chardonnay</td><td class="r bev-num">28</td><td class="r bev-num">22</td><td class="r"><span class="pill p-red">+6 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
+      <tr><td class="bev-wname">Antro Chardonnay</td><td class="r bev-num">20</td><td class="r bev-num">16</td><td class="r"><span class="pill p-red">+4 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
+      <tr><td class="bev-wname">Esperando Los Bárbaros</td><td class="r bev-num">15</td><td class="r bev-num">13</td><td class="r"><span class="pill p-red">+2 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
+      <tr><td class="bev-wname">H.C. Riesling</td><td class="r bev-num">29</td><td class="r bev-num">28</td><td class="r"><span class="pill p-amb">+1 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
+      <tr><td class="bev-wname">Contra Corriente Chardonnay</td><td class="r bev-num">15</td><td class="r bev-num">15</td><td class="r"><span class="pill p-ok">✓ 0</span></td><td class="r"><span class="cau c-ok">OK</span></td></tr>
+      <tr><td class="bev-wname">Livverá Chenin</td><td class="r bev-num">22</td><td class="r bev-num">22</td><td class="r"><span class="pill p-ok">✓ 0</span></td><td class="r"><span class="cau c-ok">OK</span></td></tr>
+      <tr><td class="bev-wname">Polígonos Verdejo</td><td class="r bev-num">6</td><td class="r bev-num">6</td><td class="r"><span class="pill p-ok">✓ 0</span></td><td class="r"><span class="cau c-ok">OK</span></td></tr>
+      <tr><td class="bev-wname">Verum Naranjo</td><td class="r bev-num">16</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="pill p-gry">No Bev.</span></td><td class="r"><span class="cau c-nr">No registrado</span></td></tr>
+      <tr><td class="bev-wname">Solito Va Naranjo</td><td class="r bev-num">7</td><td class="r bev-num">6</td><td class="r"><span class="pill p-amb">+1 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
+      <tr><td class="bev-wname">Petit Mara Naranjo</td><td class="r bev-num">36</td><td class="r bev-num">36</td><td class="r"><span class="pill p-ok">✓ 0</span></td><td class="r"><span class="cau c-ok">OK</span></td></tr>
+      <tr><td class="bev-wname">Verum Chardonnay</td><td class="r bev-num">5.5</td><td class="r bev-num">5</td><td class="r"><span class="pill p-amb">+0.5</span></td><td class="r"><span class="cau c-ing">Pequeña diff.</span></td></tr>
+      <tr><td class="bev-wname">Verum Chardonnay Naranjo</td><td class="r bev-num bev-num-m">—</td><td class="r bev-num">14</td><td class="r"><span class="pill p-blu">+14 Bev.</span></td><td class="r"><span class="cau c-rev">Revisar Chuí</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="bev-divider"></div>
+  <div class="bev-sec"><div class="bev-sec-title">🌸 Rosados <span>6 productos</span></div></div>
+  <div class="bev-tbl"><table>
+    <thead><tr><th>Producto</th><th class="r">Chuí</th><th class="r">Bev.</th><th class="r">Dif.</th><th class="r">Causa</th></tr></thead>
+    <tbody>
+      <tr><td class="bev-wname">LIAP Flower Merlot</td><td class="r bev-num">34</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="pill p-gry">No Bev.</span></td><td class="r"><span class="cau c-nr">No registrado</span></td></tr>
+      <tr><td class="bev-wname">Rocamadre Rosado</td><td class="r bev-num">30</td><td class="r bev-num">28</td><td class="r"><span class="pill p-red">+2 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
+      <tr><td class="bev-wname">El Afinador Rosé CF</td><td class="r bev-num">19</td><td class="r bev-num">17</td><td class="r"><span class="pill p-red">+2 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
+      <tr><td class="bev-wname">Inconsciente Merlot Rosé</td><td class="r bev-num">17</td><td class="r bev-num">15</td><td class="r"><span class="pill p-red">+2 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
+      <tr><td class="bev-wname">Araucana Malbec Rosé</td><td class="r bev-num">16</td><td class="r bev-num">4</td><td class="r"><span class="pill p-red">+12 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
+      <tr><td class="bev-wname">HC Canale Rosé Noir</td><td class="r bev-num">31.6</td><td class="r bev-num">29</td><td class="r"><span class="pill p-amb">+2.6 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="bev-divider"></div>
+  <div class="bev-sec"><div class="bev-sec-title">🔴 Tintos <span>18 productos</span></div></div>
+  <div class="bev-tbl"><table>
+    <thead><tr><th>Producto</th><th class="r">Chuí</th><th class="r">Bev.</th><th class="r">Compras Bev.</th><th class="r">Dif.</th><th class="r">Causa</th></tr></thead>
+    <tbody>
+      <tr><td class="bev-wname">Cara Sur Pérgolas</td><td class="r bev-num">32</td><td class="r bev-num">16</td><td class="r bev-num">42</td><td class="r"><span class="pill p-red">+16 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
+      <tr><td class="bev-wname">Vertebrado Cab. Franc</td><td class="r bev-num">2</td><td class="r bev-num">10</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="pill p-blu">+8 Bev.</span></td><td class="r"><span class="cau c-rev">Revisar Chuí</span></td></tr>
+      <tr><td class="bev-wname">Elephant Gun Malbec</td><td class="r bev-num">33</td><td class="r bev-num">26</td><td class="r bev-num">36</td><td class="r"><span class="pill p-red">+7 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
+      <tr><td class="bev-wname">La Voja Pinot Noir</td><td class="r bev-num">24</td><td class="r bev-num">16</td><td class="r bev-num">30</td><td class="r"><span class="pill p-red">+8 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
+      <tr><td class="bev-wname">Negra Margen Bonarda</td><td class="r bev-num">6.2</td><td class="r bev-num">3.1</td><td class="r bev-num">6</td><td class="r"><span class="pill p-red">+3.1 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
+      <tr><td class="bev-wname">Les Astronautes Malbec</td><td class="r bev-num">30</td><td class="r bev-num">16</td><td class="r bev-num">36</td><td class="r"><span class="pill p-red">+14 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
+      <tr><td class="bev-wname">Naciente Cab. Franc</td><td class="r bev-num">18</td><td class="r bev-num">22</td><td class="r bev-num">30</td><td class="r"><span class="pill p-blu">+4 Bev.</span></td><td class="r"><span class="cau c-rev">Revisar Chuí</span></td></tr>
+      <tr><td class="bev-wname">El Raro Nebbiolo</td><td class="r bev-num">13</td><td class="r bev-num">12</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="pill p-amb">+1 Chuí</span></td><td class="r"><span class="cau c-ing">Pequeña diff.</span></td></tr>
+      <tr><td class="bev-wname">Petit Maremmano Syrah-CS</td><td class="r bev-num">22</td><td class="r bev-num bev-num-m">—</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="pill p-gry">No Bev.</span></td><td class="r"><span class="cau c-nr">No registrado</span></td></tr>
+      <tr><td class="bev-wname">Mara Bonarda (casa)</td><td class="r bev-num">47.6</td><td class="r bev-num">39.5</td><td class="r bev-num">48</td><td class="r"><span class="pill p-red">+8.1 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
+      <tr><td class="bev-wname">Elephant Gun Merlot</td><td class="r bev-num">51.5</td><td class="r bev-num">51</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="pill p-amb">+0.5</span></td><td class="r"><span class="cau c-ing">Pequeña diff.</span></td></tr>
+      <tr><td class="bev-wname">Mara Petit Verdot</td><td class="r bev-num">13.2</td><td class="r bev-num">15</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="pill p-blu">+1.8 Bev.</span></td><td class="r"><span class="cau c-rev">Revisar Chuí</span></td></tr>
+      <tr><td class="bev-wname">Tilia Malbec</td><td class="r bev-num">0</td><td class="r bev-num">23</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="pill p-blu">+23 Bev.</span></td><td class="r"><span class="cau c-rev">Revisar Chuí</span></td></tr>
+      <tr><td class="bev-wname">Verum Malbec</td><td class="r bev-num">19</td><td class="r bev-num">19</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="pill p-ok">✓ 0</span></td><td class="r"><span class="cau c-ok">OK</span></td></tr>
+      <tr><td class="bev-wname">Stella Crinita Malbec</td><td class="r bev-num">3</td><td class="r bev-num">3</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="pill p-ok">✓ 0</span></td><td class="r"><span class="cau c-ok">OK</span></td></tr>
+      <tr><td class="bev-wname">Angélica Zapata CF</td><td class="r bev-num">7</td><td class="r bev-num">7</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="pill p-ok">✓ 0</span></td><td class="r"><span class="cau c-ok">OK</span></td></tr>
+      <tr><td class="bev-wname">Chacra 55 Pinot Noir</td><td class="r bev-num">3</td><td class="r bev-num">2</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="pill p-amb">+1 Chuí</span></td><td class="r"><span class="cau c-ing">Pequeña diff.</span></td></tr>
+      <tr><td class="bev-wname">Ver Sacrum Monastrell</td><td class="r bev-num">0</td><td class="r bev-num">0</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="pill p-ok">✓ 0</span></td><td class="r"><span class="cau c-ok">OK</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="bev-divider"></div>
+  <div class="bev-sec"><div class="bev-sec-title">🫧 Espumosos & Vino Dulce <span>7 productos</span></div></div>
+  <div class="bev-tbl"><table>
+    <thead><tr><th>Producto</th><th class="r">Chuí</th><th class="r">Bev.</th><th class="r">Dif.</th><th class="r">Causa</th></tr></thead>
+    <tbody>
+      <tr><td class="bev-wname">Nox Malbec</td><td class="r bev-num">5</td><td class="r bev-num">5</td><td class="r"><span class="pill p-ok">✓ 0</span></td><td class="r"><span class="cau c-ok">OK</span></td></tr>
+      <tr><td class="bev-wname">Alma 4 Pinot-Chardonnay</td><td class="r bev-num">27</td><td class="r bev-num">24</td><td class="r"><span class="pill p-red">+3 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
+      <tr><td class="bev-wname">Alma Negra Blanc de Blancs</td><td class="r bev-num">24</td><td class="r bev-num">25</td><td class="r"><span class="pill p-blu">+1 Bev.</span></td><td class="r"><span class="cau c-rev">Diff. mínima</span></td></tr>
+      <tr><td class="bev-wname">Zuccardi Blanc de Blancs</td><td class="r bev-num">21</td><td class="r bev-num">21</td><td class="r"><span class="pill p-ok">✓ 0</span></td><td class="r"><span class="cau c-ok">OK</span></td></tr>
+      <tr><td class="bev-wname">Animal Extra Brut</td><td class="r bev-num">12</td><td class="r bev-num">12</td><td class="r"><span class="pill p-ok">✓ 0</span></td><td class="r"><span class="cau c-ok">OK</span></td></tr>
+      <tr><td class="bev-wname">Gascón Extra Brut Reserva</td><td class="r bev-num">6</td><td class="r bev-num">6</td><td class="r"><span class="pill p-ok">✓ 0</span></td><td class="r"><span class="cau c-ok">OK</span></td></tr>
+      <tr><td class="bev-wname">Terrazas Petit Manseng</td><td class="r bev-num">2.1</td><td class="r bev-num">1.9</td><td class="r"><span class="pill p-amb">+0.2</span></td><td class="r"><span class="cau c-ing">Pequeña diff.</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="bev-divider"></div>
+  <div class="bev-sec"><div class="bev-sec-title">⚡ No registrados en Bevinco <span>dar de alta</span></div></div>
+  <div class="bev-cards">
+    <div class="bev-card"><div class="bev-wname">Verum Naranjo</div><div class="bev-num">16 BTL</div></div>
+    <div class="bev-card"><div class="bev-wname">LIAP Flower Merlot</div><div class="bev-num">34 BTL</div></div>
+    <div class="bev-card"><div class="bev-wname">Petit Maremmano Syrah-CS</div><div class="bev-num">22 BTL</div></div>
+    <div class="bev-card"><div class="bev-wname">Negra Margen Bonarda</div><div class="bev-num">6.2 BTL</div></div>
+    <div class="bev-card"><div class="bev-wname">La Marchigiana Bonarda</div><div class="bev-num">6 BTL</div></div>
+    <div class="bev-card"><div class="bev-wname">Eléctrico Rosé</div><div class="bev-num">16 BTL</div></div>
+    <div class="bev-card"><div class="bev-wname">HC Semillón</div><div class="bev-num">6 BTL</div></div>
+    <div class="bev-card"><div class="bev-wname">Martínez Croce Malbec</div><div class="bev-num">5 BTL</div></div>
+    <div class="bev-card"><div class="bev-wname">Demoño Rojo Garnacha</div><div class="bev-num">0 BTL</div></div>
+  </div>
+
+  <div class="bev-sec"><div class="bev-sec-title">🔵 Bevinco tiene stock — verificar ingreso Chuí <span>10 productos</span></div></div>
+  <div class="bev-tbl" style="margin-bottom:12px;"><table>
+    <thead><tr><th>Producto</th><th class="r">Bev. Existencia</th><th class="r">Chuí</th><th class="r">Acción</th></tr></thead>
+    <tbody>
+      <tr><td class="bev-wname">Casa Tano Chardonnay</td><td class="r bev-num">10</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="cau c-rev">Cargar en Chuí</span></td></tr>
+      <tr><td class="bev-wname">Casa Tano Naranjo</td><td class="r bev-num">9.9</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="cau c-rev">Cargar en Chuí</span></td></tr>
+      <tr><td class="bev-wname">Rocamadre Blanco</td><td class="r bev-num">12</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="cau c-rev">Cargar en Chuí</span></td></tr>
+      <tr><td class="bev-wname">Rocamadre Criolla Blanca</td><td class="r bev-num">3</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="cau c-rev">Cargar en Chuí</span></td></tr>
+      <tr><td class="bev-wname">Pielihueso Tinto</td><td class="r bev-num">7</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="cau c-rev">Cargar en Chuí</span></td></tr>
+      <tr><td class="bev-wname">Puercovin Malbec</td><td class="r bev-num">2</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="cau c-rev">Cargar en Chuí</span></td></tr>
+      <tr><td class="bev-wname">Puercovin Semillón 2018</td><td class="r bev-num">5</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="cau c-rev">Cargar en Chuí</span></td></tr>
+      <tr><td class="bev-wname">Milagrosado</td><td class="r bev-num">9.3</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="cau c-rev">Cargar en Chuí</span></td></tr>
+      <tr><td class="bev-wname">Tilia Malbec</td><td class="r bev-num">23</td><td class="r bev-num">0</td><td class="r"><span class="cau c-rev">Stock 0 en Chuí</span></td></tr>
+      <tr><td class="bev-wname">Vertebrado Cab. Franc</td><td class="r bev-num">10</td><td class="r bev-num">2</td><td class="r"><span class="cau c-rev">Diff. grande</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="bev-alert blu"><strong>📋 Resumen Ejecutivo</strong><b>Para Bevinco:</b> cargar ingresos de 18 vinos donde Chuí tiene más stock.<br><b>Para Chuí:</b> verificar y cargar 10 productos que Bevinco tiene pero el sistema Chuí no refleja.<br><b>Alta en Bevinco:</b> 9 vinos del stock Chuí sin registrar en su sistema.</div>
 </div>
 
 <div id="main-content"></div>
@@ -393,6 +568,8 @@ var pedidosMode = false;
 
 function filterPedidos(btn) {
   pedidosMode = true;
+  document.getElementById('bevinco-view').classList.remove('active');
+  document.getElementById('main-content').classList.remove('hidden');
   currentCat = 'all';
   document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
   document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
@@ -468,6 +645,15 @@ function renderPedidos() {
   });
 }
 
+function showBevinco(btn) {
+  pedidosMode = false;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('main-content').classList.add('hidden');
+  document.getElementById('bevinco-view').classList.add('active');
+}
+
 function filterFromStat(status) {
   pedidosMode = false;
   currentFilter = status;
@@ -489,6 +675,8 @@ function filterFromStat(status) {
 
 function filterCat(cat, btn) {
   pedidosMode = false;
+  document.getElementById('bevinco-view').classList.remove('active');
+  document.getElementById('main-content').classList.remove('hidden');
   currentCat = cat;
   document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
@@ -642,6 +830,8 @@ function renderItems(filterStatus) {
 
 function filter(status, btn) {
   pedidosMode = false;
+  document.getElementById('bevinco-view').classList.remove('active');
+  document.getElementById('main-content').classList.remove('hidden');
   currentFilter = status;
   document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
