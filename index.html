@@ -202,7 +202,7 @@ footer { max-width:900px; margin:48px auto 0; padding-top:20px; border-top:1px s
     <tbody>
       <tr><td class="bev-wname">Laborum Torrontes</td><td class="r bev-num">25</td><td class="r bev-num">25</td><td class="r"><span class="pill p-ok">✓ 0</span></td><td class="r"><span class="cau c-ok">OK</span></td></tr>
       <tr><td class="bev-wname">Eléctrico SB-Chardonnay</td><td class="r bev-num">28</td><td class="r bev-num">22</td><td class="r"><span class="pill p-red">+6 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
-      <tr><td class="bev-wname">Antro Chardonnay</td><td class="r bev-num">20</td><td class="r bev-num">16</td><td class="r"><span class="pill p-red">+4 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
+      <tr><td class="bev-wname">Antro Chardonnay</td><td class="r bev-num">46</td><td class="r bev-num">16</td><td class="r"><span class="pill p-red">+30 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
       <tr><td class="bev-wname">Esperando Los Bárbaros</td><td class="r bev-num">15</td><td class="r bev-num">13</td><td class="r"><span class="pill p-red">+2 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
       <tr><td class="bev-wname">H.C. Riesling</td><td class="r bev-num">29</td><td class="r bev-num">28</td><td class="r"><span class="pill p-amb">+1 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
       <tr><td class="bev-wname">Contra Corriente Chardonnay</td><td class="r bev-num">15</td><td class="r bev-num">15</td><td class="r"><span class="pill p-ok">✓ 0</span></td><td class="r"><span class="cau c-ok">OK</span></td></tr>
@@ -348,7 +348,7 @@ var items = [
   {nombre:"Laborum Torrontes",categoria:"Blancos",stockUnidades:25,minimo:10,pedido:"5c",asesor:"Daniela Davila",contacto:"+54 9 11 3039-1384",razon:"Uvas del Valle",obs:"5+1 copa dia",pendiente:null,ultimoPedido:"06/04",ultimoCant:"6c",entregado:"6c"},
   {nombre:"La Marchigiana Moscatel",categoria:"Blancos",stockUnidades:1,minimo:null,pedido:"-",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Electrico SB-Chardonnay",categoria:"Blancos",stockUnidades:21,minimo:8,pedido:"3c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"1c",entregado:"1c (14/04)"},
-  {nombre:"Antro Chardonnay",categoria:"Blancos",stockUnidades:34,minimo:15,pedido:"5c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:"4c en camino",ultimoPedido:"04/05",ultimoCant:"4c"},
+  {nombre:"Antro Chardonnay",categoria:"Blancos",stockUnidades:46,minimo:15,pedido:"5c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:"4c en camino",ultimoPedido:"04/05",ultimoCant:"4c"},
   {nombre:"Esperando a Los Barbaros SB",categoria:"Blancos",stockUnidades:7,minimo:8,pedido:"3c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"1c",entregado:"1c (28/04)"},
   {nombre:"Humberto Canale Riesling",categoria:"Blancos",stockUnidades:28,minimo:12,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Humberto Canale",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"3c",entregado:"3c (15/04)"},
   {nombre:"Poligonos Verdejo",categoria:"Blancos",stockUnidades:6,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
@@ -414,14 +414,14 @@ var precios = {
   "Verum Chardonnay Naranjo": {costo:13500, venta:37800},
   "Solito Va Naranjo": {costo:13260, venta:37128},
   "Petit Mara Naranjo 375ml": {costo:7000, venta:21000},
-  "Livvera Malvasia Naranjo": {costo:14750, venta:41300},
+  "Livvera Malvasia Naranjo": {costo:12190, venta:41300},
   "L.I.A.P. Flower Merlot": {costo:15000, venta:42000},
   "Rocamadre Pinot Noir Rose": {costo:16335, venta:42471},
   "El Afinador Rose CF": {costo:10000, venta:30000},
   "Inconsciente Merlot Rose": {costo:9500, venta:28500},
   "Araucana Malbec Rose": {costo:21000, venta:54600},
   "Humberto Canale Rose Noir": {costo:11500, venta:32200},
-  "Cara Sur Pergolas Criollas Tintas": {costo:10000, venta:30000},
+  "Cara Sur Pergolas Criollas Tintas": {costo:8264, venta:30000},
   "Elephant Gun Malbec": {costo:6000, venta:18000},
   "Ver Sacrum Monastrell": {costo:16000, venta:44800},
   "Nat Cool Bonarda": {costo:11550, venta:32340},
@@ -440,6 +440,9 @@ var precios = {
   "Alma Negra Chardonnay": {costo:18000, venta:46800},
   "Zuccardi Blanc de Blancs": {costo:27000, venta:64800},
   "Terrazas Petit Manseng": {costo:18815, venta:48919},
+  "Electrico Rosado": {costo:11364, venta:38500},
+  "Vertebrado Pinot Noir": {costo:16116, venta:46800},
+  "Tilia Chardonnay": {costo:22810, venta:8100},
 };
 
 function formatPesos(n) {
