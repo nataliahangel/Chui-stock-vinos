@@ -24,6 +24,8 @@
   .filter-btn:hover,.filter-btn.active { background:var(--card); color:var(--text); border-color:var(--muted); }
   .filter-btn.red.active { border-color:var(--red); color:var(--red); }
   .filter-btn.amber.active { border-color:var(--amber); color:var(--amber); }
+  .filter-btn.archivo { border-color:#4a4538; color:#4a4538; }
+  .filter-btn.archivo:hover, .filter-btn.archivo.active { border-color:#7a7060; color:#7a7060; background:var(--card); }
 
   /* BEVINCO TAB STYLES */
   #bevinco-view { display:none; max-width:900px; margin:0 auto; }
@@ -75,6 +77,10 @@
   .alert-card { background:var(--card); border:1px solid var(--border); border-left:3px solid; padding:16px 20px; margin-bottom:8px; border-radius:0 2px 2px 0; display:grid; grid-template-columns:1fr auto; gap:12px; align-items:start; animation:fadeIn 0.4s ease forwards; opacity:0; }
   @keyframes fadeIn { to { opacity:1; } }
   .alert-card.critica { border-left-color:var(--red); } .alert-card.alerta { border-left-color:var(--amber); } .alert-card.ok { border-left-color:var(--green); }
+  /* Copa: borde azul tenue, sin contar como alerta */
+  .alert-card.copa { border-left-color:#3a5a8a; opacity:0.75; }
+  /* Archivo: apagado, grisáceo */
+  .alert-card.archivo { border-left-color:#3a3830; opacity:0.6; }
   .wine-name { font-family:'Playfair Display',serif; font-size:17px; margin-bottom:6px; line-height:1.2; }
   .wine-meta { font-size:11px; color:var(--muted); display:flex; gap:16px; flex-wrap:wrap; margin-bottom:8px; }
   .contact-info { font-size:11px; color:var(--muted); margin-top:6px; padding-top:8px; border-top:1px solid var(--border); display:flex; gap:16px; flex-wrap:wrap; }
@@ -88,12 +94,15 @@
   .badge { display:inline-block; font-size:10px; letter-spacing:0.1em; padding:3px 8px; border-radius:2px; text-transform:uppercase; margin-bottom:10px; }
   .badge.critica { background:rgba(192,57,43,0.2); color:var(--red); border:1px solid rgba(192,57,43,0.4); }
   .badge.alerta { background:rgba(212,160,23,0.15); color:var(--amber); border:1px solid rgba(212,160,23,0.35); }
+  .badge.copa { background:rgba(58,90,138,0.15); color:#6a9ad4; border:1px solid rgba(58,90,138,0.35); }
+  .badge.archivo { background:rgba(58,56,48,0.3); color:#5a5040; border:1px solid rgba(58,56,48,0.5); }
   .stock-display { font-size:28px; font-family:'Playfair Display',serif; line-height:1; margin-bottom:2px; }
   .stock-label { font-size:10px; color:var(--muted); letter-spacing:0.08em; }
   .pedido-tag { margin-top:10px; font-size:11px; color:var(--dim); background:var(--surface); padding:4px 8px; border-radius:2px; display:inline-block; }
   .pedido-tag strong { color:var(--text); font-weight:500; }
   .obs-tag { display:inline-block; font-size:10px; color:var(--blue); background:rgba(74,111,165,0.1); border:1px solid rgba(74,111,165,0.25); padding:2px 7px; border-radius:2px; margin-top:4px; margin-right:4px; }
   .pendiente-tag { display:inline-block; font-size:10px; color:var(--blue); background:rgba(74,111,165,0.1); border:1px solid rgba(74,111,165,0.4); padding:2px 7px; border-radius:2px; margin-top:4px; margin-right:4px; }
+  .nuevo-tag { display:inline-block; font-size:10px; color:#4a7c59; background:rgba(74,124,89,0.12); border:1px solid rgba(74,124,89,0.35); padding:2px 7px; border-radius:2px; margin-top:4px; margin-right:4px; letter-spacing:0.06em; }
   .wa-fab { position:fixed; bottom:32px; right:32px; background:#25D366; color:#fff; border:none; border-radius:2px; font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; padding:14px 22px; cursor:pointer; z-index:100; box-shadow:0 4px 24px rgba(0,0,0,0.4); transition:transform 0.2s,box-shadow 0.2s; display:flex; align-items:center; gap:10px; }
   .wa-fab:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,0,0,0.5); }
   .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:200; backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:20px; }
@@ -120,6 +129,9 @@
   .wa-message-preview { padding:12px 16px; font-size:12px; line-height:1.8; color:var(--muted); white-space:pre-wrap; font-family:'DM Mono',monospace; background:rgba(0,0,0,0.2); }
   .wa-empty { text-align:center; color:var(--dim); font-size:12px; padding:30px; font-style:italic; }
   footer { max-width:900px; margin:48px auto 0; padding-top:20px; border-top:1px solid var(--border); font-size:10px; color:var(--dim); letter-spacing:0.08em; display:flex; justify-content:space-between; }
+
+  /* Archivo banner */
+  .archivo-banner { max-width:900px; margin:0 auto 24px; padding:12px 16px; background:rgba(58,56,48,0.25); border:1px solid #3a3830; border-left:3px solid #4a4538; border-radius:0 2px 2px 0; font-size:11px; color:#5a5040; letter-spacing:0.06em; }
 </style>
 </head>
 <body>
@@ -155,9 +167,10 @@
   <button class="filter-btn" onclick="filter('ok',this)">Stock OK</button>
   <button class="filter-btn" style="border-color:#4a6fa5;color:#4a6fa5" onclick="filterPedidos(this)">🚚 Pedidos</button>
   <button class="filter-btn" style="border-color:#8B1A1A;color:#8B1A1A" onclick="showBevinco(this)">📊 Bevinco</button>
+  <button class="filter-btn archivo" onclick="showArchivo(this)">📁 Archivo</button>
 </div>
 
-<div style="max-width:900px;margin:0 auto 20px;display:flex;gap:6px;flex-wrap:wrap">
+<div style="max-width:900px;margin:0 auto 20px;display:flex;gap:6px;flex-wrap:wrap" id="cat-row">
   <button class="cat-btn active" onclick="filterCat('all',this)">Todas</button>
   <button class="cat-btn" onclick="filterCat('Blancos',this)">🟡 Blancos</button>
   <button class="cat-btn" onclick="filterCat('Naranjos',this)">🟠 Naranjos</button>
@@ -179,7 +192,6 @@
     <div class="bev-title">Chuí <span>×</span> Bevinco</div>
     <div class="bev-sub">Stock Chuí 07/05 vs Bevinco 27 Abr–10 May 2026</div>
   </div>
-
   <div class="bev-kpis">
     <div class="bev-kpi"><div class="bev-kpi-n dark">47</div><div class="bev-kpi-l">Vinos analizados</div></div>
     <div class="bev-kpi"><div class="bev-kpi-n red">18</div><div class="bev-kpi-l">Chuí &gt; Bevinco</div></div>
@@ -188,12 +200,9 @@
     <div class="bev-kpi"><div class="bev-kpi-n amber">23</div><div class="bev-kpi-l">Con diferencia</div></div>
     <div class="bev-kpi"><div class="bev-kpi-n green">15</div><div class="bev-kpi-l">Sin diferencia ✓</div></div>
   </div>
-
   <div class="bev-alert red"><strong>⚠ Ingresos no cargados por Bevinco</strong>18 vinos tienen más stock en Chuí. Las diferencias más críticas: <b>Cara Sur Pérgolas +16, Les Astronautes +14, Araucana Rosé +12, La Voja +8, Elephant Gun +7.</b></div>
   <div class="bev-alert amb"><strong>⚡ Verificar en Chuí</strong>10 productos aparecen en Bevinco con stock que Chuí no refleja: Casa Tano Chardonnay/Naranjo, Rocamadre Blanco/Criolla, Pielihueso, Puercovin, Milagrosado, Tilia Malbec, Vertebrado CF.</div>
-
   <div class="bev-divider"></div>
-
   <div class="bev-sec"><div class="bev-sec-title">🟡 Blancos & 🟠 Naranjos <span>13 productos</span></div></div>
   <div class="bev-tbl"><table>
     <thead><tr><th>Producto</th><th class="r">Chuí</th><th class="r">Bev.</th><th class="r">Dif.</th><th class="r">Causa</th></tr></thead>
@@ -213,7 +222,6 @@
       <tr><td class="bev-wname">Verum Chardonnay Naranjo</td><td class="r bev-num bev-num-m">—</td><td class="r bev-num">14</td><td class="r"><span class="pill p-blu">+14 Bev.</span></td><td class="r"><span class="cau c-rev">Revisar Chuí</span></td></tr>
     </tbody>
   </table></div>
-
   <div class="bev-divider"></div>
   <div class="bev-sec"><div class="bev-sec-title">🌸 Rosados <span>6 productos</span></div></div>
   <div class="bev-tbl"><table>
@@ -227,7 +235,6 @@
       <tr><td class="bev-wname">HC Canale Rosé Noir</td><td class="r bev-num">31.6</td><td class="r bev-num">29</td><td class="r"><span class="pill p-amb">+2.6 Chuí</span></td><td class="r"><span class="cau c-ing">No cargado</span></td></tr>
     </tbody>
   </table></div>
-
   <div class="bev-divider"></div>
   <div class="bev-sec"><div class="bev-sec-title">🔴 Tintos <span>18 productos</span></div></div>
   <div class="bev-tbl"><table>
@@ -253,7 +260,6 @@
       <tr><td class="bev-wname">Ver Sacrum Monastrell</td><td class="r bev-num">0</td><td class="r bev-num">0</td><td class="r bev-num bev-num-m">—</td><td class="r"><span class="pill p-ok">✓ 0</span></td><td class="r"><span class="cau c-ok">OK</span></td></tr>
     </tbody>
   </table></div>
-
   <div class="bev-divider"></div>
   <div class="bev-sec"><div class="bev-sec-title">🫧 Espumosos & Vino Dulce <span>7 productos</span></div></div>
   <div class="bev-tbl"><table>
@@ -268,7 +274,6 @@
       <tr><td class="bev-wname">Terrazas Petit Manseng</td><td class="r bev-num">2.1</td><td class="r bev-num">1.9</td><td class="r"><span class="pill p-amb">+0.2</span></td><td class="r"><span class="cau c-ing">Pequeña diff.</span></td></tr>
     </tbody>
   </table></div>
-
   <div class="bev-divider"></div>
   <div class="bev-sec"><div class="bev-sec-title">⚡ No registrados en Bevinco <span>dar de alta</span></div></div>
   <div class="bev-cards">
@@ -282,7 +287,6 @@
     <div class="bev-card"><div class="bev-wname">Martínez Croce Malbec</div><div class="bev-num">5 BTL</div></div>
     <div class="bev-card"><div class="bev-wname">Demoño Rojo Garnacha</div><div class="bev-num">0 BTL</div></div>
   </div>
-
   <div class="bev-sec"><div class="bev-sec-title">🔵 Bevinco tiene stock — verificar ingreso Chuí <span>10 productos</span></div></div>
   <div class="bev-tbl" style="margin-bottom:12px;"><table>
     <thead><tr><th>Producto</th><th class="r">Bev. Existencia</th><th class="r">Chuí</th><th class="r">Acción</th></tr></thead>
@@ -299,7 +303,6 @@
       <tr><td class="bev-wname">Vertebrado Cab. Franc</td><td class="r bev-num">10</td><td class="r bev-num">2</td><td class="r"><span class="cau c-rev">Diff. grande</span></td></tr>
     </tbody>
   </table></div>
-
   <div class="bev-alert blu"><strong>📋 Resumen Ejecutivo</strong><b>Para Bevinco:</b> cargar ingresos de 18 vinos donde Chuí tiene más stock.<br><b>Para Chuí:</b> verificar y cargar 10 productos que Bevinco tiene pero el sistema Chuí no refleja.<br><b>Alta en Bevinco:</b> 9 vinos del stock Chuí sin registrar en su sistema.</div>
 </div>
 
@@ -326,1046 +329,94 @@
 </div>
 
 <script>
+// ─── ESTADO DE CADA ITEM ──────────────────────────────────────────────────────
+// estado: "carta"    → en carta, se muestra normal, cuenta en alertas
+//         "copa"     → fuera de carta pero sigue por copa, visible pero NO cuenta en alertas
+//         "archivo"  → salió de carta, solo visible en solapa Archivo
+
 var items = [
-  {
-    nombre: "Un Mundo Chiquito Malbec",
-    categoria: "Casa",
-    stockUnidades: 33,
-    minimo: null,
-    pedido: "-",
-    asesor: null,
-    contacto: null,
-    razon: null,
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Un Mundo Chiquito C y CB",
-    categoria: "Casa",
-    stockUnidades: 28,
-    minimo: null,
-    pedido: "-",
-    asesor: null,
-    contacto: null,
-    razon: null,
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Un Mundo Chiquito Rose",
-    categoria: "Casa",
-    stockUnidades: 12,
-    minimo: null,
-    pedido: "-",
-    asesor: null,
-    contacto: null,
-    razon: null,
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Animal Extra Brut",
-    categoria: "Espumosos",
-    stockUnidades: 12,
-    minimo: 2,
-    pedido: "2c",
-    asesor: "Joaquin Sastre",
-    contacto: "+54 9 11 3660-4557",
-    razon: "Nakbe",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Ribera del Cuarzo Merlot",
-    categoria: "Tintos",
-    stockUnidades: 2,
-    minimo: null,
-    pedido: "-",
-    asesor: null,
-    contacto: null,
-    razon: null,
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Cara Sur Criolla Chica",
-    categoria: "Tintos",
-    stockUnidades: 1,
-    minimo: null,
-    pedido: "-",
-    asesor: "Camila Sciaini",
-    contacto: "+54 9 11 4980-7377",
-    razon: "Vinos Andinos",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "La Marchigiana Bonarda",
-    categoria: "Tintos",
-    stockUnidades: 8,
-    minimo: null,
-    pedido: "-",
-    asesor: null,
-    contacto: null,
-    razon: null,
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Tilia Malbec",
-    categoria: "Tintos",
-    stockUnidades: 6,
-    minimo: null,
-    pedido: "-",
-    asesor: "Joaquin Sastre",
-    contacto: "+54 9 11 3660-4557",
-    razon: "Nakbe",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "El Raro Sauvignon Blanc",
-    categoria: "Blancos",
-    stockUnidades: 1,
-    minimo: null,
-    pedido: "-",
-    asesor: null,
-    contacto: null,
-    razon: null,
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Poligonos Semillon",
-    categoria: "Blancos",
-    stockUnidades: 19,
-    minimo: null,
-    pedido: "-",
-    asesor: null,
-    contacto: null,
-    razon: null,
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "La Marchigiana Chardonnay",
-    categoria: "Blancos",
-    stockUnidades: 8,
-    minimo: null,
-    pedido: "-",
-    asesor: null,
-    contacto: null,
-    razon: null,
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Cara Sur Moscatel Blanco",
-    categoria: "Blancos",
-    stockUnidades: 3,
-    minimo: null,
-    pedido: "-",
-    asesor: "Camila Sciaini",
-    contacto: "+54 9 11 4980-7377",
-    razon: "Vinos Andinos",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Verum Chardonnay",
-    categoria: "Blancos",
-    stockUnidades: 17,
-    minimo: null,
-    pedido: "-",
-    asesor: "Catalina Uriburu",
-    contacto: "+54 9 11 5095-1600",
-    razon: "Tino Slow",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: "4c (24/5)"
-  },
-  {
-    nombre: "La Marchigiana Rose",
-    categoria: "Rosados",
-    stockUnidades: 18,
-    minimo: null,
-    pedido: "-",
-    asesor: null,
-    contacto: null,
-    razon: null,
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "N7",
-    categoria: "Espumosos",
-    stockUnidades: 12,
-    minimo: null,
-    pedido: "-",
-    asesor: null,
-    contacto: null,
-    razon: null,
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Mara Semillon",
-    categoria: "Blancos",
-    stockUnidades: 23,
-    minimo: null,
-    pedido: "-",
-    asesor: "Joaquin Sastre",
-    contacto: "+54 9 11 3660-4557",
-    razon: "Nakbe",
-    obs: "Nuevo",
-    pendiente: null,
-    ultimoPedido: "28/04",
-    ultimoCant: "3c",
-    entregado: "3c (28/04)"
-  },
-  {
-    nombre: "Laborum Torrontes",
-    categoria: "Blancos",
-    stockUnidades: 19,
-    minimo: 10,
-    pedido: "5c",
-    asesor: "Daniela Davila",
-    contacto: "+54 9 11 3039-1384",
-    razon: "Uvas del Valle",
-    obs: "5+1 copa dia",
-    pendiente: null,
-    ultimoPedido: "06/04",
-    ultimoCant: "6c",
-    entregado: "6c"
-  },
-  {
-    nombre: "La Marchigiana Moscatel",
-    categoria: "Blancos",
-    stockUnidades: 0,
-    minimo: null,
-    pedido: "-",
-    asesor: "Ornella Bresciani",
-    contacto: "+54 9 11 4175-9655",
-    razon: "Catena Zapata",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Electrico SB-Chardonnay",
-    categoria: "Blancos",
-    stockUnidades: 22,
-    minimo: 8,
-    pedido: "3c",
-    asesor: "Camila Sciaini",
-    contacto: "+54 9 11 4980-7377",
-    razon: "Vinos Andinos",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: "13/04",
-    ultimoCant: "1c",
-    entregado: "1c (14/04)"
-  },
-  {
-    nombre: "Antro Chardonnay",
-    categoria: "Blancos",
-    stockUnidades: 29,
-    minimo: 15,
-    pedido: "5c",
-    asesor: "Alejandro Chacon",
-    contacto: "+54 9 11 7365-5676",
-    razon: "Jarilla Wines",
-    obs: null,
-    pendiente: "4c en camino",
-    ultimoPedido: "04/05",
-    ultimoCant: "4c"
-  },
-  {
-    nombre: "Esperando a Los Barbaros SB",
-    categoria: "Blancos",
-    stockUnidades: 14,
-    minimo: 8,
-    pedido: "3c",
-    asesor: "Camila Sciaini",
-    contacto: "+54 9 11 4980-7377",
-    razon: "Vinos Andinos",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: "28/04",
-    ultimoCant: "1c",
-    entregado: "2c (24/5)"
-  },
-  {
-    nombre: "Humberto Canale Riesling",
-    categoria: "Blancos",
-    stockUnidades: 24,
-    minimo: 12,
-    pedido: "4c",
-    asesor: "Catalina Uriburu",
-    contacto: "+54 9 11 5095-1600",
-    razon: "Humberto Canale",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: "13/04",
-    ultimoCant: "3c",
-    entregado: "3c (15/04)"
-  },
-  {
-    nombre: "Poligonos Verdejo",
-    categoria: "Blancos",
-    stockUnidades: 3,
-    minimo: 4,
-    pedido: "3c",
-    asesor: "Gabriela Biscay",
-    contacto: "+54 9 11 4164-9001",
-    razon: "La Agricola",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Contra Corriente Chardonnay",
-    categoria: "Blancos",
-    stockUnidades: 14,
-    minimo: 1,
-    pedido: "3c",
-    asesor: "Juan Molano Mesa",
-    contacto: "+54 9 11 2842-4015",
-    razon: "Patagonia River Guides",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Livvera Chenin",
-    categoria: "Blancos",
-    stockUnidades: 22,
-    minimo: 6,
-    pedido: "2c",
-    asesor: "Camila Sciaini",
-    contacto: "+54 9 11 4980-7377",
-    razon: "Vinos Andinos",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Paso a Paso Criolla Blanco",
-    categoria: "Blancos",
-    stockUnidades: 7,
-    minimo: null,
-    pedido: "2c",
-    asesor: "Micaela Baum",
-    contacto: "+54 9 11 5823-6823",
-    razon: "Aurea",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: "06/04",
-    ultimoCant: "2c",
-    entregado: "2c (07/04)"
-  },
-  {
-    nombre: "Verum Naranjo",
-    categoria: "Naranjos",
-    stockUnidades: 0,
-    minimo: 12,
-    pedido: "4c",
-    asesor: "Catalina Uriburu",
-    contacto: "+54 9 11 5095-1600",
-    razon: "Verum",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: "07/04",
-    ultimoCant: "4c",
-    entregado: "4c (24/5)"
-  },
-  {
-    nombre: "Solito Va Naranjo",
-    categoria: "Naranjos",
-    stockUnidades: 3,
-    minimo: 15,
-    pedido: "6c",
-    asesor: "Alejandro Chacon",
-    contacto: "+54 9 11 7365-5676",
-    razon: "Jarilla Wines",
-    obs: null,
-    pendiente: "6c en camino",
-    ultimoPedido: "04/05",
-    ultimoCant: "6c"
-  },
-  {
-    nombre: "Petit Mara Naranjo 375ml",
-    categoria: "Naranjos",
-    stockUnidades: 30,
-    minimo: 10,
-    pedido: "24u",
-    asesor: "Joaquin Sastre",
-    contacto: "+54 9 11 3660-4557",
-    razon: "Nakbe",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: "quiebre bodega"
-  },
-  {
-    nombre: "Livvera Malvasia Naranjo",
-    categoria: "Naranjos",
-    stockUnidades: 14,
-    minimo: 3,
-    pedido: "1c",
-    asesor: "Camila Sciaini",
-    contacto: "+54 9 11 4980-7377",
-    razon: "Vinos Andinos",
-    obs: null,
-    pendiente: "3c en camino",
-    ultimoPedido: "04/05",
-    ultimoCant: "3c"
-  },
-  {
-    nombre: "Paso a Paso Orange",
-    categoria: "Naranjos",
-    stockUnidades: 0,
-    minimo: null,
-    pedido: "2c",
-    asesor: "Micaela Baum",
-    contacto: "+54 9 11 5823-6823",
-    razon: "Aurea",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: "06/04",
-    ultimoCant: "2c",
-    entregado: "3c (04/05)"
-  },
-  {
-    nombre: "L.I.A.P. Flower Merlot",
-    categoria: "Rosados",
-    stockUnidades: 4,
-    minimo: 4,
-    pedido: "4c",
-    asesor: "Mauro Villarejo",
-    contacto: "+54 9 2616 10-5500",
-    razon: "LIAP",
-    obs: null,
-    pendiente: "1c en camino",
-    ultimoPedido: "04/05",
-    ultimoCant: "1c"
-  },
-  {
-    nombre: "L.I.A.P. Power Merlot",
-    categoria: "Tintos",
-    stockUnidades: 17,
-    minimo: null,
-    pedido: "3c",
-    asesor: "Mauro Villarejo",
-    contacto: "+54 9 2616 10-5500",
-    razon: "LIAP",
-    obs: "Vino nuevo",
-    pendiente: null,
-    ultimoPedido: "04/05",
-    ultimoCant: "3c",
-    entregado: "1c (04/05)"
-  },
-  {
-    nombre: "LIAP Noir de Blanc",
-    categoria: "Rosados",
-    stockUnidades: 1,
-    minimo: 4,
-    pedido: "1c",
-    asesor: "Mauro Villarejo",
-    contacto: "+54 9 2616 10-5500",
-    razon: "?",
-    obs: "Vino nuevo",
-    pendiente: null,
-    ultimoPedido: "06/04",
-    ultimoCant: "1c",
-    entregado: "1c (08/04)"
-  },
-  {
-    nombre: "Rocamadre Pinot Noir Rose",
-    categoria: "Rosados",
-    stockUnidades: 18,
-    minimo: 12,
-    pedido: "5c",
-    asesor: "Emilia",
-    contacto: "vinosrocamadre@gmail.com",
-    razon: "Rocamadre",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "El Afinador Rose CF",
-    categoria: "Rosados",
-    stockUnidades: 9,
-    minimo: 15,
-    pedido: "5c",
-    asesor: "Carolina Biga",
-    contacto: "+54 9 3472 55-0464",
-    razon: "Don Agustin",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Inconsciente Merlot Rose",
-    categoria: "Rosados",
-    stockUnidades: 0,
-    minimo: 15,
-    pedido: "5c",
-    asesor: "Juan Cano",
-    contacto: "+54 9 11 4563-4899",
-    razon: "Sophenia",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Humberto Canale Rose",
-    categoria: "Rosados",
-    stockUnidades: 7,
-    minimo: 6,
-    pedido: "2c",
-    asesor: "Catalina Uriburu",
-    contacto: "+54 9 11 5095-1600",
-    razon: "Humberto Canale",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Araucana Malbec Rose",
-    categoria: "Rosados",
-    stockUnidades: 16,
-    minimo: 4,
-    pedido: "3c",
-    asesor: "Juan Pablo Flores",
-    contacto: "+54 9 11 3566-7785",
-    razon: "Casa Pirque",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Cara Sur Pergolas Criollas Tintas",
-    categoria: "Tintos",
-    stockUnidades: 3,
-    minimo: 18,
-    pedido: "6c",
-    asesor: "Camila Sciaini",
-    contacto: "+54 9 11 4980-7377",
-    razon: "Vinos Andinos",
-    obs: null,
-    pendiente: "2c en camino",
-    ultimoPedido: "04/05",
-    ultimoCant: "2c"
-  },
-  {
-    nombre: "Elephant Gun Malbec",
-    categoria: "Tintos",
-    stockUnidades: 0,
-    minimo: 20,
-    pedido: "7c",
-    asesor: "Felipe Azcona",
-    contacto: "+54 9 2645 64-8795",
-    razon: "Azcona",
-    obs: null,
-    pendiente: "6c en camino",
-    ultimoPedido: "27/04",
-    ultimoCant: "6c"
-  },
-  {
-    nombre: "Ver Sacrum Monastrell",
-    categoria: "Tintos",
-    stockUnidades: 0,
-    minimo: 8,
-    pedido: "4c",
-    asesor: "Micaela Baum",
-    contacto: "+54 9 11 5823-6823",
-    razon: "Aurea",
-    obs: "Combinar con PAP Naranjo",
-    pendiente: null,
-    ultimoPedido: "06/04",
-    ultimoCant: "4c",
-    entregado: "6c (04/05)"
-  },
-  {
-    nombre: "Nat Cool Bonarda",
-    categoria: "Tintos",
-    stockUnidades: 4,
-    minimo: 12,
-    pedido: "5c",
-    asesor: "Alejandro Chacon",
-    contacto: "+54 9 11 7365-5676",
-    razon: "Jarilla Wines",
-    obs: null,
-    pendiente: "5c en camino",
-    ultimoPedido: "04/05",
-    ultimoCant: "5c"
-  },
-  {
-    nombre: "La Voja Pinot Noir",
-    categoria: "Tintos",
-    stockUnidades: 7,
-    minimo: 12,
-    pedido: "5c",
-    asesor: "Catalina Uriburu",
-    contacto: "+54 9 11 5095-1600",
-    razon: "Aper",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: "28/04",
-    ultimoCant: "4+1c",
-    entregado: "5c (24/5)"
-  },
-  {
-    nombre: "Negra Margen Bonarda",
-    categoria: "Tintos",
-    stockUnidades: 0,
-    minimo: 12,
-    pedido: "4c",
-    asesor: "Meli Montse",
-    contacto: "+54 9 2214 37-0690",
-    razon: "-",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: "28/04",
-    ultimoCant: "1c",
-    entregado: "1c (28/04)"
-  },
-  {
-    nombre: "Les Astronautes Malbec",
-    categoria: "Tintos",
-    stockUnidades: 25,
-    minimo: 20,
-    pedido: "5c",
-    asesor: "Catalina Uriburu",
-    contacto: "+54 9 11 5095-1600",
-    razon: "Tino Slow",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: "28/04",
-    ultimoCant: "6+1c",
-    entregado: "7c (24/5)"
-  },
-  {
-    nombre: "Naciente CF y M",
-    categoria: "Tintos",
-    stockUnidades: 3,
-    minimo: 12,
-    pedido: "3c",
-    asesor: "Meli Montse",
-    contacto: "+54 9 2214 37-0690",
-    razon: "-",
-    obs: null,
-    pendiente: "2c en camino",
-    ultimoPedido: "04/05",
-    ultimoCant: "2c"
-  },
-  {
-    nombre: "El Raro Nebbiolo",
-    categoria: "Tintos",
-    stockUnidades: 12,
-    minimo: 3,
-    pedido: "3c",
-    asesor: "Gabriel Campana",
-    contacto: "+54 9 3525 64-4693",
-    razon: "Campana",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: "2c (04/05)"
-  },
-  {
-    nombre: "Angelica Zapata CF",
-    categoria: "Tintos",
-    stockUnidades: 0,
-    minimo: 6,
-    pedido: "4c",
-    asesor: "Ornella Bresciani",
-    contacto: "+54 9 11 4175-9655",
-    razon: "Catena Zapata",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "A Lisa Malbec",
-    categoria: "Tintos",
-    stockUnidades: 10,
-    minimo: 5,
-    pedido: "3c",
-    asesor: "Belen Fretes",
-    contacto: "+54 9 2984 66-1071",
-    razon: "Noemia",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Chacra 55 Pinot Noir",
-    categoria: "Tintos",
-    stockUnidades: 6,
-    minimo: 1,
-    pedido: "1c",
-    asesor: "Rodrigo Calderon",
-    contacto: "+54 9 11 6901-2375",
-    razon: "Calderon",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: "1c (24/5)"
-  },
-  {
-    nombre: "Las Cuerdas Cota 1500",
-    categoria: "Tintos",
-    stockUnidades: 15,
-    minimo: 3,
-    pedido: "2c",
-    asesor: "Meli Montse",
-    contacto: "+54 9 2214 37-0690",
-    razon: "-",
-    obs: null,
-    pendiente: "3c en camino",
-    ultimoPedido: "04/05",
-    ultimoCant: "3c"
-  },
-  {
-    nombre: "Petit Maremmano Syrah-CS 375ml",
-    categoria: "Tintos",
-    stockUnidades: 12,
-    minimo: 15,
-    pedido: "12u",
-    asesor: "Joaquin Sastre",
-    contacto: "+54 9 11 3660-4557",
-    razon: "Nakbe",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: "13/04",
-    ultimoCant: "12u",
-    entregado: "3c (04/05)"
-  },
-  {
-    nombre: "Vertebrado Cabernet Franc",
-    categoria: "Tintos",
-    stockUnidades: 18,
-    minimo: 8,
-    pedido: "1c",
-    asesor: "Camila Sciaini",
-    contacto: "+54 9 11 4980-7377",
-    razon: "Vinos Andinos",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: "04/05",
-    ultimoCant: "2c",
-    entregado: "4c (24/5)"
-  },
-  {
-    nombre: "Verum Malbec",
-    categoria: "Tintos",
-    stockUnidades: 0,
-    minimo: null,
-    pedido: "4c",
-    asesor: "Catalina Uriburu",
-    contacto: "+54 9 11 5095-1600",
-    razon: "Verum",
-    obs: "Evento",
-    pendiente: null,
-    ultimoPedido: "13/04",
-    ultimoCant: "4c",
-    entregado: "2c (04/05)"
-  },
-  {
-    nombre: "Electrico Rosado",
-    categoria: "Rosados",
-    stockUnidades: 11,
-    minimo: null,
-    pedido: "1c",
-    asesor: "Camila Sciaini",
-    contacto: "+54 9 11 4980-7377",
-    razon: "Vinos Andinos",
-    obs: "Evento",
-    pendiente: "2c en camino",
-    ultimoPedido: "04/05",
-    ultimoCant: "2c"
-  },
-  {
-    nombre: "Nox Malbec",
-    categoria: "Espumosos",
-    stockUnidades: 0,
-    minimo: 4,
-    pedido: "3c",
-    asesor: "Alma Cabral",
-    contacto: "+54 9 11 3357-8389",
-    razon: "Punto Novisa",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: "2c (04/05)"
-  },
-  {
-    nombre: "Alma 4 Pinot-Chardonnay",
-    categoria: "Espumosos",
-    stockUnidades: 15,
-    minimo: 4,
-    pedido: "3c",
-    asesor: "Gabriela Biscay",
-    contacto: "+54 9 11 4164-9001",
-    razon: "La Agricola",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: "13/04",
-    ultimoCant: "4c",
-    entregado: "5c (15/04)"
-  },
-  {
-    nombre: "Alma Negra Chardonnay",
-    categoria: "Espumosos",
-    stockUnidades: 20,
-    minimo: 4,
-    pedido: "3c",
-    asesor: "Joaquin Sastre",
-    contacto: "+54 9 11 3660-4557",
-    razon: "Nakbe",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Zuccardi Blanc de Blancs",
-    categoria: "Espumosos",
-    stockUnidades: 19,
-    minimo: 4,
-    pedido: "3c",
-    asesor: "Gabriela Biscay",
-    contacto: "+54 9 11 4164-9001",
-    razon: "La Agricola",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: "13/04",
-    ultimoCant: "3c",
-    entregado: "3c (15/04)"
-  },
-  {
-    nombre: "Animal Extra Brut",
-    categoria: "Espumosos",
-    stockUnidades: 13,
-    minimo: 2,
-    pedido: "2c",
-    asesor: "Joaquin Sastre",
-    contacto: "+54 9 11 3660-4557",
-    razon: "Nakbe",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  },
-  {
-    nombre: "Terrazas Petit Manseng",
-    categoria: "Dulce",
-    stockUnidades: 5,
-    minimo: 4,
-    pedido: "3c",
-    asesor: "Camila Pacheco",
-    contacto: "+54 9 11 5035-8041",
-    razon: "Chandon",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: "1c (24/5)"
-  },
-  {
-    nombre: "Mara de Uco Bonarda",
-    categoria: "Casa",
-    stockUnidades: 15,
-    minimo: 18,
-    pedido: "3+3c",
-    asesor: "Joaquin Sastre",
-    contacto: "+54 9 11 3660-4557",
-    razon: "Nakbe",
-    obs: "1+1",
-    pendiente: null,
-    ultimoPedido: "24/5",
-    ultimoCant: "15",
-    entregado: "15 (24/5)"
-  },
-  {
-    nombre: "Elephant Gun Merlot Rose",
-    categoria: "Casa",
-    stockUnidades: 48,
-    minimo: 15,
-    pedido: "3c",
-    asesor: "Felipe Azcona",
-    contacto: "+54 9 2645 64-8795",
-    razon: "Azcona",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: "10/04",
-    ultimoCant: "3c",
-    entregado: "3c (14/04)"
-  },
-  {
-    nombre: "Tilia Chardonnay",
-    categoria: "Casa",
-    stockUnidades: 33,
-    minimo: 18,
-    pedido: "3+3c",
-    asesor: "Ornella Bresciani",
-    contacto: "+54 9 11 4175-9655",
-    razon: "Catena Zapata",
-    obs: "1+1",
-    pendiente: "3c en camino",
-    ultimoPedido: "04/05",
-    ultimoCant: "3c"
-  },
-  {
-    nombre: "UMC Malbec",
-    categoria: "Casa",
-    stockUnidades: 66,
-    minimo: 15,
-    pedido: "8c",
-    asesor: "Catalina Uriburu",
-    contacto: "+54 9 11 5095-1600",
-    razon: "Vistalba",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: "06/04",
-    ultimoCant: "8c",
-    entregado: "6c (04/05)"
-  },
-  {
-    nombre: "UMC Blanco",
-    categoria: "Casa",
-    stockUnidades: 30,
-    minimo: 6,
-    pedido: "2c",
-    asesor: "Catalina Uriburu",
-    contacto: "+54 9 11 5095-1600",
-    razon: "Vistalba",
-    obs: null,
-    pendiente: null,
-    ultimoPedido: "06/04",
-    ultimoCant: "2c->3c",
-    entregado: "3c"
-  },
-  {
-    nombre: "Kombucha",
-    categoria: "Otros",
-    stockUnidades: 131,
-    minimo: 30,
-    pedido: "7p",
-    asesor: "Elda",
-    contacto: "+54 9 11 5596-7259",
-    razon: "Sueno Verde",
-    obs: "min. 7p",
-    pendiente: null,
-    ultimoPedido: "28/04",
-    ultimoCant: "7p",
-    entregado: "7p (28/04)"
-  },
-  {
-    nombre: "Jugo de Tomate (Bloody)",
-    categoria: "Otros",
-    stockUnidades: 24,
-    minimo: 6,
-    pedido: "3p",
-    asesor: "Adriana",
-    contacto: "+54 9 11 6558-1113",
-    razon: "-",
-    obs: "min y max 3p",
-    pendiente: null,
-    ultimoPedido: "06/04",
-    ultimoCant: "3 packs",
-    entregado: "3 packs = 24u (08/04)"
-  },
-  {
-    nombre: "Cafe Samba",
-    categoria: "Otros",
-    stockUnidades: 6,
-    minimo: 3,
-    pedido: "6kg",
-    asesor: null,
-    contacto: "tostadero@cuervocafe.com",
-    razon: "Cuervo",
-    obs: "min. 6kg",
-    pendiente: null,
-    ultimoPedido: "14/04",
-    ultimoCant: "6kg",
-    entregado: "6kg (14/04)"
-  }
+  // ── CARTA ACTUAL ─────────────────────────────────────────────────
+  { nombre:"Un Mundo Chiquito Malbec", categoria:"Casa", stockUnidades:33, minimo:null, pedido:"-", asesor:null, contacto:null, razon:null, obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"Un Mundo Chiquito C y CB", categoria:"Casa", stockUnidades:28, minimo:null, pedido:"-", asesor:null, contacto:null, razon:null, obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"Un Mundo Chiquito Rose", categoria:"Casa", stockUnidades:12, minimo:null, pedido:"-", asesor:null, contacto:null, razon:null, obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"Animal Extra Brut", categoria:"Espumosos", stockUnidades:12, minimo:2, pedido:"2c", asesor:"Joaquin Sastre", contacto:"+54 9 11 3660-4557", razon:"Nakbe", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"Ribera del Cuarzo Merlot", categoria:"Tintos", stockUnidades:2, minimo:null, pedido:"-", asesor:null, contacto:null, razon:null, obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"Cara Sur Criolla Chica", categoria:"Tintos", stockUnidades:1, minimo:null, pedido:"-", asesor:"Camila Sciaini", contacto:"+54 9 11 4980-7377", razon:"Vinos Andinos", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"La Marchigiana Bonarda", categoria:"Tintos", stockUnidades:8, minimo:null, pedido:"-", asesor:null, contacto:null, razon:null, obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"copa" },
+  { nombre:"Tilia Malbec", categoria:"Tintos", stockUnidades:6, minimo:null, pedido:"-", asesor:"Joaquin Sastre", contacto:"+54 9 11 3660-4557", razon:"Nakbe", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"copa" },
+  { nombre:"El Raro Sauvignon Blanc", categoria:"Blancos", stockUnidades:1, minimo:null, pedido:"-", asesor:null, contacto:null, razon:null, obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"Poligonos Semillon", categoria:"Blancos", stockUnidades:19, minimo:null, pedido:"-", asesor:null, contacto:null, razon:null, obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"La Marchigiana Chardonnay", categoria:"Blancos", stockUnidades:8, minimo:null, pedido:"-", asesor:null, contacto:null, razon:null, obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"Cara Sur Moscatel Blanco", categoria:"Blancos", stockUnidades:3, minimo:null, pedido:"-", asesor:"Camila Sciaini", contacto:"+54 9 11 4980-7377", razon:"Vinos Andinos", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"Verum Chardonnay", categoria:"Blancos", stockUnidades:17, minimo:null, pedido:"-", asesor:"Catalina Uriburu", contacto:"+54 9 11 5095-1600", razon:"Tino Slow", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:"4c (24/5)", estado:"carta" },
+  { nombre:"La Marchigiana Rose", categoria:"Rosados", stockUnidades:18, minimo:null, pedido:"-", asesor:null, contacto:null, razon:null, obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"N7", categoria:"Espumosos", stockUnidades:12, minimo:null, pedido:"-", asesor:null, contacto:null, razon:null, obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"Mara Semillon", categoria:"Blancos", stockUnidades:23, minimo:null, pedido:"-", asesor:"Joaquin Sastre", contacto:"+54 9 11 3660-4557", razon:"Nakbe", obs:"Nuevo", pendiente:null, ultimoPedido:"28/04", ultimoCant:"3c", entregado:"3c (28/04)", estado:"carta" },
+  { nombre:"Laborum Torrontes", categoria:"Blancos", stockUnidades:19, minimo:10, pedido:"5c", asesor:"Daniela Davila", contacto:"+54 9 11 3039-1384", razon:"Uvas del Valle", obs:"5+1 copa dia", pendiente:null, ultimoPedido:"06/04", ultimoCant:"6c", entregado:"6c", estado:"carta" },
+  { nombre:"La Marchigiana Moscatel", categoria:"Blancos", stockUnidades:0, minimo:null, pedido:"-", asesor:"Ornella Bresciani", contacto:"+54 9 11 4175-9655", razon:"Catena Zapata", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"Electrico SB-Chardonnay", categoria:"Blancos", stockUnidades:22, minimo:8, pedido:"3c", asesor:"Camila Sciaini", contacto:"+54 9 11 4980-7377", razon:"Vinos Andinos", obs:null, pendiente:null, ultimoPedido:"13/04", ultimoCant:"1c", entregado:"1c (14/04)", estado:"copa" },
+  { nombre:"Antro Chardonnay", categoria:"Blancos", stockUnidades:29, minimo:15, pedido:"5c", asesor:"Alejandro Chacon", contacto:"+54 9 11 7365-5676", razon:"Jarilla Wines", obs:null, pendiente:null, ultimoPedido:"04/05", ultimoCant:"4c", estado:"carta" },
+  { nombre:"Esperando a Los Barbaros SB", categoria:"Blancos", stockUnidades:14, minimo:8, pedido:"3c", asesor:"Camila Sciaini", contacto:"+54 9 11 4980-7377", razon:"Vinos Andinos", obs:null, pendiente:null, ultimoPedido:"28/04", ultimoCant:"1c", entregado:"2c (24/5)", estado:"carta" },
+  { nombre:"Humberto Canale Riesling", categoria:"Blancos", stockUnidades:24, minimo:12, pedido:"4c", asesor:"Catalina Uriburu", contacto:"+54 9 11 5095-1600", razon:"Humberto Canale", obs:null, pendiente:null, ultimoPedido:"13/04", ultimoCant:"3c", entregado:"3c (15/04)", estado:"carta" },
+  { nombre:"Poligonos Verdejo", categoria:"Blancos", stockUnidades:3, minimo:4, pedido:"3c", asesor:"Gabriela Biscay", contacto:"+54 9 11 4164-9001", razon:"La Agricola", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"archivo" },
+  { nombre:"Contra Corriente Chardonnay", categoria:"Blancos", stockUnidades:14, minimo:1, pedido:"3c", asesor:"Juan Molano Mesa", contacto:"+54 9 11 2842-4015", razon:"Patagonia River Guides", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"copa" },
+  { nombre:"Livvera Chenin", categoria:"Blancos", stockUnidades:22, minimo:6, pedido:"2c", asesor:"Camila Sciaini", contacto:"+54 9 11 4980-7377", razon:"Vinos Andinos", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"Paso a Paso Criolla Blanco", categoria:"Blancos", stockUnidades:7, minimo:null, pedido:"2c", asesor:"Micaela Baum", contacto:"+54 9 11 5823-6823", razon:"Aurea", obs:null, pendiente:null, ultimoPedido:"06/04", ultimoCant:"2c", entregado:"2c (07/04)", estado:"carta" },
+  { nombre:"Verum Naranjo", categoria:"Naranjos", stockUnidades:0, minimo:12, pedido:"4c", asesor:"Catalina Uriburu", contacto:"+54 9 11 5095-1600", razon:"Verum", obs:null, pendiente:null, ultimoPedido:"07/04", ultimoCant:"4c", entregado:"4c (24/5)", estado:"carta" },
+  { nombre:"Solito Va Naranjo", categoria:"Naranjos", stockUnidades:3, minimo:15, pedido:"6c", asesor:"Alejandro Chacon", contacto:"+54 9 11 7365-5676", razon:"Jarilla Wines", obs:null, pendiente:null, ultimoPedido:"04/05", ultimoCant:"6c", estado:"carta" },
+  { nombre:"Petit Mara Naranjo 375ml", categoria:"Naranjos", stockUnidades:30, minimo:10, pedido:"24u", asesor:"Joaquin Sastre", contacto:"+54 9 11 3660-4557", razon:"Nakbe", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:"quiebre bodega", estado:"carta" },
+  { nombre:"Livvera Malvasia Naranjo", categoria:"Naranjos", stockUnidades:14, minimo:3, pedido:"1c", asesor:"Camila Sciaini", contacto:"+54 9 11 4980-7377", razon:"Vinos Andinos", obs:null, pendiente:null, ultimoPedido:"04/05", ultimoCant:"3c", estado:"carta" },
+  { nombre:"Paso a Paso Orange", categoria:"Naranjos", stockUnidades:0, minimo:null, pedido:"2c", asesor:"Micaela Baum", contacto:"+54 9 11 5823-6823", razon:"Aurea", obs:null, pendiente:null, ultimoPedido:"06/04", ultimoCant:"2c", entregado:"3c (04/05)", estado:"carta" },
+  { nombre:"L.I.A.P. Flower Merlot", categoria:"Rosados", stockUnidades:4, minimo:4, pedido:"4c", asesor:"Mauro Villarejo", contacto:"+54 9 2616 10-5500", razon:"LIAP", obs:null, pendiente:null, ultimoPedido:"04/05", ultimoCant:"1c", estado:"carta" },
+  { nombre:"L.I.A.P. Power Merlot", categoria:"Tintos", stockUnidades:17, minimo:null, pedido:"3c", asesor:"Mauro Villarejo", contacto:"+54 9 2616 10-5500", razon:"LIAP", obs:"Vino nuevo", pendiente:null, ultimoPedido:"04/05", ultimoCant:"3c", entregado:"1c (04/05)", estado:"carta" },
+  { nombre:"LIAP Noir de Blanc", categoria:"Rosados", stockUnidades:1, minimo:4, pedido:"1c", asesor:"Mauro Villarejo", contacto:"+54 9 2616 10-5500", razon:"?", obs:"Vino nuevo", pendiente:null, ultimoPedido:"06/04", ultimoCant:"1c", entregado:"1c (08/04)", estado:"carta" },
+  { nombre:"Rocamadre Pinot Noir Rose", categoria:"Rosados", stockUnidades:18, minimo:12, pedido:"5c", asesor:"Emilia", contacto:"vinosrocamadre@gmail.com", razon:"Rocamadre", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"El Afinador Rose CF", categoria:"Rosados", stockUnidades:9, minimo:15, pedido:"5c", asesor:"Carolina Biga", contacto:"+54 9 3472 55-0464", razon:"Don Agustin", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"archivo" },
+  { nombre:"Inconsciente Merlot Rose", categoria:"Rosados", stockUnidades:0, minimo:15, pedido:"5c", asesor:"Juan Cano", contacto:"+54 9 11 4563-4899", razon:"Sophenia", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"Humberto Canale Rose", categoria:"Rosados", stockUnidades:7, minimo:6, pedido:"2c", asesor:"Catalina Uriburu", contacto:"+54 9 11 5095-1600", razon:"Humberto Canale", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"Araucana Malbec Rose", categoria:"Rosados", stockUnidades:16, minimo:4, pedido:"3c", asesor:"Juan Pablo Flores", contacto:"+54 9 11 3566-7785", razon:"Casa Pirque", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"Cara Sur Pergolas Criollas Tintas", categoria:"Tintos", stockUnidades:3, minimo:18, pedido:"6c", asesor:"Camila Sciaini", contacto:"+54 9 11 4980-7377", razon:"Vinos Andinos", obs:null, pendiente:null, ultimoPedido:"04/05", ultimoCant:"2c", estado:"archivo" },
+  { nombre:"Elephant Gun Malbec", categoria:"Tintos", stockUnidades:0, minimo:20, pedido:"7c", asesor:"Felipe Azcona", contacto:"+54 9 2645 64-8795", razon:"Azcona", obs:null, pendiente:"6c en camino", ultimoPedido:"27/04", ultimoCant:"6c", estado:"carta" },
+  { nombre:"Ver Sacrum Monastrell", categoria:"Tintos", stockUnidades:0, minimo:8, pedido:"4c", asesor:"Micaela Baum", contacto:"+54 9 11 5823-6823", razon:"Aurea", obs:"Combinar con PAP Naranjo", pendiente:null, ultimoPedido:"06/04", ultimoCant:"4c", entregado:"6c (04/05)", estado:"archivo" },
+  { nombre:"Nat Cool Bonarda", categoria:"Tintos", stockUnidades:4, minimo:12, pedido:"5c", asesor:"Alejandro Chacon", contacto:"+54 9 11 7365-5676", razon:"Jarilla Wines", obs:null, pendiente:null, ultimoPedido:"04/05", ultimoCant:"5c", estado:"carta" },
+  { nombre:"La Voja Pinot Noir", categoria:"Tintos", stockUnidades:7, minimo:12, pedido:"5c", asesor:"Catalina Uriburu", contacto:"+54 9 11 5095-1600", razon:"Aper", obs:null, pendiente:null, ultimoPedido:"28/04", ultimoCant:"4+1c", entregado:"5c (24/5)", estado:"carta" },
+  { nombre:"Negra Margen Bonarda", categoria:"Tintos", stockUnidades:0, minimo:12, pedido:"4c", asesor:"Meli Montse", contacto:"+54 9 2214 37-0690", razon:"-", obs:null, pendiente:null, ultimoPedido:"28/04", ultimoCant:"1c", entregado:"1c (28/04)", estado:"archivo" },
+  { nombre:"Les Astronautes Malbec", categoria:"Tintos", stockUnidades:25, minimo:20, pedido:"5c", asesor:"Catalina Uriburu", contacto:"+54 9 11 5095-1600", razon:"Tino Slow", obs:null, pendiente:null, ultimoPedido:"28/04", ultimoCant:"6+1c", entregado:"7c (24/5)", estado:"carta" },
+  { nombre:"Naciente CF y M", categoria:"Tintos", stockUnidades:3, minimo:12, pedido:"3c", asesor:"Meli Montse", contacto:"+54 9 2214 37-0690", razon:"-", obs:null, pendiente:null, ultimoPedido:"04/05", ultimoCant:"2c", estado:"carta" },
+  { nombre:"El Raro Nebbiolo", categoria:"Tintos", stockUnidades:12, minimo:3, pedido:"3c", asesor:"Gabriel Campana", contacto:"+54 9 3525 64-4693", razon:"Campana", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:"2c (04/05)", estado:"carta" },
+  { nombre:"Angelica Zapata CF", categoria:"Tintos", stockUnidades:0, minimo:6, pedido:"4c", asesor:"Ornella Bresciani", contacto:"+54 9 11 4175-9655", razon:"Catena Zapata", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"A Lisa Malbec", categoria:"Tintos", stockUnidades:10, minimo:5, pedido:"3c", asesor:"Belen Fretes", contacto:"+54 9 2984 66-1071", razon:"Noemia", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"Chacra 55 Pinot Noir", categoria:"Tintos", stockUnidades:6, minimo:1, pedido:"1c", asesor:"Rodrigo Calderon", contacto:"+54 9 11 6901-2375", razon:"Calderon", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:"1c (24/5)", estado:"carta" },
+  { nombre:"Las Cuerdas Cota 1500", categoria:"Tintos", stockUnidades:15, minimo:3, pedido:"2c", asesor:"Meli Montse", contacto:"+54 9 2214 37-0690", razon:"-", obs:null, pendiente:null, ultimoPedido:"04/05", ultimoCant:"3c", estado:"carta" },
+  { nombre:"Petit Maremmano Syrah-CS 375ml", categoria:"Tintos", stockUnidades:12, minimo:15, pedido:"12u", asesor:"Joaquin Sastre", contacto:"+54 9 11 3660-4557", razon:"Nakbe", obs:null, pendiente:null, ultimoPedido:"13/04", ultimoCant:"12u", entregado:"3c (04/05)", estado:"carta" },
+  { nombre:"Vertebrado Cabernet Franc", categoria:"Tintos", stockUnidades:18, minimo:8, pedido:"1c", asesor:"Camila Sciaini", contacto:"+54 9 11 4980-7377", razon:"Vinos Andinos", obs:null, pendiente:null, ultimoPedido:"04/05", ultimoCant:"2c", entregado:"4c (24/5)", estado:"carta" },
+  { nombre:"Verum Malbec", categoria:"Tintos", stockUnidades:0, minimo:null, pedido:"4c", asesor:"Catalina Uriburu", contacto:"+54 9 11 5095-1600", razon:"Verum", obs:"Evento", pendiente:null, ultimoPedido:"13/04", ultimoCant:"4c", entregado:"2c (04/05)", estado:"copa" },
+  { nombre:"Electrico Rosado", categoria:"Rosados", stockUnidades:11, minimo:null, pedido:"1c", asesor:"Camila Sciaini", contacto:"+54 9 11 4980-7377", razon:"Vinos Andinos", obs:"Evento", pendiente:null, ultimoPedido:"04/05", ultimoCant:"2c", estado:"copa" },
+  { nombre:"Nox Malbec", categoria:"Espumosos", stockUnidades:0, minimo:4, pedido:"3c", asesor:"Alma Cabral", contacto:"+54 9 11 3357-8389", razon:"Punto Novisa", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:"2c (04/05)", estado:"archivo" },
+  { nombre:"Alma 4 Pinot-Chardonnay", categoria:"Espumosos", stockUnidades:15, minimo:4, pedido:"3c", asesor:"Gabriela Biscay", contacto:"+54 9 11 4164-9001", razon:"La Agricola", obs:null, pendiente:null, ultimoPedido:"13/04", ultimoCant:"4c", entregado:"5c (15/04)", estado:"carta" },
+  { nombre:"Alma Negra Chardonnay", categoria:"Espumosos", stockUnidades:20, minimo:4, pedido:"3c", asesor:"Joaquin Sastre", contacto:"+54 9 11 3660-4557", razon:"Nakbe", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta" },
+  { nombre:"Zuccardi Blanc de Blancs", categoria:"Espumosos", stockUnidades:19, minimo:4, pedido:"3c", asesor:"Gabriela Biscay", contacto:"+54 9 11 4164-9001", razon:"La Agricola", obs:null, pendiente:null, ultimoPedido:"13/04", ultimoCant:"3c", entregado:"3c (15/04)", estado:"carta" },
+  { nombre:"Terrazas Petit Manseng", categoria:"Dulce", stockUnidades:5, minimo:4, pedido:"3c", asesor:"Camila Pacheco", contacto:"+54 9 11 5035-8041", razon:"Chandon", obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:"1c (24/5)", estado:"carta" },
+  { nombre:"Mara de Uco Bonarda", categoria:"Casa", stockUnidades:15, minimo:18, pedido:"3+3c", asesor:"Joaquin Sastre", contacto:"+54 9 11 3660-4557", razon:"Nakbe", obs:"1+1", pendiente:null, ultimoPedido:"24/5", ultimoCant:"15", entregado:"15 (24/5)", estado:"carta" },
+  { nombre:"Elephant Gun Merlot Rose", categoria:"Casa", stockUnidades:48, minimo:15, pedido:"3c", asesor:"Felipe Azcona", contacto:"+54 9 2645 64-8795", razon:"Azcona", obs:null, pendiente:null, ultimoPedido:"10/04", ultimoCant:"3c", entregado:"3c (14/04)", estado:"carta" },
+  { nombre:"Tilia Chardonnay", categoria:"Casa", stockUnidades:33, minimo:18, pedido:"3+3c", asesor:"Ornella Bresciani", contacto:"+54 9 11 4175-9655", razon:"Catena Zapata", obs:"1+1", pendiente:null, ultimoPedido:"04/05", ultimoCant:"3c", estado:"carta" },
+  { nombre:"UMC Malbec", categoria:"Casa", stockUnidades:66, minimo:15, pedido:"8c", asesor:"Catalina Uriburu", contacto:"+54 9 11 5095-1600", razon:"Vistalba", obs:null, pendiente:null, ultimoPedido:"06/04", ultimoCant:"8c", entregado:"6c (04/05)", estado:"carta" },
+  { nombre:"UMC Blanco", categoria:"Casa", stockUnidades:30, minimo:6, pedido:"2c", asesor:"Catalina Uriburu", contacto:"+54 9 11 5095-1600", razon:"Vistalba", obs:null, pendiente:null, ultimoPedido:"06/04", ultimoCant:"2c->3c", entregado:"3c", estado:"carta" },
+  { nombre:"Kombucha", categoria:"Otros", stockUnidades:131, minimo:30, pedido:"7p", asesor:"Elda", contacto:"+54 9 11 5596-7259", razon:"Sueno Verde", obs:"min. 7p", pendiente:null, ultimoPedido:"28/04", ultimoCant:"7p", entregado:"7p (28/04)", estado:"carta" },
+  { nombre:"Jugo de Tomate (Bloody)", categoria:"Otros", stockUnidades:24, minimo:6, pedido:"3p", asesor:"Adriana", contacto:"+54 9 11 6558-1113", razon:"-", obs:"min y max 3p", pendiente:null, ultimoPedido:"06/04", ultimoCant:"3 packs", entregado:"3 packs = 24u (08/04)", estado:"carta" },
+  { nombre:"Cafe Samba", categoria:"Otros", stockUnidades:6, minimo:3, pedido:"6kg", asesor:null, contacto:"tostadero@cuervocafe.com", razon:"Cuervo", obs:"min. 6kg", pendiente:null, ultimoPedido:"14/04", ultimoCant:"6kg", entregado:"6kg (14/04)", estado:"carta" },
+  // ── ARCHIVO (salieron de carta) ────────────────────────────────────
+  { nombre:"Finca La Catalina Pinot Noir", categoria:"Tintos", stockUnidades:0, minimo:null, pedido:"-", asesor:null, contacto:null, razon:null, obs:null, pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"archivo" },
+  // ── NUEVOS JUNIO 2026 ──────────────────────────────────────────────
+  { nombre:"Ancon Chardonnay La Carrera", categoria:"Blancos", stockUnidades:0, minimo:null, pedido:"-", asesor:null, contacto:null, razon:"La Carrera · Mendoza", obs:"Nuevo junio", pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta", nuevo:true },
+  { nombre:"Pielihueso Claranjo 1Lt", categoria:"Naranjos", stockUnidades:0, minimo:null, pedido:"-", asesor:null, contacto:null, razon:"Los Chacayes · Mendoza", obs:"Nuevo junio · 1Lt", pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta", nuevo:true },
+  { nombre:"Solito Va Cabernet Franc 2024", categoria:"Tintos", stockUnidades:0, minimo:null, pedido:"-", asesor:"Alejandro Chacon", contacto:"+54 9 11 7365-5676", razon:"La Consulta · Mendoza", obs:"Nuevo junio", pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta", nuevo:true },
+  { nombre:"Macollo Sangiovese 2023", categoria:"Tintos", stockUnidades:0, minimo:null, pedido:"-", asesor:null, contacto:null, razon:"Este Mendoza", obs:"Nuevo junio", pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta", nuevo:true },
+  { nombre:"Yanay GSM 2023", categoria:"Tintos", stockUnidades:0, minimo:null, pedido:"-", asesor:null, contacto:null, razon:"Quebrada de Humahuaca · Jujuy", obs:"Nuevo junio", pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta", nuevo:true },
+  { nombre:"Canopus Tempranillo", categoria:"Tintos", stockUnidades:0, minimo:null, pedido:"-", asesor:null, contacto:null, razon:"El Cepillo · Mendoza", obs:"Nuevo junio", pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta", nuevo:true },
+  { nombre:"Altar Uco Edad Moderna Cabernet Sauvignon 2025", categoria:"Tintos", stockUnidades:0, minimo:null, pedido:"-", asesor:null, contacto:null, razon:null, obs:"Nuevo junio", pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta", nuevo:true },
+  { nombre:"Oir Ese Rio Cabernet Franc 2022", categoria:"Tintos", stockUnidades:0, minimo:null, pedido:"-", asesor:null, contacto:null, razon:"Gualtallary · Mendoza", obs:"Nuevo junio", pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta", nuevo:true },
+  { nombre:"Raquis Las Bases Malbec 2022", categoria:"Tintos", stockUnidades:0, minimo:null, pedido:"-", asesor:null, contacto:null, razon:"Valle de Uco · Mendoza", obs:"Nuevo junio", pendiente:null, ultimoPedido:null, ultimoCant:null, entregado:null, estado:"carta", nuevo:true }
 ];
 
 var precios = {
@@ -1378,7 +429,7 @@ var precios = {
   "Poligonos Verdejo": {costo:18000, venta:46800},
   "Contra Corriente Chardonnay": {costo:20873, venta:54270},
   "Livvera Chenin": {costo:14750, venta:41300},
-    "Solito Va Naranjo": {costo:13260, venta:37128},
+  "Solito Va Naranjo": {costo:13260, venta:37128},
   "Petit Mara Naranjo 375ml": {costo:7000, venta:21000},
   "Livvera Malvasia Naranjo": {costo:12190, venta:41300},
   "L.I.A.P. Flower Merlot": {costo:15000, venta:42000},
@@ -1411,76 +462,12 @@ var precios = {
   "Tilia Chardonnay": {costo:22810, venta:8100},
 };
 
-function formatPesos(n) {
-  return '$' + Math.round(n).toLocaleString('es-AR');
-}
+function formatPesos(n) { return '$' + Math.round(n).toLocaleString('es-AR'); }
 
 var currentFilter = 'all';
 var currentSearch = '';
 var currentCat = 'all';
-
-var descripciones = {
-  "Laborum Torrontes": {zona:"Cafayate, Salta · Finca El Retiro · 1.650 msnm",perfil:"Torrontés de viñedos viejos (1945) · El Porvenir de Cafayate",notas:"La variedad emblema de la alta montaña salteña en su versión más aromática y elegante. Nariz explosiva de flores blancas (jazmín, rosa), durazno en almíbar, maracuyá y ralladura de lima. En boca es seco y refrescante, con una acidez jugosa que equilibra el perfume. Los suelos arenosos de Cafayate moderan el vigor y concentran los aromas. Viñedos de más de 75 años bajo la dirección de la enóloga Lucía Romero Marcuzzi y Paco Puga. Copa ideal con empanadas, crudos de mar, cocina asiática o como aperitivo."},
-  "La Marchigiana Moscatel": {zona:"Luján de Cuyo, Mendoza · Catena Zapata",perfil:"Moscatel de Alejandría · dulce natural sin chaptalizacion",notas:"Moscatel vinificado con su dulzor natural residual, sin adición de azúcar. Nariz sedutora de flores blancas, miel de acacia, durazno maduro y ralladura de naranja. En boca es suave, de baja acidez, con dulzor elegante y final floral persistente. Proyecto de Catena Zapata para expresar la identidad de esta variedad histórica en Mendoza. Ideal para postres livianos, tabla de quesos blandos o frutas tropicales."},
-  "Electrico SB-Chardonnay": {zona:"Mendoza · Bodega Zorzal / Vinos Andinos",perfil:"Blend de Sauvignon Blanc y Chardonnay · fresco, sin madera",notas:"Blend pensado para la copa diaria: el Sauvignon Blanc aporta herbacidad, cítricos y frescura, mientras el Chardonnay redondea la textura y añade fruta de pepita. Sin paso por roble. Nariz vibrante de pomelo, pasto cortado, manzana verde y flor de saúco. Boca ágil, de acidez marcada y final limpio. Versátil con tapas, fritos, mariscos y ensaladas. Parte de la línea Eléctrico de Vinos Andinos."},
-  "Antro Chardonnay": {zona:"Altamira, Valle de Uco · Suelos calcáreos · 1.200–1.300 msnm",perfil:"Chardonnay de mínima intervención · Tutu Wines / Leo Erazo",notas:"Fermentado con levaduras indígenas en huevos de cemento, con contacto parcial con pieles. Sin corrección de acidez, sin filtrar. Arranca austero y mineral, con acidez viva de pomelo blanco e hinojo. Con el oxígeno se abre en capas: manzana en transición, cera de abejas, notas de champiñón blanco. Final largo, tenso y vertical. Un Chardonnay para quienes buscan la antítesis del perfil mantecoso. Ideal con pescados de mar, tiraditos, pastas en salsa blanca o risotto."},
-  "Esperando a Los Barbaros SB": {zona:"Río Negro, Patagonia · Vinos Andinos",perfil:"Sauvignon Blanc patagónico · clima frío, acidez natural",notas:"El frío patagónico es el mejor aliado del Sauvignon Blanc: preserva los aromas varietales y la acidez sin necesidad de intervención. Nariz intensa de pomelo rosado, maracuyá, lima y hierba fresca. En boca tiene cuerpo medio, acidez viva y un final herbáceo-frutal persistente. Más expresivo y aromático que los SB de Mendoza. Ideal con mariscos, ceviche, queso de cabra o ensaladas cítricas."},
-  "Humberto Canale Riesling": {zona:"General Roca, Río Negro · Patagonia · Bodega pionera desde 1909",perfil:"Riesling seco · estilo alsaciano · vendimia tardía controlada",notas:"Una de las apuestas más interesantes de la viticultura patagónica. El Riesling aquí adopta el estilo alsaciano: seco, floral y mineral. Nariz de durazno blanco, lima, miel fría y una leve petricidad (piedra mojada). En boca es de acidez vibrante, cuerpo medio-bajo y final mineral persistente. Bodega centenaria con más de 100 años en el Alto Valle del Río Negro. Maridaje excepcional con crudos de pescado, salmón, curry suave, comida thai o simplemente como aperitivo fino."},
-  "Poligonos Verdejo": {zona:"Valle de Uco, Mendoza · Familia Zuccardi / La Agrícola",perfil:"Verdejo de alta montaña · inspirado en Rueda, España",notas:"La familia Zuccardi introduce el Verdejo español en la alta altitud del Valle de Uco con resultados sorprendentes. La uva conserva su identidad varietal: nariz de hierba fresca, hinojo, manzanilla y lima. En boca tiene una tensión mineral característica, acidez precisa y un final amargo-herbal que recuerda a los Ruedas de primera línea. Sin madera. Un blanco para personas que conocen de vinos. Perfecto con fritos, cocina mediterránea, pulpo o boquerones."},
-  "Contra Corriente Chardonnay": {zona:"Patagonia · Barda del Medio, Río Negro",perfil:"Chardonnay atlántico · paso breve por roble francés",notas:"El Atlántico imprime un sello particular a este Chardonnay: más fresco y tenso que sus pares mendocinos, con la cremosidad justa del roble. Nariz de manzana golden, manteca sutilísima, vainilla y flor blanca. Boca redonda y equilibrada, con acidez que sostiene la estructura sin perder elegancia. El paso breve por roble aporta complejidad sin dominar. Ideal con pollo asado, pasta con crema, risotto de hongos o mariscos gratinados."},
-  "Livvera Chenin": {zona:"Mendoza · Vinos Andinos / Camila Sciaini",perfil:"Chenin Blanc natural · fermentación con levaduras nativas",notas:"El Chenin Blanc es la variedad más versátil de Francia y acá se vinifica con mínima intervención. Fermentación espontánea con levaduras indígenas, sin corrección de acidez. Nariz compleja: pera de agua, manzana asada, cera de abejas, notas lácticas y una ligera oxidación controlada que añade complejidad. Textura untuosa, acidez viva y final largo. Con comida o solo funciona perfecto. Combina muy bien con quesos curados, carne de cerdo, comida asiática o empanadas árabes."},
-  "Mara Semillon": {zona:"Valle de Uco, Mendoza · Nakbe / Joaquín Sastre",perfil:"Semillón de altura · sin madera · baja intervención",notas:"El Semillón es una variedad olvidada que Nakbe rescata con maestría. En altura pierde la redondez excesiva y gana tensión. Nariz de pomelo blanco, hinojo, cera de abejas y flores amarillas. Boca de acidez fina, cuerpo medio y final mineral persistente. Sin paso por madera. La expresión más pura de esta variedad histórica de Mendoza. Ideal con mariscos blancos, pescados a la plancha, pasta con aceite de oliva o queso de oveja joven."},
-    "Solito Va Naranjo": {zona:"Córdoba, Sierras Chicas · Jarilla Wines / Alejandro Chacón",perfil:"Naranja natural de Córdoba · maceración extendida · sin sulfitos",notas:"Uno de los naranjos más originales del catálogo: viene de las Sierras de Córdoba, zona que está produciendo algunos de los vinos naturales más interesantes del país. Maceración extendida de pieles. Nariz de manzana oxidativa, cáscara de naranja amarga, miel y notas de nuez. Taninos presentes pero suaves, acidez viva, final largo y especiado. Un vino de carácter y personalidad. Combina bien con comida de fuerte carácter: guisos, quesos estacionados, charcutería o platos con especias."},
-  "Petit Mara Naranjo 375ml": {zona:"Valle de Uco, Mendoza · Nakbe / Joaquín Sastre",perfil:"Marsanne-Roussanne naranja · 375ml · maceración con hollejos",notas:"Blend de Marsanne y Roussanne —dos uvas del Ródano francés— vinificadas como naranja en formato media botella. Nariz compleja de fruta amarilla madura, piel de cítricos, flores marchitas y ligeras notas especiadas. Textura amplia por la maceración, acidez fresca que equilibra la densidad, final persistente y aromático. Perfecto para explorar sin comprometer una botella entera. Ideal con comida especiada, pates, quesos curados o salmón con hierbas."},
-  "Livvera Malvasia Naranjo": {zona:"Mendoza · Vinos Andinos",perfil:"Malvasía naranja · maceración extendida · perfil aromático y tánico",notas:"La Malvasía es una uva de extraordinaria riqueza aromática: flor de naranjo, durazno, membrillo y hierbas. Vinificada como naranja, la maceración extendida le añade estructura tánica, color ámbar intenso y profundidad. Sin sulfitos añadidos. Boca amplia, de taninos suaves y sedosos, acidez fresca y final floral-especiado muy persistente. Un vino que sorprende e invita a reflexionar. Funciona muy bien con platos de complejidad aromática: marroquí, persa, o simplemente con quesos azules."},
-  "L.I.A.P. Flower Merlot": {zona:"Mendoza · Mauro Villarejo",perfil:"Rosado de Merlot · fresco, sin madera · baja intervención",notas:"Merlot vinificado en rosado con maceración breve que extrae color salmón intenso y aromas varietales puros. Nariz delicada de frutilla silvestre, frambuesa, pétalos de rosa y un toque de durazno. En boca es fresco, liviano, de acidez jugosa y final limpio y frutal. Sin paso por madera. Un rosado de bar clásico, construido para la versatilidad. Funciona perfecto como aperitivo, con ensaladas, tablas de quesos frescos o carpaccios."},
-  "Rocamadre Pinot Noir Rose": {zona:"Patagonia · clima frío · viento constante",perfil:"Rosado de Pinot Noir patagónico · fino y mineral",notas:"El Pinot Noir en Patagonia gana en acidez y fineza lo que pierde en cuerpo. En rosado ese perfil es ideal: nariz de frambuesa, granada, flor de cerezo y una nota mineral que recuerda a los Provence de primera línea. En boca es seco, elegante, de acidez precisa y final largo. Uno de los rosados más refinados del catálogo. Ideal con salmón, langostinos a la plancha, ensalada niçoise o simplemente como vino de aperitivo sofisticado."},
-  "El Afinador Rose CF": {zona:"Entre Ríos / Córdoba · elaboración artesanal",perfil:"Rosado de Cabernet Franc · seco, especiado, de carácter",notas:"El Cabernet Franc es la cepa ideal para rosados de carácter: aporta herbacidad, pimienta rosa e hibisco junto a la fruta roja. Maceración breve en frío para preservar aromas. Nariz de frutilla silvestre, pimiento asado leve, hibisco y especias. Boca de acidez viva, cuerpo medio y final que recuerda vagamente al tinto. Un rosado para quienes se aburren de los rosados clásicos. Perfecto con charcutería, paté, pizza napolitana o platos con tomate."},
-  "Inconsciente Merlot Rose": {zona:"Mendoza · Sophenia / baja intervención",perfil:"Rosado de Merlot · refrescante, frutal, sin madera",notas:"Sophenia produce este rosado buscando frescura y expresión varietal. La maceración corta extrae color salmón-rosado y aromas puros. Nariz de sandía, frambuesa, pétalos de rosa y leve toques cítricos. En boca es suave, refrescante, con cuerpo liviano y final frutal limpio. Sin madera, sin pretensiones. Un vino honesto y muy bebible, ideal para el servicio de copa diaria. Funciona bien con casi todo: empanadas, milanesas, tablas, pasta."},
-  "Humberto Canale Rose": {zona:"General Roca, Río Negro · Patagonia · Bodega Humberto Canale",perfil:"Rosado patagónico · blend de variedades · fresco y aromático",notas:"La Patagonia imprime a este rosado una frescura natural difícil de lograr en zonas cálidas. Bodega centenaria (1909) que ha perfeccionado la expresión del terroir de Río Negro. Nariz de frutilla, durazno blanco, lima y flor de saúco. Boca seca, de acidez refrescante, cuerpo liviano-medio y final frutal persistente. Rosado de excelente relación calidad-precio con el sello patagónico. Ideal para el verano: langostinos, ceviche, ensaladas, o simplemente para compartir."},
-  "Araucana Malbec Rose": {zona:"Valle de Colchagua, Chile · Araucano / Von Siebenthal",perfil:"Rosado de Malbec chileno · estructura y elegancia sudamericana",notas:"Malbec cultivado en Chile, donde la uva adquiere un perfil diferente al argentino: más tánico, con más acidez natural. En rosado esa estructura resulta muy interesante. Nariz de frambuesa, cereza fresca, flor de saúco y un toque de pomelo. Boca bien estructurada para un rosado, con acidez precisa y final de mediana persistencia. Un rosado con columna vertebral, ideal con platos de sabor más definido: carnes blancas, pastas con tomate, o pizza."},
-  "LIAP Noir de Blanc": {zona:"Mendoza · Mauro Villarejo · elaboración petillant",perfil:"Pét-nat de Malbec · rosado espumoso natural · sin dosage",notas:"Pétillant naturel (pet-nat): el vino termina su segunda fermentación en botella sin adición de azúcar ni SO2, produciendo una burbuja suave y natural. El Malbec en rosado aporta fruta roja fresca, brioche, notas de levadura y flores. Burbuja fina y persistente. Sin filtrar. El depósito en el fondo es natural. Perfil más complejo y menos predecible que los espumosos convencionales. Cada botella es levemente diferente. Ideal como aperitivo o con tapas."},
-  "Electrico Rosado": {zona:"Mendoza · Vinos Andinos / Camila Sciaini",perfil:"Rosado fresco y directo · vinificación en frío · sin madera",notas:"Vinificado en frío para preservar aromas primarios y frescura. Sin maceración prolongada, lo que le da un color rosado pálido y un perfil delicado. Nariz de frutilla, sandía y flor de rosa. En boca es seco, liviano, de acidez refrescante y final limpio. Un rosado de bar construido para la copa diaria: fácil, honesto y muy bebible. Funciona con casi todo, pero brilla especialmente con tapas, tablas de quesos frescos o como aperitivo de verano."},
-  "Cara Sur Pergolas Criollas Tintas": {zona:"Valle de Uco, Mendoza · Cara Sur / Familia Zuccardi",perfil:"Blend de uvas criollas (Cereza, Criolla Grande, Criolla Chica) · sin madera",notas:"Las uvas criollas son el patrimonio histórico de la viticultura argentina, cultivadas desde la época colonial. Cara Sur las reivindica con un blend fresco y auténtico. Nariz de cereza fresca, mora joven, pimienta y hierbas silvestres. En boca es jugoso, de taninos suaves, baja graduación alcohólica y final especiado. Sin paso por madera. Un tinto para beber con alegría y sin prejuicios. Perfecto a temperatura fresca (16°C), con platos sencillos, milanesas, pizzas o pasta."},
-  "Elephant Gun Malbec": {zona:"Mendoza · Bodegas Azcona / Felipe Azcona",perfil:"Malbec clásico y accesible · paso breve por roble · copa de la casa",notas:"Un Malbec construido para la copa diaria: frutal, redondo, sin aristas. Nariz de ciruela madura, mora, violeta y vainilla sutil. En boca es suave, de taninos pulidos, acidez equilibrada y final de fruta roja madura. Paso breve por roble que aporta estructura sin dominar. La relación costo-beneficio es imbatible dentro del catálogo. Funciona con todo: milanesas, pasta con tuco, pizzas, chorizos, o simplemente solo."},
-  "Ver Sacrum Monastrell": {zona:"San Rafael, Mendoza · Ver Sacrum / Pablo Giménez Riili",perfil:"Monastrell del sur mendocino · uva española en suelo volcánico",notas:"La Monastrell es la variedad emblemática de Murcia y Alicante, aquí adaptada a los suelos volcánicos del sur mendocino con resultados notables. Nariz intensa de fruta oscura (mora, ciruela negra), cuero, especias y una nota mineral volcánica. En boca tiene cuerpo medio-pleno, taninos firmes pero maduros, acidez moderada y final especiado largo. Un tinto de carácter para quienes buscan algo fuera de lo común. Ideal con carnes rojas, estofados, quesos curados o chocolate amargo."},
-  "Nat Cool Bonarda": {zona:"Mendoza · elaboración natural · sin sulfitos añadidos",perfil:"Bonarda natural de mínima intervención · fresco, jugoso, sin filtrar",notas:"La Bonarda es la cepa más plantada de Argentina y aquí se vinifica sin sulfitos, con fermentación espontánea. El resultado es un tinto vivo, sin artificios. Nariz de ciruela fresca, violeta, pimienta blanca y notas de levadura natural. En boca es jugoso, de taninos suaves, baja astringencia y final frutal-especiado. Puede tener ligero turbio natural: es señal de baja intervención, no defecto. Servir a 16°C. Ideal con pastas, pizzas, parrilla o charcutería."},
-  "La Voja Pinot Noir": {zona:"Sierras de Nono, Córdoba · alta altitud · clima frío de montaña",perfil:"Pinot Noir cordobés · elegancia y frescura de altura · baja intervención",notas:"Las Sierras de Córdoba son uno de los terroirs más emocionantes de la viticultura argentina emergente. El frío de montaña preserva la acidez natural del Pinot y su perfume delicado. Nariz compleja de cereza ácida, frambuesa silvestre, tierra húmeda, hongos shiitake y una nota floral que recuerda a los Borgoñas. En boca es elegante, de taninos finos, acidez vivaz y final largo y persistente. Baja graduación alcohólica (menos de 13°). El Pinot Noir más interesante del catálogo. Ideal con hongos, salmón, codorniz o pastas con trufa."},
-  "Negra Margen Bonarda": {zona:"Mendoza · baja intervención",perfil:"Bonarda oscura y concentrada · más estructura que los bonardas clásicos",notas:"Una Bonarda de carácter diferente al perfil jugoso habitual: aquí la uva se lleva a mayor madurez y la vinificación busca concentración. Nariz de mora, ciruela negra, café y notas de chocolate amargo. En boca tiene más cuerpo que otros bonardas, taninos firmes y final largo. Sin perder la esencia varietal: fresca y frutal en el fondo. Ideal con carnes rojas, guisos, pizza de rúcula o quesos curados."},
-  "Les Astronautes Malbec": {zona:"Valle de Uco, Mendoza · más de 1.000 msnm · suelos pedregosos",perfil:"Malbec de altura con frescura y mineralidad · Tino Slow / Catalina Uriburu",notas:"El Valle de Uco a más de 1000 metros es el corazón del Malbec argentino de alta gama. Les Astronautes expresa ese terroir con elegancia: nariz de violeta fresca, ciruela roja, frambuesa y una nota mineral que recuerda al grafito. En boca tiene acidez vibrante, taninos finos y presentes, cuerpo medio-pleno y final largo con notas minerales. Más fresco y vertical que los Malbecs de la llanura. El tinto más vendido de CHUÍ, y por buenas razones. Ideal con carnes rojas, pasta con ragù, o solo."},
-  "Naciente CF y M": {zona:"Sierras de Córdoba · Meli Montserrat",perfil:"Cabernet Franc y Malbec cordobés · blend de montaña · baja intervención",notas:"Blend interesante de dos variedades complementarias: el Cabernet Franc aporta herbacidad, pimiento asado y estructura, mientras el Malbec añade fruta oscura y redondez. Las Sierras de Córdoba imprimen una frescura y acidez difícil de lograr en zonas más cálidas. Nariz de cereza, pimentón leve, especias y flor roja. Boca de taninos suaves, muy food-friendly, con final persistente. Uno de los vinos más gastronómicos del catálogo. Ideal con pastas, pizzas, carnes blancas o empanadas."},
-  "El Raro Nebbiolo": {zona:"Sierras de Córdoba · elaboración artesanal",perfil:"Nebbiolo cordobés · uva del Piamonte italiano en las sierras argentinas",notas:"El Nebbiolo es la uva del Barolo y Barbaresco, el tinto más noble de Italia. Cultivarlo en Córdoba es una apuesta audaz que produce resultados sorprendentes. Nariz compleja de cereza ácida, rosa marchita, cuero, alquitrán y especias. Taninos marcados y astringentes en la juventud, acidez alta y estructura imponente. Necesita comida para domesticarse. Con los años ganará complejidad. Ideal con carnes rojas de corte graso, estofados, ragù de carne o quesos muy curados."},
-  "Angelica Zapata CF": {zona:"Mendoza · Catena Zapata · línea premium",perfil:"Cabernet Franc de alta gama · Catena Zapata · con paso por roble",notas:"La línea Ángélica Zapata es la apuesta de alta gama de Catena para variedades alternativas al Malbec. El Cabernet Franc aquí se muestra en su mejor versión argentina: nariz de pimiento verde maduro, ciruela roja, grafito, cacao y especias de roble fino. En boca tiene taninos sedosos, cuerpo pleno, acidez equilibrada y un final de gran persistencia. Un vino de guarda que puede mejorar muchos años en botella. Abrir 30 minutos antes o usar decantador. Ideal con carnes rojas, cordero o quesos muy curados."},
-  "A Lisa Malbec": {zona:"Patagonia · Bodega Noemia / Ann Colgin y Hans Vinding-Diers",perfil:"Malbec patagónico de autor · elegancia y frescura atlántica",notas:"Producido por Ann Colgin (Napa Valley) y Hans Vinding-Diers (Burdeos), dos referentes mundiales que eligieron Patagonia para hacer Malbec. El resultado es un vino de perfil europeo: fresco, elegante, de acidez precisa. Nariz de violeta, mora, ciruela roja, grafito y especias finas. En boca tiene taninos pulidos y de gran calidad, acidez que da vida y frescura, y un final larguísimo. Una de las referencias más interesantes del catálogo. Ideal con carnes rojas de calidad, cordero o solo para disfrutar."},
-  "Chacra 55 Pinot Noir": {zona:"Río Negro, Patagonia · Bodega Chacra · viñedos de 1955",perfil:"Pinot Noir patagónico premium · viñedos viejos sin injertar · Piero Incisa della Rocchetta",notas:"Uno de los Pinot Noir más célebres de Argentina. Viñedos plantados en 1955, sin injertar, pie propio franco. El frío extremo patagónico y la edad de las vides producen un vino de complejidad y elegancia extraordinarias. Nariz de cereza ácida, frambuesa silvestre, tierra, hongos trufados, rosa marchita y especias. En boca tiene taninos de seda, acidez vibrante, cuerpo medio y un final interminable. Propietario: Piero Incisa della Rocchetta (familia Sassicaia). Servir a 14°C. Ideal con hongos, salmón, aves de caza o solo como experiencia."},
-  "Las Cuerdas Cota 1500": {zona:"Valle de Uco, Mendoza · 1.500 msnm · suelos calcáreos",perfil:"Malbec-Cabernet Franc de extrema altitud · fresco, mineral, tenso",notas:"1500 metros sobre el nivel del mar en el Valle de Uco: el límite superior de la viticultura mendocina. A esa altitud la uva madura lentamente, concentra aromas y preserva una acidez natural imponente. Nariz de violeta, fruta negra fresca, grafito, flores y una mineralidad calcárea que recorre toda la copa. En boca es fresco, tenso, de taninos finos y gran acidez. Final largo y mineral. Un vino con potencial de guarda de 8 a 10 años. Ideal con carnes de caza, cordero, o solo para contemplar."},
-  "Petit Maremmano Syrah-CS 375ml": {zona:"Córdoba · Sierras · formato media botella 375ml",perfil:"Syrah-Cabernet Sauvignon cordobés · intenso y especiado · 375ml",notas:"Blend de Syrah y Cabernet Sauvignon en formato media botella: ideal para compartir una copa individual o para probar sin comprometer una botella entera. El Syrah aporta pimienta negra, aceitunas y notas de cuero; el Cabernet Sauvignon añade estructura tánica y cassis. Nariz intensa de ciruela negra, pimienta, cuero y especias. Boca de cuerpo pleno, taninos firmes y final especiado largo. Ideal con carnes rojas, chorizo colorado o queso azul."},
-  "Verum Malbec": {zona:"Valle de Uco, Mendoza · Bodega Verum · baja intervención",perfil:"Malbec natural · sin filtrar · levaduras indígenas · expresión viva",notas:"Verum trabaja con mínima intervención: levaduras indígenas, sin corrección de acidez, sin filtrar. El resultado es un Malbec vivo, expresivo, diferente al perfil convencional. Nariz de ciruela fresca, violeta, tierra húmeda y notas de levadura natural. En boca tiene acidez más marcada que un Malbec comercial, taninos suaves y un final frutal-especiado. Puede tener ligero turbio natural. Servir a 16°C. Ideal con pasta, milanesas, pizza o carnes a la parrilla."},
-  "Vertebrado Cabernet Franc": {zona:"Mendoza · elaboración de baja intervención",perfil:"Pinot Noir natural · sin madera · levaduras indígenas · muy fresco",notas:"Pinot Noir vinificado sin madera y con mínima intervención para preservar la expresión varietal pura. Nariz de frutilla silvestre, cereza ácida, flores rojas y una nota de levadura natural. En boca es liviano, de taninos finos y casi imperceptibles, acidez jugosa y final frutal limpio. Baja graduación alcohólica. Un Pinot para beber fresco (14-16°C), casi como un rosado corposo. Ideal con salmón, pollo, pasta, hongos o como vino de aperitivo para los que prefieren tintos."},
-  "Nox Malbec": {zona:"Mendoza · método tradicional (Champenoise)",perfil:"Espumoso de Malbec · método tradicional · brut · segunda fermentación en botella",notas:"Espumoso elaborado por método tradicional (champenoise): la segunda fermentación ocurre dentro de la botella, produciendo burbujas de gran fineza y persistencia. El Malbec aporta fruta roja fresca, violeta y cuerpo. Nariz de frutilla, frambuesa, flores rojas y notas de brioche y levadura. Burbuja fina, persistente y cremosa. En boca es fresco, seco (brut), de final frutal con un toque mineral. Perfecto como aperitivo o para acompañar celebraciones. Maridaje clásico con embutidos, sushi o mariscos."},
-  "Alma 4 Pinot-Chardonnay": {zona:"Mendoza · método tradicional (Champenoise) · añada expresada",perfil:"Extra Brut de alta gama · Pinot Noir y Chardonnay · autolisis marcada",notas:"Blend clásico del Champagne trasladado a Mendoza con muy buenos resultados. El Pinot Noir aporta cuerpo y fruta roja; el Chardonnay añade frescura, acidez y fineza. Método tradicional con tirage prolongado para desarrollar autolisis (notas de brioche, avellana y levadura). Nariz de manzana verde, lima, brioche, avellana y flores blancas. Burbuja muy fina y cremosa. Extra Brut (muy seco). Final largo, mineral y tostado. El espumoso de referencia del catálogo. Ideal con ostras, langostinos, sushi o aves."},
-  "Alma Negra Chardonnay": {zona:"Valle de Uco, Mendoza · Ernesto Catena · alta altitud",perfil:"Blanc de Blancs premium · solo Chardonnay · método tradicional",notas:"Blanc de Blancs significa que el espumoso es 100% Chardonnay, sin Pinot Noir. El resultado es más austero, mineral y tenso que los blends. El Valle de Uco a altura garantiza acidez natural sin corrección. Nariz precisa de limón, manzana verde, tiza, tostado sutil y flores blancas. Burbuja de gran fineza. En boca es seco, de acidez elevada, cuerpo medio y un final mineral larguísimo. Uno de los Blanc de Blancs más interesantes de Argentina. Ideal con mariscos, ostras, sushi o crudos de mar."},
-  "Zuccardi Blanc de Blancs": {zona:"Valle de Uco, Mendoza · Familia Zuccardi / La Agrícola",perfil:"Extra Brut de Valle de Uco · sin dosage · 100% Chardonnay",notas:"Producido sin dosage (azúcar cero agregada): el estilo más austero y mineral de los espumosos. La Familia Zuccardi expresa el Valle de Uco en su versión más precisa. Nariz de manzana verde, pomelo, tiza húmeda, brioche y flores. Burbuja fina y muy persistente. En boca es seco, con acidez marcada, textura cremosa y final mineral de gran persistencia. Para paladares que disfrutan la austeridad. Perfecto con ostras, salmón ahumado, crudos o simplemente como aperitivo de lujo."},
-  "Animal Extra Brut": {zona:"Mendoza · Bodega Achaval Ferrer / Nakbe",perfil:"Extra Brut accesible · blend clásico · método tradicional",notas:"Espumoso de método tradicional con un perfil más accesible que los de alta gama, pero con muy buena construcción. Nariz de manzana, pera, notas de levadura y pan tostado. Burbuja de buena persistencia. En boca es seco (extra brut), fresco, de cuerpo liviano y final frutal con un toque mineral. Relación calidad-precio muy competitiva dentro de los espumosos del catálogo. Ideal como aperitivo de bienvenida, con tostadas, quesos suaves o frutos del mar."},
-  "Terrazas Petit Manseng": {zona:"Mendoza · Terrazas de Los Andes · Maison Moët & Chandon",perfil:"Late Harvest de Petit Manseng · dulzor elegante · acidez equilibrada",notas:"El Petit Manseng es la variedad reina de los vinos dulces del sudoeste francés (Jurançon). Aquí, bajo la dirección de Terrazas (brazo argentino de Moët & Chandon), produce un late harvest de gran elegancia. La vendimia tardía concentra azúcares naturales manteniendo la acidez varietal. Nariz de miel de flores, durazno en almíbar, albaricoque, naranja confitada y vainilla. En boca es untuoso, dulce pero con acidez que equilibra y evita la pesadez. Final larguísimo y aromático. Ideal con postres de frutas, tarte tatin, quesos azules o foie gras."},
-  "Mara de Uco Bonarda": {zona:"Valle de Uco, Mendoza · Nakbe / Joaquín Sastre · copa de la casa tinta",perfil:"Bonarda joven y jugosa · sin madera · copa de la casa de CHUÍ",notas:"La copa tinta de CHUÍ fue elegida por su frescura, accesibilidad y versatilidad con toda la carta. Bonarda vinificada sin paso por madera: la fruta manda. Nariz de ciruela fresca, mora joven y violeta. En boca es jugosa, de taninos suaves, acidez equilibrada y final frutal limpio. Baja graduación. Se sirve a 16-17°C. El objetivo es que sea tan agradable que el comensal la pida como agua. Nakbe, la bodega detrás, trabaja con viticultura sustentable en el Valle de Uco."},
-  "Elephant Gun Merlot Rose": {zona:"Mendoza · Bodegas Azcona / Felipe Azcona · copa de la casa rosada",perfil:"Merlot Rosé fresco y directo · copa de la casa rosada de CHUÍ",notas:"La copa rosada de CHUÍ: elegida por su equilibrio entre frescura, color atractivo y precio. Merlot vinificado en rosado con maceración breve. Nariz de frutilla, sandía, flor de rosa y un leve toque de durazno. En boca es seco, refrescante, de cuerpo liviano y final limpio. Se sirve bien frío (8-10°C). Versátil con toda la carta: desde empanadas hasta tablas de quesos. El mismo productor del Elephant Gun Malbec de la copa tinta, lo que asegura consistencia de calidad."},
-  "Tilia Chardonnay": {zona:"Mendoza · Catena Zapata · copa de la casa blanca",perfil:"Chardonnay sin madera · fresco y accesible · copa de la casa blanca de CHUÍ",notas:"La copa blanca de CHUÍ: Catena Zapata en su línea de acceso, con toda la calidad de la bodega a precio de copa. Chardonnay sin paso por roble: nariz de manzana verde, pera, flores blancas y un toque cítrico. En boca es seco, fresco, de cuerpo liviano-medio y final limpio. Se sirve a 8-10°C. Uno de los Chardonnays sin madera más consistentes del mercado argentino. Pensado para ser agradable con absolutamente todo el menú."},
-  "Un Mundo Chiquito Malbec": {zona:"Valle de Uco, Mendoza · Bodega Vistalba / Catalina Uriburu",perfil:"Malbec de altura frutal y accesible · Vistalba · copa recomendada",notas:"Vistalba es una de las bodegas más respetadas del Valle de Uco. Este Malbec de su línea de acceso expresa el terroir de altura con honestidad. Nariz de ciruela roja, mora, violeta y un toque de especias dulces. En boca es frutal, de taninos suaves, acidez equilibrada y final agradable. Buen cuerpo sin ser pesado. Relación calidad-precio muy sólida. Ideal para recomendar a alguien que busca un Malbec clásico pero de origen serio. Funciona con todo lo que se sirve en CHUÍ."},
-  "Un Mundo Chiquito C y CB": {zona:"Valle de Uco, Mendoza · Bodega Vistalba / Catalina Uriburu",perfil:"Blend de Chardonnay y Chenin Blanc · fresco, sin madera",notas:"Blend poco convencional que refleja el espíritu exploratorio de Vistalba en el Valle de Uco. El Chardonnay aporta cuerpo y fruta de pepita; el Chenin Blanc añade frescura, notas de manzana asada y una ligera untuosidad. Nariz de manzana verde, limón, flores blancas y pera. En boca es fresco, liviano, de acidez equilibrada y final floral. Sin paso por madera. Ideal para quienes buscan un blanco diferente al Torrontés o al Chardonnay solo. Versátil con ensaladas, pollo, mariscos o pastas livianas."},
-  "Un Mundo Chiquito Rose": {zona:"Valle de Uco, Mendoza · Bodega Vistalba / Catalina Uriburu",perfil:"Rosado de Malbec de Vistalba · seco, fresco, de altura",notas:"Malbec vinificado en rosado con maceración corta, preservando color y frescura. La alta altitud del Valle de Uco garantiza acidez natural y fineza. Nariz de frutilla, frambuesa, cítricos y flores rojas. En boca es seco, fresco, de cuerpo liviano y final frutal limpio. Muy accesible y versátil. De la misma bodega que los otros Un Mundo Chiquito, lo que garantiza consistencia en la relación calidad-precio. Ideal para el verano o con platos livianos."}
-};;;
-
-function toggleDesc(id, btn) {
-  var el = document.getElementById(id);
-  if (el.classList.contains('open')) {
-    el.classList.remove('open');
-    btn.textContent = '🍷 Ver ficha';
-  } else {
-    el.classList.add('open');
-    btn.textContent = '🍷 Cerrar ficha';
-  }
-}
+var archiveModeActive = false;
 
 var recomendaciones = {
   "Cara Sur Pergolas Criollas Tintas": "⚡ Alta rotación — se quedó sin stock 3 veces en abril. Mínimo actualizado a 25u. Pedir siempre de a 6c.",
@@ -1500,42 +487,26 @@ var recomendaciones = {
   "Zuccardi Blanc de Blancs": "🫧 Margen del 58% — el más bajo entre espumosos. Revisar precio de venta.",
 };
 
+function toggleDesc(id, btn) {
+  var el = document.getElementById(id);
+  if (el.classList.contains('open')) { el.classList.remove('open'); btn.textContent = '🍷 Ver ficha'; }
+  else { el.classList.add('open'); btn.textContent = '🍷 Cerrar ficha'; }
+}
 function togglePrecio(id, btn) {
   var el = document.getElementById(id);
-  if (el.classList.contains('open')) {
-    el.classList.remove('open');
-    btn.textContent = '💲 Ver precios';
-  } else {
-    el.classList.add('open');
-    btn.textContent = '💲 Ocultar precios';
-  }
+  if (el.classList.contains('open')) { el.classList.remove('open'); btn.textContent = '💲 Ver precios'; }
+  else { el.classList.add('open'); btn.textContent = '💲 Ocultar precios'; }
 }
-
 function toggleReco(id, btn) {
   var el = document.getElementById(id);
-  if (el.classList.contains('open')) {
-    el.classList.remove('open');
-    btn.textContent = '💡 Ver recomendación';
-  } else {
-    el.classList.add('open');
-    btn.textContent = '💡 Ocultar';
-  }
-}
-function togglePrecio(id, btn) {
-  var el = document.getElementById(id);
-  if (el.classList.contains('open')) {
-    el.classList.remove('open');
-    btn.textContent = '💲 Ver precios';
-  } else {
-    el.classList.add('open');
-    btn.textContent = '💲 Ocultar precios';
-  }
+  if (el.classList.contains('open')) { el.classList.remove('open'); btn.textContent = '💡 Ver recomendación'; }
+  else { el.classList.add('open'); btn.textContent = '💡 Ocultar'; }
 }
 
 var pedidosMode = false;
 
 function filterPedidos(btn) {
-  pedidosMode = true;
+  pedidosMode = true; archiveModeActive = false;
   document.getElementById('bevinco-view').classList.remove('active');
   document.getElementById('main-content').classList.remove('hidden');
   currentCat = 'all';
@@ -1546,12 +517,50 @@ function filterPedidos(btn) {
   renderPedidos();
 }
 
-function renderPedidos() {
+function showArchivo(btn) {
+  pedidosMode = false; archiveModeActive = true;
+  document.getElementById('bevinco-view').classList.remove('active');
+  document.getElementById('main-content').classList.remove('hidden');
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.querySelectorAll('.cat-btn')[0].classList.add('active');
+  renderArchivo();
+}
+
+function renderArchivo() {
   var container = document.getElementById('main-content');
   container.innerHTML = '';
 
-  var pendientes = items.filter(function(i) { return i.pendiente && i.pendiente !== null; });
+  var banner = document.createElement('div');
+  banner.className = 'archivo-banner';
+  banner.textContent = '📁 ARCHIVO — Vinos que salieron de carta. El stock se sigue registrando pero no generan alertas.';
+  container.appendChild(banner);
 
+  var archiveItems = items.filter(function(i) { return i.estado === 'archivo' && matchesSearch(i); });
+  if (archiveItems.length === 0) {
+    var e = document.createElement('div');
+    e.style.cssText = 'max-width:900px;margin:40px auto;text-align:center;color:#4a4538;font-size:13px;font-style:italic';
+    e.textContent = 'No hay vinos en el archivo.';
+    container.appendChild(e);
+    return;
+  }
+
+  var section = document.createElement('div'); section.className = 'section';
+  var title = document.createElement('div'); title.className = 'section-title'; title.textContent = 'FUERA DE CARTA';
+  section.appendChild(title);
+
+  archiveItems.forEach(function(item, idx) {
+    var card = buildCard(item, idx, 'arch');
+    section.appendChild(card);
+  });
+  container.appendChild(section);
+}
+
+function renderPedidos() {
+  var container = document.getElementById('main-content');
+  container.innerHTML = '';
+  var pendientes = items.filter(function(i) { return i.pendiente && i.estado !== 'archivo'; });
   if (pendientes.length === 0) {
     var empty = document.createElement('div');
     empty.style.cssText = 'max-width:900px;margin:40px auto;text-align:center;color:#4a4538;font-size:13px;font-style:italic';
@@ -1559,62 +568,37 @@ function renderPedidos() {
     container.appendChild(empty);
     return;
   }
-
-  // Group by asesor
   var porAsesor = {};
   pendientes.forEach(function(item) {
     var key = item.asesor || 'Sin contacto';
     if (!porAsesor[key]) porAsesor[key] = { asesor: item.asesor, contacto: item.contacto, razon: item.razon, items: [] };
     porAsesor[key].items.push(item);
   });
-
-  // Header
   var header = document.createElement('div');
   header.style.cssText = 'max-width:900px;margin:0 auto 24px;font-size:11px;color:#7a7060;letter-spacing:0.1em';
   header.textContent = pendientes.length + ' PEDIDO' + (pendientes.length > 1 ? 'S' : '') + ' PENDIENTE' + (pendientes.length > 1 ? 'S' : '');
   container.appendChild(header);
-
   Object.keys(porAsesor).sort().forEach(function(key) {
     var grupo = porAsesor[key];
-    var section = document.createElement('div');
-    section.className = 'section';
-
-    var title = document.createElement('div');
-    title.className = 'section-title';
+    var section = document.createElement('div'); section.className = 'section';
+    var title = document.createElement('div'); title.className = 'section-title';
     title.textContent = (grupo.razon && grupo.razon !== '-' ? grupo.razon : key).toUpperCase();
     section.appendChild(title);
-
     grupo.items.forEach(function(item, idx) {
       var card = document.createElement('div');
       card.style.cssText = 'background:#211f1b;border:1px solid #2e2b25;border-left:3px solid #4a6fa5;padding:14px 20px;margin-bottom:8px;border-radius:0 2px 2px 0;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;animation:fadeIn 0.3s ease forwards;opacity:0';
       card.style.animationDelay = (idx * 0.05) + 's';
-
       var isEmail = grupo.contacto && grupo.contacto.indexOf('@') !== -1;
-      var contactHTML = grupo.contacto
-        ? '<a href="' + (isEmail ? 'mailto:' : 'https://wa.me/') + grupo.contacto.replace(/[\s\+\-]/g,'') + '" style="color:#d4a017;text-decoration:none">' + grupo.contacto + '</a>'
-        : '';
-
-      card.innerHTML =
-        '<div>' +
-          '<div style="font-family:Playfair Display,serif;font-size:17px;color:#e8e0d0;margin-bottom:4px">' + item.nombre + '</div>' +
-          '<div style="font-size:11px;color:#7a7060">' + (grupo.asesor || '') + ' &nbsp; ' + contactHTML + '</div>' +
-        '</div>' +
-        '<div style="text-align:right">' +
-          '<div style="font-size:10px;color:#4a6fa5;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px">🚚 En camino</div>' +
-          '<div style="font-family:Playfair Display,serif;font-size:22px;color:#e8e0d0">' + item.ultimoCant + '</div>' +
-          '<div style="font-size:10px;color:#7a7060">pedido ' + item.ultimoPedido + '</div>' +
-          '<div style="font-size:11px;color:#4a4538;margin-top:4px">Stock actual: ' + item.stockUnidades + 'u</div>' +
-        '</div>';
-
+      var contactHTML = grupo.contacto ? '<a href="' + (isEmail ? 'mailto:' : 'https://wa.me/') + grupo.contacto.replace(/[\s\+\-]/g,'') + '" style="color:#d4a017;text-decoration:none">' + grupo.contacto + '</a>' : '';
+      card.innerHTML = '<div><div style="font-family:Playfair Display,serif;font-size:17px;color:#e8e0d0;margin-bottom:4px">' + item.nombre + '</div><div style="font-size:11px;color:#7a7060">' + (grupo.asesor || '') + ' &nbsp; ' + contactHTML + '</div></div><div style="text-align:right"><div style="font-size:10px;color:#4a6fa5;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px">🚚 En camino</div><div style="font-family:Playfair Display,serif;font-size:22px;color:#e8e0d0">' + item.ultimoCant + '</div><div style="font-size:10px;color:#7a7060">pedido ' + item.ultimoPedido + '</div><div style="font-size:11px;color:#4a4538;margin-top:4px">Stock actual: ' + item.stockUnidades + 'u</div></div>';
       section.appendChild(card);
     });
-
     container.appendChild(section);
   });
 }
 
 function showBevinco(btn) {
-  pedidosMode = false;
+  pedidosMode = false; archiveModeActive = false;
   document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
   document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
@@ -1623,26 +607,19 @@ function showBevinco(btn) {
 }
 
 function filterFromStat(status) {
-  pedidosMode = false;
-  currentFilter = status;
-  currentCat = 'all';
+  pedidosMode = false; archiveModeActive = false;
+  currentFilter = status; currentCat = 'all';
   document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
   document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
-  // Activate matching filter button
   document.querySelectorAll('.filter-btn').forEach(function(b){
-    if ((status === 'all' && b.textContent.trim() === 'Todos') ||
-        (status === 'critica' && b.textContent.includes('Criticas')) ||
-        (status === 'alerta' && b.textContent.includes('alerta')) ||
-        (status === 'ok' && b.textContent.includes('OK'))) {
-      b.classList.add('active');
-    }
+    if ((status==='all'&&b.textContent.trim()==='Todos')||(status==='critica'&&b.textContent.includes('Criticas'))||(status==='alerta'&&b.textContent.includes('alerta'))||(status==='ok'&&b.textContent.includes('OK'))) b.classList.add('active');
   });
   document.querySelectorAll('.cat-btn')[0].classList.add('active');
   renderItems(status);
 }
 
 function filterCat(cat, btn) {
-  pedidosMode = false;
+  pedidosMode = false; archiveModeActive = false;
   document.getElementById('bevinco-view').classList.remove('active');
   document.getElementById('main-content').classList.remove('hidden');
   currentCat = cat;
@@ -1651,46 +628,130 @@ function filterCat(cat, btn) {
   renderItems(currentFilter);
 }
 
-function applySearch() {
-  currentSearch = document.getElementById('search-input').value.toLowerCase().trim();
-  renderItems(currentFilter);
-}
-
-function clearSearch() {
-  document.getElementById('search-input').value = '';
-  currentSearch = '';
-  renderItems(currentFilter);
-}
+function applySearch() { currentSearch = document.getElementById('search-input').value.toLowerCase().trim(); archiveModeActive ? renderArchivo() : renderItems(currentFilter); }
+function clearSearch() { document.getElementById('search-input').value = ''; currentSearch = ''; archiveModeActive ? renderArchivo() : renderItems(currentFilter); }
 
 function matchesSearch(item) {
   if (!currentSearch) return true;
-  return item.nombre.toLowerCase().includes(currentSearch) ||
-         (item.asesor && item.asesor.toLowerCase().includes(currentSearch)) ||
-         (item.razon && item.razon.toLowerCase().includes(currentSearch));
+  return item.nombre.toLowerCase().includes(currentSearch) || (item.asesor && item.asesor.toLowerCase().includes(currentSearch)) || (item.razon && item.razon.toLowerCase().includes(currentSearch));
 }
 
 function clasificar(item) {
-  if (item.minimo === null) return "sin-minimo";
-  if (item.stockUnidades === 0) return "critica";
-  if (item.stockUnidades <= item.minimo) return "critica";
-  if (item.stockUnidades <= item.minimo * 1.4) return "alerta";
-  return "ok";
+  // Copa y archivo NUNCA generan alerta
+  if (item.estado === 'copa' || item.estado === 'archivo') return 'sin-minimo';
+  if (item.minimo === null) return 'sin-minimo';
+  if (item.stockUnidades === 0) return 'critica';
+  if (item.stockUnidades <= item.minimo) return 'critica';
+  if (item.stockUnidades <= item.minimo * 1.4) return 'alerta';
+  return 'ok';
+}
+
+function buildCard(item, idx, idPrefix) {
+  var estado = clasificar(item);
+  var esCopa = item.estado === 'copa';
+  var esArchivo = item.estado === 'archivo';
+  var esNuevo = item.nuevo === true;
+
+  var cardClass = esArchivo ? 'archivo' : esCopa ? 'copa' : (estado === 'sin-minimo' ? 'ok' : estado);
+  var card = document.createElement('div');
+  card.className = 'alert-card ' + cardClass;
+  card.style.animationDelay = (idx * 0.05) + 's';
+
+  var col = esArchivo ? '#3a3830' : esCopa ? '#3a5a8a' : (estado==='critica' ? '#c0392b' : estado==='alerta' ? '#d4a017' : '#4a7c59');
+
+  var badge = '';
+  if (esArchivo) badge = '<div class="badge archivo">Fuera de carta</div>';
+  else if (esCopa) badge = '<div class="badge copa">Solo copa</div>';
+  else if (estado==='critica') badge = '<div class="badge critica">Pedir ya</div>';
+  else if (estado==='alerta') badge = '<div class="badge alerta">En alerta</div>';
+
+  var ct = '';
+  if (item.asesor) ct += '<span>👤 '+item.asesor+'</span>';
+  if (item.contacto) { var isEm=item.contacto.indexOf('@')!==-1; ct += '<span>'+(isEm?'✉':'📱')+' <a href="'+(isEm?'mailto:':'https://wa.me/')+item.contacto.replace(/[\s\+\-]/g,'')+'">'+item.contacto+'</a></span>'; }
+  if (item.razon && item.razon!=='?' && item.razon!=='-') ct += '<span>🏢 '+item.razon+'</span>';
+
+  var obsH = item.obs ? '<span class="obs-tag">'+item.obs+'</span>' : '';
+  var penH = item.pendiente ? '<span class="pendiente-tag">🚚 '+item.pendiente+'</span>' : '';
+  var nuevoH = esNuevo ? '<span class="nuevo-tag">✦ Nuevo junio 2026</span>' : '';
+  var minL = item.minimo !== null ? 'min: '+item.minimo+'u' : 'sin minimo';
+  var pedH = item.pedido !== '-' ? '<div class="pedido-tag">Pedir: <strong>'+item.pedido+'</strong></div>' : '';
+
+  var histH = '';
+  if (item.ultimoPedido) {
+    var entH = item.entregado ? '<span>✅ <strong style="color:#4a7c59">'+item.entregado+'</strong></span>' : '<span style="color:#d4a017">⏳ Pendiente</span>';
+    histH = '<div class="historial"><span>🗓 '+item.ultimoPedido+'</span><span>📋 '+item.ultimoCant+'</span>'+entH+'</div>';
+  }
+
+  var precioH = '';
+  var p = precios[item.nombre];
+  if (p) {
+    var margen = Math.round((p.venta - p.costo) / p.venta * 100);
+    var mColor = margen >= 65 ? '#4a7c59' : margen >= 60 ? '#d4a017' : '#c0392b';
+    var uid = 'precio-' + idPrefix + idx;
+    precioH = '<button class="expand-btn" onclick="togglePrecio(\'' + uid + '\', this)">💲 Ver precios</button>'
+      + '<div class="precio-section" id="' + uid + '">'
+      + '<div style="margin-top:8px;padding-top:8px;border-top:1px solid #2e2b25;display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#7a7060">'
+      + '<span>💰 Costo: <strong style="color:#e8e0d0">' + formatPesos(p.costo) + '</strong></span>'
+      + '<span>🏷️ Venta: <strong style="color:#e8e0d0">' + formatPesos(p.venta) + '</strong></span>'
+      + '<span>📈 Margen: <strong style="color:' + mColor + '">' + margen + '%</strong></span>'
+      + '</div></div>';
+  }
+
+  var recoH = '';
+  var reco = recomendaciones[item.nombre];
+  if (reco) {
+    var recoId = 'reco-' + idPrefix + idx;
+    recoH = '<button class="expand-btn" style="border-color:rgba(212,160,23,0.4);color:#d4a017" onclick="toggleReco(\'' + recoId + '\', this)">💡 Ver recomendación</button>'
+      + '<div class="precio-section" id="' + recoId + '">'
+      + '<div style="margin-top:8px;padding:8px 12px;background:rgba(212,160,23,0.08);border:1px solid rgba(212,160,23,0.2);border-radius:2px;font-size:11px;color:#e8e0d0;line-height:1.6">' + reco + '</div>'
+      + '</div>';
+  }
+
+  card.innerHTML =
+    '<div>'+
+      '<div class="wine-name">'+item.nombre+'</div>'+
+      '<div class="wine-meta"><span>📦 '+minL+'</span><span>🗂 '+item.categoria+'</span></div>'+
+      nuevoH+obsH+penH+
+      '<div class="contact-info">'+ct+'</div>'+
+      histH+recoH+precioH+
+    '</div>'+
+    '<div class="right-panel">'+
+      badge+
+      '<div class="stock-display" style="color:'+col+'">'+item.stockUnidades+'</div>'+
+      '<div class="stock-label">'+(item.stockUnidades===0?'SIN STOCK':'unidades')+'</div>'+
+      pedH+
+    '</div>';
+  return card;
 }
 
 function renderItems(filterStatus) {
+  if (archiveModeActive) { renderArchivo(); return; }
   var container = document.getElementById('main-content');
   container.innerHTML = '';
-  var categorias = [];
-  items.forEach(function(i) { if (categorias.indexOf(i.categoria) === -1) categorias.push(i.categoria); });
+  document.getElementById('bevinco-view').classList.remove('active');
+  document.getElementById('main-content').classList.remove('hidden');
+
+  // Solo items carta y copa para los contadores y la vista principal
+  var visibles = items.filter(function(i){ return i.estado !== 'archivo'; });
+
   var cC=0,cA=0,cO=0,cS=0;
-  items.forEach(function(i) { var s=clasificar(i); if(s==='critica')cC++; else if(s==='alerta')cA++; else if(s==='ok')cO++; else cS++; });
+  visibles.forEach(function(i) {
+    var s = clasificar(i);
+    if(s==='critica') cC++;
+    else if(s==='alerta') cA++;
+    else if(s==='ok') cO++;
+    else cS++;
+  });
   document.getElementById('cnt-critica').textContent=cC;
   document.getElementById('cnt-alerta').textContent=cA;
   document.getElementById('cnt-ok').textContent=cO;
   document.getElementById('cnt-sin').textContent=cS;
 
+  var categorias = [];
+  visibles.forEach(function(i){ if(categorias.indexOf(i.categoria)===-1) categorias.push(i.categoria); });
+
   categorias.forEach(function(cat) {
-    var catItems = items.filter(function(i) {
+    var catItems = visibles.filter(function(i) {
       if (i.categoria !== cat) return false;
       if (currentCat !== 'all' && i.categoria !== currentCat) return false;
       if (!matchesSearch(i)) return false;
@@ -1707,97 +768,14 @@ function renderItems(filterStatus) {
     section.appendChild(title);
 
     catItems.forEach(function(item, idx) {
-      var estado = clasificar(item);
-      var card = document.createElement('div');
-      card.className = 'alert-card ' + (estado==='sin-minimo' ? 'ok' : estado);
-      card.style.animationDelay = (idx*0.05)+'s';
-
-      var col = estado==='critica' ? '#c0392b' : estado==='alerta' ? '#d4a017' : '#4a7c59';
-      var badge = estado==='critica' ? '<div class="badge critica">Pedir ya</div>' : estado==='alerta' ? '<div class="badge alerta">En alerta</div>' : '';
-
-      var ct = '';
-      if (item.asesor) ct += '<span>👤 '+item.asesor+'</span>';
-      if (item.contacto) {
-        var isEm = item.contacto.indexOf('@') !== -1;
-        ct += '<span>'+(isEm?'✉':'📱')+' <a href="'+(isEm?'mailto:':'https://wa.me/')+item.contacto.replace(/[\s\+\-]/g,'')+'">'+item.contacto+'</a></span>';
-      }
-      if (item.razon && item.razon!=='?' && item.razon!=='-') ct += '<span>🏢 '+item.razon+'</span>';
-
-      var obsH = item.obs ? '<span class="obs-tag">'+item.obs+'</span>' : '';
-      var penH = item.pendiente ? '<span class="pendiente-tag">🚚 '+item.pendiente+'</span>' : '';
-      var minL = item.minimo !== null ? 'min: '+item.minimo+'u' : 'sin minimo';
-      var pedH = item.pedido !== '-' ? '<div class="pedido-tag">Pedir: <strong>'+item.pedido+'</strong></div>' : '';
-
-      var histH = '';
-      if (item.ultimoPedido) {
-        var entH = item.entregado ? '<span>✅ <strong style="color:#4a7c59">'+item.entregado+'</strong></span>' : '<span style="color:#d4a017">⏳ Pendiente</span>';
-        histH = '<div class="historial"><span>🗓 '+item.ultimoPedido+'</span><span>📋 '+item.ultimoCant+'</span>'+entH+'</div>';
-      }
-
-      var descH = '';
-      var desc = descripciones[item.nombre];
-      if (desc) {
-        var descId = 'desc-' + idx + '-' + cat.replace(/\s/g,'');
-        descH = '<button class="expand-btn" style="border-color:rgba(139,90,60,0.4);color:#a07050" onclick="toggleDesc(\'' + descId + '\', this)">🍷 Ver ficha</button>'
-          + '<div class="precio-section" id="' + descId + '">'
-          + '<div style="margin-top:8px;padding:10px 14px;background:rgba(139,90,60,0.06);border:1px solid rgba(139,90,60,0.2);border-radius:2px;font-size:11px;color:#c8b89a;line-height:1.8">'
-          + '<div style="margin-bottom:4px"><span style="color:#7a7060;text-transform:uppercase;letter-spacing:0.08em;font-size:10px">📍 Zona &nbsp;</span>' + desc.zona + '</div>'
-          + '<div style="margin-bottom:4px"><span style="color:#7a7060;text-transform:uppercase;letter-spacing:0.08em;font-size:10px">🧪 Perfil &nbsp;</span>' + desc.perfil + '</div>'
-          + '<div><span style="color:#7a7060;text-transform:uppercase;letter-spacing:0.08em;font-size:10px">👃 Notas &nbsp;</span>' + desc.notas + '</div>'
-          + '</div></div>';
-      }
-
-      var recoH = '';
-      var reco = recomendaciones[item.nombre];
-      if (reco) {
-        var recoId = 'reco-' + idx + '-' + cat.replace(/\s/g,'');
-        recoH = '<button class="expand-btn" style="border-color:rgba(212,160,23,0.4);color:#d4a017" onclick="toggleReco(\'' + recoId + '\', this)">💡 Ver recomendación</button>'
-          + '<div class="precio-section" id="' + recoId + '">'
-          + '<div style="margin-top:8px;padding:8px 12px;background:rgba(212,160,23,0.08);border:1px solid rgba(212,160,23,0.2);border-radius:2px;font-size:11px;color:#e8e0d0;line-height:1.6">' + reco + '</div>'
-          + '</div>';
-      }
-
-      var precioH = '';
-      var p = precios[item.nombre];
-      if (p) {
-        var margen = Math.round((p.venta - p.costo) / p.venta * 100);
-        var mColor = margen >= 65 ? '#4a7c59' : margen >= 60 ? '#d4a017' : '#c0392b';
-        var uid = 'precio-' + idx + '-' + cat.replace(/\s/g,'');
-        precioH = '<button class="expand-btn" onclick="togglePrecio(\'' + uid + '\', this)">💲 Ver precios</button>'
-          + '<div class="precio-section" id="' + uid + '">'
-          + '<div style="margin-top:8px;padding-top:8px;border-top:1px solid #2e2b25;display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#7a7060">'
-          + '<span>💰 Costo: <strong style="color:#e8e0d0">' + formatPesos(p.costo) + '</strong></span>'
-          + '<span>🏷️ Venta: <strong style="color:#e8e0d0">' + formatPesos(p.venta) + '</strong></span>'
-          + '<span>📈 Margen: <strong style="color:' + mColor + '">' + margen + '%</strong></span>'
-          + '</div></div>';
-      }
-
-      card.innerHTML =
-        '<div>'+
-          '<div class="wine-name">'+item.nombre+'</div>'+
-          '<div class="wine-meta"><span>📦 '+minL+'</span><span>🗂 '+item.categoria+'</span></div>'+
-          obsH+penH+
-          '<div class="contact-info">'+ct+'</div>'+
-          histH+
-          descH+
-          recoH+
-          precioH+
-        '</div>'+
-        '<div class="right-panel">'+
-          badge+
-          '<div class="stock-display" style="color:'+col+'">'+item.stockUnidades+'</div>'+
-          '<div class="stock-label">'+(item.stockUnidades===0?'SIN STOCK':'unidades')+'</div>'+
-          pedH+
-        '</div>';
-
-      section.appendChild(card);
+      section.appendChild(buildCard(item, idx, cat.replace(/\s/g,'')));
     });
     container.appendChild(section);
   });
 }
 
 function filter(status, btn) {
-  pedidosMode = false;
+  pedidosMode = false; archiveModeActive = false;
   document.getElementById('bevinco-view').classList.remove('active');
   document.getElementById('main-content').classList.remove('hidden');
   currentFilter = status;
@@ -1807,7 +785,6 @@ function filter(status, btn) {
 }
 
 var waFilter = 'urgente';
-
 function buildWAMessage(asesor, productos) {
   var fecha = new Date().toLocaleDateString('es-AR',{day:'numeric',month:'long',year:'numeric'});
   var msg = 'Hola '+(asesor||'')+'! 👋\n\nTe escribimos desde *CHUI* para hacer un pedido ('+fecha+'):\n\n';
@@ -1818,47 +795,29 @@ function buildWAMessage(asesor, productos) {
   msg += '\nMuchas gracias!';
   return msg;
 }
-
 function openWAModal() { waFilter='urgente'; renderWAModal(); document.getElementById('waModal').classList.add('open'); }
 function closeWAModal() { document.getElementById('waModal').classList.remove('open'); }
 function closeOnOverlay(e) { if(e.target===document.getElementById('waModal'))closeWAModal(); }
-
-function setWAFilter(f,btn) {
-  waFilter=f;
-  document.querySelectorAll('.wa-filter-btn').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
-  renderWAModal();
-}
-
+function setWAFilter(f,btn) { waFilter=f; document.querySelectorAll('.wa-filter-btn').forEach(function(b){b.classList.remove('active');}); btn.classList.add('active'); renderWAModal(); }
 function renderWAModal() {
   var body = document.getElementById('waModalBody');
   body.innerHTML='';
   var fr = document.createElement('div'); fr.className='wa-filter-row';
   fr.innerHTML='<button class="wa-filter-btn '+(waFilter==='urgente'?'active':'')+'" onclick="setWAFilter(\'urgente\',this)">Solo urgentes</button><button class="wa-filter-btn '+(waFilter==='all'?'active':'')+'" onclick="setWAFilter(\'all\',this)">Todos</button>';
   body.appendChild(fr);
-
   var porAsesor={};
   items.forEach(function(item) {
     if(item.pedido==='-') return;
+    if(item.estado==='archivo') return;
     var estado=clasificar(item);
     if(waFilter==='urgente' && estado!=='critica' && estado!=='alerta') return;
     var key=item.asesor||item.contacto||'Sin contacto';
     if(!porAsesor[key]) porAsesor[key]={asesor:item.asesor,contacto:item.contacto,productos:[]};
     porAsesor[key].productos.push(item);
   });
-
   var asesores=Object.keys(porAsesor);
-  if(asesores.length===0){
-    var em=document.createElement('div'); em.className='wa-empty';
-    em.textContent=waFilter==='urgente'?'No hay pedidos urgentes.':'No hay pedidos.';
-    body.appendChild(em); return;
-  }
-
-  asesores.sort(function(a,b){
-    return porAsesor[b].productos.filter(function(p){return clasificar(p)==='critica';}).length -
-           porAsesor[a].productos.filter(function(p){return clasificar(p)==='critica';}).length;
-  });
-
+  if(asesores.length===0){ var em=document.createElement('div'); em.className='wa-empty'; em.textContent=waFilter==='urgente'?'No hay pedidos urgentes.':'No hay pedidos.'; body.appendChild(em); return; }
+  asesores.sort(function(a,b){ return porAsesor[b].productos.filter(function(p){return clasificar(p)==='critica';}).length - porAsesor[a].productos.filter(function(p){return clasificar(p)==='critica';}).length; });
   asesores.forEach(function(key) {
     var d=porAsesor[key];
     var mensaje=buildWAMessage(d.asesor,d.productos);
@@ -1876,13 +835,7 @@ function renderWAModal() {
     body.appendChild(card);
   });
 }
-
-function copyMsg(btn,msg) {
-  navigator.clipboard.writeText(msg).then(function(){
-    btn.textContent='✓ Copiado'; btn.classList.add('copied');
-    setTimeout(function(){btn.textContent='Copiar';btn.classList.remove('copied');},2000);
-  });
-}
+function copyMsg(btn,msg) { navigator.clipboard.writeText(msg).then(function(){ btn.textContent='✓ Copiado'; btn.classList.add('copied'); setTimeout(function(){btn.textContent='Copiar';btn.classList.remove('copied');},2000); }); }
 
 document.getElementById('fecha').textContent=new Date().toLocaleDateString('es-AR',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).toUpperCase();
 renderItems('all');
