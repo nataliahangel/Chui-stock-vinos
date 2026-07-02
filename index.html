@@ -997,63 +997,73 @@ function parseTotalFromCSV(val) {
 
 var syncStatus = 'idle'; // idle | loading | ok | error
 
+var CORS_PROXIES = [
+  'https://corsproxy.io/?',
+  'https://api.allorigins.win/raw?url=',
+];
+
 function syncFromSheets() {
   if (syncStatus === 'loading') return;
   syncStatus = 'loading';
   updateSyncUI('⟳ Sincronizando...', '#d4a017');
+  tryFetchCSV(0);
+}
 
-  fetch(CSV_URL + '&cachebust=' + Date.now())
-    .then(function(r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.text();
+function tryFetchCSV(idx) {
+  var url = idx === 0
+    ? CSV_URL
+    : CORS_PROXIES[idx-1] + encodeURIComponent(CSV_URL);
+  fetch(url, {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.text(); })
+    .then(function(csv){
+      if(!csv || csv.length < 50) throw new Error('Empty');
+      processCSV(csv);
     })
-    .then(function(csv) {
-      var lines = csv.split(/\r?\n/);
-      var updated = 0;
-      var sinMapear = [];
-      var totalCol = -1;
-      var nombreCol = 0;
-      var inStock = false;
-
-      lines.forEach(function(line) {
-        if (!line.trim()) return;
-        var cols = parseCSVLine(line);
-        var first = (cols[0] || '').trim();
-
-        // Detect header row
-        if (first === '' && cols.some(function(c){ return /total/i.test(c); })) {
-          inStock = true;
-          cols.forEach(function(c, i){ if (/total/i.test(c)) totalCol = i; });
-          return;
-        }
-        // Skip category headers
-        if (/^(BLANCOS|NARANJOS|ROSADOS|TINTOS|ESPUMOSOS|VINO DULCE|VINOS DE LA CASA|VINOS POR FUERA)/i.test(first)) return;
-        if (!inStock || !first) return;
-
-        var total = parseTotalFromCSV(cols[totalCol > -1 ? totalCol : 3]);
-        if (total === null) return;
-
-        var dashNombre = resolverNombre(first);
-        if (dashNombre) {
-          var found = items.find(function(i){ return i.nombre === dashNombre; });
-          if (found) { found.stockUnidades = total; updated++; }
-        } else {
-          sinMapear.push(first);
-        }
-      });
-
-      syncStatus = 'ok';
-      var ts = new Date().toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit'});
-      updateSyncUI('✓ Sync ' + ts + ' (' + updated + ' vinos)', '#4a7c59');
-      saveStorage('chui-sin-mapear', sinMapear);
-      renderItems(currentFilter);
-      rKPIs();
-    })
-    .catch(function(e) {
-      syncStatus = 'error';
-      updateSyncUI('⚠ Sin conexión a Sheets', '#c0392b');
-      console.warn('Sync error:', e);
+    .catch(function(e){
+      if(idx < CORS_PROXIES.length) { tryFetchCSV(idx+1); }
+      else {
+        syncStatus = 'error';
+        updateSyncUI('⚠ Sin conexión a Sheets', '#c0392b');
+        console.warn('Sync error:', e);
+      }
     });
+}
+
+function processCSV(csv) {
+  var lines = csv.split(/\r?\n/);
+  var updated = 0;
+  var sinMapear = [];
+  var totalCol = -1;
+  var inStock = false;
+
+  lines.forEach(function(line) {
+    if (!line.trim()) return;
+    var cols = parseCSVLine(line);
+    var first = (cols[0] || '').trim();
+    if (first === '' && cols.some(function(c){ return /total/i.test(c); })) {
+      inStock = true;
+      cols.forEach(function(c, i){ if (/total/i.test(c)) totalCol = i; });
+      return;
+    }
+    if (/^(BLANCOS|NARANJOS|ROSADOS|TINTOS|ESPUMOSOS|VINO DULCE|VINOS DE LA CASA|VINOS POR FUERA)/i.test(first)) return;
+    if (!inStock || !first) return;
+    var total = parseTotalFromCSV(cols[totalCol > -1 ? totalCol : 3]);
+    if (total === null) return;
+    var dashNombre = resolverNombre(first);
+    if (dashNombre) {
+      var found = items.find(function(i){ return i.nombre === dashNombre; });
+      if (found) { found.stockUnidades = total; updated++; }
+    } else {
+      sinMapear.push(first);
+    }
+  });
+
+  syncStatus = 'ok';
+  var ts = new Date().toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit'});
+  updateSyncUI('✓ Sync ' + ts + ' (' + updated + ' vinos)', '#4a7c59');
+  saveStorage('chui-sin-mapear', sinMapear);
+  renderItems(currentFilter);
+  rKPIs();
 }
 
 function updateSyncUI(text, color) {
