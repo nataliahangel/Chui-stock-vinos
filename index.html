@@ -748,21 +748,21 @@ function showMain() {
 
 function showBevinco(btn) {} // stub - removed
 
-// ── STORAGE PERSISTENTE ──────────────────────
-async function saveStorage(key, value) {
-  try { await window.storage.set(key, JSON.stringify(value)); } catch(e) { console.warn('Storage error:', e); }
+// ── STORAGE PERSISTENTE (localStorage) ───────
+function saveStorage(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch(e) { console.warn('Storage error:', e); }
 }
 
-async function loadStorage(key) {
+function loadStorage(key) {
   try {
-    var r = await window.storage.get(key);
-    return r ? JSON.parse(r.value) : null;
+    var r = localStorage.getItem(key);
+    return r ? JSON.parse(r) : null;
   } catch(e) { return null; }
 }
 
-async function initStorage() {
+function initStorage() {
   // Load archived items
-  var saved_arch = await loadStorage('chui-archivados');
+  var saved_arch = loadStorage('chui-archivados');
   if (saved_arch && Array.isArray(saved_arch)) {
     saved_arch.forEach(function(nombre) {
       var found = items.find(function(i){ return i.nombre === nombre; });
@@ -770,7 +770,7 @@ async function initStorage() {
     });
   }
   // Load custom items added via modal
-  var saved_items = await loadStorage('chui-items-custom');
+  var saved_items = loadStorage('chui-items-custom');
   if (saved_items && Array.isArray(saved_items)) {
     saved_items.forEach(function(item) {
       var exists = items.find(function(i){ return i.nombre === item.nombre; });
@@ -780,7 +780,7 @@ async function initStorage() {
   renderItems(currentFilter);
 }
 
-async function agregarNuevoVino() {
+function agregarNuevoVino() {
   var nombre = document.getElementById('nv-nombre').value.trim();
   var cat = document.getElementById('nv-cat').value;
   var stock = parseInt(document.getElementById('nv-stock').value) || 0;
@@ -801,10 +801,9 @@ async function agregarNuevoVino() {
 
   items.push(nuevoItem);
 
-  // Save to storage
-  var saved = await loadStorage('chui-items-custom') || [];
+  var saved = loadStorage('chui-items-custom') || [];
   saved.push(nuevoItem);
-  await saveStorage('chui-items-custom', saved);
+  saveStorage('chui-items-custom', saved);
 
   ['nv-nombre','nv-stock','nv-minimo','nv-asesor','nv-telefono','nv-bodega','nv-pedido'].forEach(function(id){
     document.getElementById(id).value = '';
@@ -817,22 +816,22 @@ async function agregarNuevoVino() {
   renderItems(currentFilter);
 }
 
-async function archivarVino(nombre) {
+function archivarVino(nombre) {
   if (!confirm('¿Archivar "' + nombre + '"? Se ocultará del dashboard.')) return;
   var found = items.find(function(i){ return i.nombre === nombre; });
   if (found) {
     found.archivado = true;
     if (archivedItems.indexOf(nombre) === -1) archivedItems.push(nombre);
-    await saveStorage('chui-archivados', archivedItems);
+    saveStorage('chui-archivados', archivedItems);
     renderItems(currentFilter);
   }
 }
 
-async function desarchivarVino(nombre) {
+function desarchivarVino(nombre) {
   var found = items.find(function(i){ return i.nombre === nombre; });
   if (found) found.archivado = false;
   archivedItems = archivedItems.filter(function(n){ return n !== nombre; });
-  await saveStorage('chui-archivados', archivedItems);
+  saveStorage('chui-archivados', archivedItems);
   renderArchivados();
   renderItems(currentFilter);
 }
