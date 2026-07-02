@@ -131,6 +131,10 @@
     <div id="fecha"></div>
     <div>DATOS: 10/05/2026</div>
     <button onclick="document.getElementById('modal-nuevo').style.display='flex'" style="margin-top:6px;background:#4a7c59;border:none;color:#fff;font-family:'DM Mono',monospace;font-size:10px;padding:5px 12px;border-radius:2px;cursor:pointer;letter-spacing:0.08em;text-transform:uppercase">+ Nuevo vino</button>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+      <button onclick="syncFromSheets()" style="background:#1a1815;border:1px solid #2e2b25;color:#4a7c59;font-family:'DM Mono',monospace;font-size:10px;padding:5px 12px;border-radius:2px;cursor:pointer;letter-spacing:0.08em;text-transform:uppercase">⟳ Sync Sheets</button>
+      <span id="sync-status" style="font-family:'DM Mono',monospace;font-size:9px;color:#7a7060;letter-spacing:0.05em"></span>
+    </div>
   </div>
 </header>
 
@@ -322,71 +326,71 @@
 
 <script>
 var items = [
-  {nombre:"Un Mundo Chiquito Malbec",categoria:"Casa",stockUnidades:2,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Un Mundo Chiquito C y CB",categoria:"Casa",stockUnidades:23,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Un Mundo Chiquito Malbec",categoria:"Casa",stockUnidades:18,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Un Mundo Chiquito C y CB",categoria:"Casa",stockUnidades:12,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Un Mundo Chiquito Rose",categoria:"Casa",stockUnidades:12,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Animal Extra Brut",categoria:"Espumosos",stockUnidades:11,minimo:2,pedido:"2c",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Animal Extra Brut",categoria:"Espumosos",stockUnidades:16,minimo:2,pedido:"2c",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Ribera del Cuarzo Merlot",categoria:"Tintos",stockUnidades:2,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Cara Sur Criolla Chica",categoria:"Tintos",stockUnidades:1,minimo:null,pedido:"-",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"La Marchigiana Bonarda",categoria:"Tintos",stockUnidades:19,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Tilia Malbec",categoria:"Tintos",stockUnidades:27,minimo:null,pedido:"-",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Tilia Malbec",categoria:"Tintos",stockUnidades:20,minimo:null,pedido:"-",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"El Raro Sauvignon Blanc",categoria:"Blancos",stockUnidades:2,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Poligonos Semillon",categoria:"Blancos",stockUnidades:15,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Poligonos Semillon",categoria:"Blancos",stockUnidades:19,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"La Marchigiana Chardonnay",categoria:"Blancos",stockUnidades:8,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Cara Sur Moscatel Blanco",categoria:"Blancos",stockUnidades:3,minimo:null,pedido:"-",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Verum Chardonnay",categoria:"Blancos",stockUnidades:0,minimo:null,pedido:"-",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Tino Slow",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"La Marchigiana Rose",categoria:"Rosados",stockUnidades:18,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"N7",categoria:"Espumosos",stockUnidades:12,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Mara Semillon",categoria:"Blancos",stockUnidades:43,minimo:null,pedido:"-",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:"Nuevo",pendiente:null,ultimoPedido:"28/04",ultimoCant:"3c",entregado:"3c (28/04)"},
-  {nombre:"Laborum Torrontes",categoria:"Blancos",stockUnidades:12,minimo:10,pedido:"5c",asesor:"Daniela Davila",contacto:"+54 9 11 3039-1384",razon:"Uvas del Valle",obs:"5+1 copa dia",pendiente:null,ultimoPedido:"06/04",ultimoCant:"6c",entregado:"6c"},
-  {nombre:"La Marchigiana Moscatel",categoria:"Blancos",stockUnidades:0,minimo:null,pedido:"-",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Electrico SB-Chardonnay",categoria:"Blancos",stockUnidades:10,minimo:8,pedido:"3c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"1c",entregado:"1c (14/04)"},
-  {nombre:"Antro Chardonnay",categoria:"Blancos",stockUnidades:8,minimo:15,pedido:"5c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:"4c en camino",ultimoPedido:"04/05",ultimoCant:"4c"},
-  {nombre:"Esperando a Los Barbaros SB",categoria:"Blancos",stockUnidades:19,minimo:8,pedido:"3c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"1c",entregado:"1c (28/04)"},
-  {nombre:"Humberto Canale Riesling",categoria:"Blancos",stockUnidades:16,minimo:12,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Humberto Canale",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"3c",entregado:"3c (15/04)"},
-  {nombre:"Poligonos Verdejo",categoria:"Blancos",stockUnidades:0,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Contra Corriente Chardonnay",categoria:"Blancos",stockUnidades:9,minimo:1,pedido:"3c",asesor:"Juan Molano Mesa",contacto:"+54 9 11 2842-4015",razon:"Patagonia River Guides",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Livvera Chenin",categoria:"Blancos",stockUnidades:18,minimo:6,pedido:"2c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Mara Semillon",categoria:"Blancos",stockUnidades:18,minimo:null,pedido:"-",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:"Nuevo",pendiente:null,ultimoPedido:"28/04",ultimoCant:"3c",entregado:"3c (28/04)"},
+  {nombre:"Laborum Torrontes",categoria:"Blancos",stockUnidades:19,minimo:10,pedido:"5c",asesor:"Daniela Davila",contacto:"+54 9 11 3039-1384",razon:"Uvas del Valle",obs:"5+1 copa dia",pendiente:null,ultimoPedido:"06/04",ultimoCant:"6c",entregado:"6c"},
+  {nombre:"La Marchigiana Moscatel",categoria:"Blancos",stockUnidades:3,minimo:null,pedido:"-",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Electrico SB-Chardonnay",categoria:"Blancos",stockUnidades:27,minimo:8,pedido:"3c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"1c",entregado:"1c (14/04)"},
+  {nombre:"Antro Chardonnay",categoria:"Blancos",stockUnidades:30,minimo:15,pedido:"5c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:"4c en camino",ultimoPedido:"04/05",ultimoCant:"4c"},
+  {nombre:"Esperando a Los Barbaros SB",categoria:"Blancos",stockUnidades:17,minimo:8,pedido:"3c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"1c",entregado:"1c (28/04)"},
+  {nombre:"Humberto Canale Riesling",categoria:"Blancos",stockUnidades:37,minimo:12,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Humberto Canale",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"3c",entregado:"3c (15/04)"},
+  {nombre:"Poligonos Verdejo",categoria:"Blancos",stockUnidades:9,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Contra Corriente Chardonnay",categoria:"Blancos",stockUnidades:17,minimo:1,pedido:"3c",asesor:"Juan Molano Mesa",contacto:"+54 9 11 2842-4015",razon:"Patagonia River Guides",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Livvera Chenin",categoria:"Blancos",stockUnidades:27,minimo:6,pedido:"2c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Paso a Paso Criolla Blanco",categoria:"Blancos",stockUnidades:12,minimo:null,pedido:"2c",asesor:"Micaela Baum",contacto:"+54 9 11 5823-6823",razon:"Aurea",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"2c",entregado:"2c (07/04)"},
-  {nombre:"Verum Naranjo",categoria:"Naranjos",stockUnidades:0,minimo:12,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Verum",obs:null,pendiente:null,ultimoPedido:"07/04",ultimoCant:"4c",entregado:"4c (07/04)"},
-  {nombre:"Solito Va Naranjo",categoria:"Naranjos",stockUnidades:0,minimo:15,pedido:"6c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:"6c en camino",ultimoPedido:"04/05",ultimoCant:"6c"},
-  {nombre:"Petit Mara Naranjo 375ml",categoria:"Naranjos",stockUnidades:20,minimo:10,pedido:"24u",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:"quiebre bodega"},
+  {nombre:"Verum Naranjo",categoria:"Naranjos",stockUnidades:12,minimo:12,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Verum",obs:null,pendiente:null,ultimoPedido:"07/04",ultimoCant:"4c",entregado:"4c (07/04)"},
+  {nombre:"Solito Va Naranjo",categoria:"Naranjos",stockUnidades:14,minimo:15,pedido:"6c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:"6c en camino",ultimoPedido:"04/05",ultimoCant:"6c"},
+  {nombre:"Petit Mara Naranjo 375ml",categoria:"Naranjos",stockUnidades:47,minimo:10,pedido:"24u",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:"quiebre bodega"},
   {nombre:"Livvera Malvasia Naranjo",categoria:"Naranjos",stockUnidades:3,minimo:3,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:"3c en camino",ultimoPedido:"04/05",ultimoCant:"3c"},
   {nombre:"Paso a Paso Orange",categoria:"Naranjos",stockUnidades:0,minimo:null,pedido:"2c",asesor:"Micaela Baum",contacto:"+54 9 11 5823-6823",razon:"Aurea",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"2c",entregado:"3c (04/05)"},
-  {nombre:"L.I.A.P. Flower Merlot",categoria:"Rosados",stockUnidades:6,minimo:4,pedido:"4c",asesor:"Mauro Villarejo",contacto:"+54 9 2616 10-5500",razon:"LIAP",obs:null,pendiente:"1c en camino",ultimoPedido:"04/05",ultimoCant:"1c"},
+  {nombre:"L.I.A.P. Flower Merlot",categoria:"Rosados",stockUnidades:0,minimo:4,pedido:"4c",asesor:"Mauro Villarejo",contacto:"+54 9 2616 10-5500",razon:"LIAP",obs:null,pendiente:"1c en camino",ultimoPedido:"04/05",ultimoCant:"1c"},
   {nombre:"L.I.A.P. Power Merlot",categoria:"Tintos",stockUnidades:0,minimo:null,pedido:"3c",asesor:"Mauro Villarejo",contacto:"+54 9 2616 10-5500",razon:"LIAP",obs:"Vino nuevo",pendiente:null,ultimoPedido:"04/05",ultimoCant:"3c",entregado:"1c (04/05)"},
   {nombre:"LIAP Noir de Blanc",categoria:"Rosados",stockUnidades:3,minimo:4,pedido:"1c",asesor:"Mauro Villarejo",contacto:"+54 9 2616 10-5500",razon:"?",obs:"Vino nuevo",pendiente:null,ultimoPedido:"06/04",ultimoCant:"1c",entregado:"1c (08/04)"},
-  {nombre:"Rocamadre Pinot Noir Rose",categoria:"Rosados",stockUnidades:7,minimo:12,pedido:"5c",asesor:"Emilia",contacto:"vinosrocamadre@gmail.com",razon:"Rocamadre",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"El Afinador Rose CF",categoria:"Rosados",stockUnidades:11,minimo:15,pedido:"5c",asesor:"Carolina Biga",contacto:"+54 9 3472 55-0464",razon:"Don Agustin",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Inconsciente Merlot Rose",categoria:"Rosados",stockUnidades:2,minimo:15,pedido:"5c",asesor:"Juan Cano",contacto:"+54 9 11 4563-4899",razon:"Sophenia",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Humberto Canale Rose",categoria:"Rosados",stockUnidades:12,minimo:6,pedido:"2c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Humberto Canale",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Rocamadre Pinot Noir Rose",categoria:"Rosados",stockUnidades:47,minimo:12,pedido:"5c",asesor:"Emilia",contacto:"vinosrocamadre@gmail.com",razon:"Rocamadre",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"El Afinador Rose CF",categoria:"Rosados",stockUnidades:37,minimo:15,pedido:"5c",asesor:"Carolina Biga",contacto:"+54 9 3472 55-0464",razon:"Don Agustin",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Inconsciente Merlot Rose",categoria:"Rosados",stockUnidades:34,minimo:15,pedido:"5c",asesor:"Juan Cano",contacto:"+54 9 11 4563-4899",razon:"Sophenia",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Humberto Canale Rose",categoria:"Rosados",stockUnidades:21,minimo:6,pedido:"2c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Humberto Canale",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
   {nombre:"Araucana Malbec Rose",categoria:"Rosados",stockUnidades:13,minimo:4,pedido:"3c",asesor:"Juan Pablo Flores",contacto:"+54 9 11 3566-7785",razon:"Casa Pirque",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Cara Sur Pergolas Criollas Tintas",categoria:"Tintos",stockUnidades:3,minimo:18,pedido:"6c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:"2c en camino",ultimoPedido:"04/05",ultimoCant:"2c"},
-  {nombre:"Elephant Gun Malbec",categoria:"Tintos",stockUnidades:35,minimo:20,pedido:"7c",asesor:"Felipe Azcona",contacto:"+54 9 2645 64-8795",razon:"Azcona",obs:null,pendiente:"6c en camino",ultimoPedido:"27/04",ultimoCant:"6c"},
-  {nombre:"Ver Sacrum Monastrell",categoria:"Tintos",stockUnidades:0,minimo:8,pedido:"4c",asesor:"Micaela Baum",contacto:"+54 9 11 5823-6823",razon:"Aurea",obs:"Combinar con PAP Naranjo",pendiente:null,ultimoPedido:"06/04",ultimoCant:"4c",entregado:"6c (04/05)"},
-  {nombre:"Nat Cool Bonarda",categoria:"Tintos",stockUnidades:0,minimo:12,pedido:"5c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:"5c en camino",ultimoPedido:"04/05",ultimoCant:"5c"},
-  {nombre:"La Voja Pinot Noir",categoria:"Tintos",stockUnidades:21,minimo:12,pedido:"5c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Aper",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"4+1c",entregado:"5c (30/04)"},
-  {nombre:"Negra Margen Bonarda",categoria:"Tintos",stockUnidades:0,minimo:12,pedido:"4c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"1c",entregado:"1c (28/04)"},
-  {nombre:"Les Astronautes Malbec",categoria:"Tintos",stockUnidades:0,minimo:20,pedido:"5c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Tino Slow",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"6+1c",entregado:"7c (28/04)"},
-  {nombre:"Naciente CF y M",categoria:"Tintos",stockUnidades:1,minimo:12,pedido:"3c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:"2c en camino",ultimoPedido:"04/05",ultimoCant:"2c"},
-  {nombre:"El Raro Nebbiolo",categoria:"Tintos",stockUnidades:9,minimo:3,pedido:"3c",asesor:"Gabriel Campana",contacto:"+54 9 3525 64-4693",razon:"Campana",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:"2c (04/05)"},
-  {nombre:"Angelica Zapata CF",categoria:"Tintos",stockUnidades:16,minimo:6,pedido:"4c",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"A Lisa Malbec",categoria:"Tintos",stockUnidades:0,minimo:5,pedido:"3c",asesor:"Belen Fretes",contacto:"+54 9 2984 66-1071",razon:"Noemia",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Chacra 55 Pinot Noir",categoria:"Tintos",stockUnidades:2,minimo:1,pedido:"1c",asesor:"Rodrigo Calderon",contacto:"+54 9 11 6901-2375",razon:"Calderon",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Las Cuerdas Cota 1500",categoria:"Tintos",stockUnidades:20,minimo:3,pedido:"2c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:"3c en camino",ultimoPedido:"04/05",ultimoCant:"3c"},
-  {nombre:"Petit Maremmano Syrah-CS 375ml",categoria:"Tintos",stockUnidades:2,minimo:15,pedido:"12u",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"12u",entregado:"3c (04/05)"},
+  {nombre:"Cara Sur Pergolas Criollas Tintas",categoria:"Tintos",stockUnidades:20,minimo:18,pedido:"6c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:"2c en camino",ultimoPedido:"04/05",ultimoCant:"2c"},
+  {nombre:"Elephant Gun Malbec",categoria:"Tintos",stockUnidades:34,minimo:20,pedido:"7c",asesor:"Felipe Azcona",contacto:"+54 9 2645 64-8795",razon:"Azcona",obs:null,pendiente:"6c en camino",ultimoPedido:"27/04",ultimoCant:"6c"},
+  {nombre:"Ver Sacrum Monastrell",categoria:"Tintos",stockUnidades:9,minimo:8,pedido:"4c",asesor:"Micaela Baum",contacto:"+54 9 11 5823-6823",razon:"Aurea",obs:"Combinar con PAP Naranjo",pendiente:null,ultimoPedido:"06/04",ultimoCant:"4c",entregado:"6c (04/05)"},
+  {nombre:"Nat Cool Bonarda",categoria:"Tintos",stockUnidades:25,minimo:12,pedido:"5c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:"5c en camino",ultimoPedido:"04/05",ultimoCant:"5c"},
+  {nombre:"La Voja Pinot Noir",categoria:"Tintos",stockUnidades:10,minimo:12,pedido:"5c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Aper",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"4+1c",entregado:"5c (30/04)"},
+  {nombre:"Negra Margen Bonarda",categoria:"Tintos",stockUnidades:7,minimo:12,pedido:"4c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"1c",entregado:"1c (28/04)"},
+  {nombre:"Les Astronautes Malbec",categoria:"Tintos",stockUnidades:28,minimo:20,pedido:"5c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Tino Slow",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"6+1c",entregado:"7c (28/04)"},
+  {nombre:"Naciente CF y M",categoria:"Tintos",stockUnidades:21,minimo:12,pedido:"3c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:"2c en camino",ultimoPedido:"04/05",ultimoCant:"2c"},
+  {nombre:"El Raro Nebbiolo",categoria:"Tintos",stockUnidades:14,minimo:3,pedido:"3c",asesor:"Gabriel Campana",contacto:"+54 9 3525 64-4693",razon:"Campana",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:"2c (04/05)"},
+  {nombre:"Angelica Zapata CF",categoria:"Tintos",stockUnidades:13,minimo:6,pedido:"4c",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"A Lisa Malbec",categoria:"Tintos",stockUnidades:16,minimo:5,pedido:"3c",asesor:"Belen Fretes",contacto:"+54 9 2984 66-1071",razon:"Noemia",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Chacra 55 Pinot Noir",categoria:"Tintos",stockUnidades:5,minimo:1,pedido:"1c",asesor:"Rodrigo Calderon",contacto:"+54 9 11 6901-2375",razon:"Calderon",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Las Cuerdas Cota 1500",categoria:"Tintos",stockUnidades:5,minimo:3,pedido:"2c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:"3c en camino",ultimoPedido:"04/05",ultimoCant:"3c"},
+  {nombre:"Petit Maremmano Syrah-CS 375ml",categoria:"Tintos",stockUnidades:16,minimo:15,pedido:"12u",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"12u",entregado:"3c (04/05)"},
   {nombre:"Vertebrado Cabernet Franc",categoria:"Tintos",stockUnidades:11,minimo:8,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:"2c en camino",ultimoPedido:"04/05",ultimoCant:"2c"},
   {nombre:"Verum Malbec",categoria:"Tintos",stockUnidades:18,minimo:null,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Verum",obs:"Evento",pendiente:null,ultimoPedido:"13/04",ultimoCant:"4c",entregado:"2c (04/05)"},
   {nombre:"Electrico Rosado",categoria:"Rosados",stockUnidades:0,minimo:null,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:"Evento",pendiente:"2c en camino",ultimoPedido:"04/05",ultimoCant:"2c"},
-  {nombre:"Nox Malbec",categoria:"Espumosos",stockUnidades:0,minimo:4,pedido:"3c",asesor:"Alma Cabral",contacto:"+54 9 11 3357-8389",razon:"Punto Novisa",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:"2c (04/05)"},
-  {nombre:"Alma 4 Pinot-Chardonnay",categoria:"Espumosos",stockUnidades:11,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"4c",entregado:"5c (15/04)"},
-  {nombre:"Alma Negra Chardonnay",categoria:"Espumosos",stockUnidades:15,minimo:4,pedido:"3c",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Zuccardi Blanc de Blancs",categoria:"Espumosos",stockUnidades:18,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"3c",entregado:"3c (15/04)"},
+  {nombre:"Nox Malbec",categoria:"Espumosos",stockUnidades:10,minimo:4,pedido:"3c",asesor:"Alma Cabral",contacto:"+54 9 11 3357-8389",razon:"Punto Novisa",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:"2c (04/05)"},
+  {nombre:"Alma 4 Pinot-Chardonnay",categoria:"Espumosos",stockUnidades:17,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"4c",entregado:"5c (15/04)"},
+  {nombre:"Alma Negra Chardonnay",categoria:"Espumosos",stockUnidades:26,minimo:4,pedido:"3c",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Zuccardi Blanc de Blancs",categoria:"Espumosos",stockUnidades:7,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"3c",entregado:"3c (15/04)"},
   {nombre:"Animal Extra Brut",categoria:"Espumosos",stockUnidades:13,minimo:2,pedido:"2c",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Terrazas Petit Manseng",categoria:"Dulce",stockUnidades:0,minimo:4,pedido:"3c",asesor:"Camila Pacheco",contacto:"+54 9 11 5035-8041",razon:"Chandon",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
-  {nombre:"Mara de Uco Bonarda",categoria:"Casa",stockUnidades:50,minimo:18,pedido:"3+3c",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:"1+1",pendiente:null,ultimoPedido:"13/04",ultimoCant:"6c",entregado:"8c (28/04)"},
-  {nombre:"Elephant Gun Merlot Rose",categoria:"Casa",stockUnidades:30,minimo:15,pedido:"3c",asesor:"Felipe Azcona",contacto:"+54 9 2645 64-8795",razon:"Azcona",obs:null,pendiente:null,ultimoPedido:"10/04",ultimoCant:"3c",entregado:"3c (14/04)"},
-  {nombre:"Tilia Chardonnay",categoria:"Casa",stockUnidades:37,minimo:18,pedido:"3+3c",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:"1+1",pendiente:"3c en camino",ultimoPedido:"04/05",ultimoCant:"3c"},
+  {nombre:"Terrazas Petit Manseng",categoria:"Dulce",stockUnidades:5,minimo:4,pedido:"3c",asesor:"Camila Pacheco",contacto:"+54 9 11 5035-8041",razon:"Chandon",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Mara de Uco Bonarda",categoria:"Casa",stockUnidades:45,minimo:18,pedido:"3+3c",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:"1+1",pendiente:null,ultimoPedido:"13/04",ultimoCant:"6c",entregado:"8c (28/04)"},
+  {nombre:"Elephant Gun Merlot Rose",categoria:"Casa",stockUnidades:46,minimo:15,pedido:"3c",asesor:"Felipe Azcona",contacto:"+54 9 2645 64-8795",razon:"Azcona",obs:null,pendiente:null,ultimoPedido:"10/04",ultimoCant:"3c",entregado:"3c (14/04)"},
+  {nombre:"Tilia Chardonnay",categoria:"Casa",stockUnidades:15,minimo:18,pedido:"3+3c",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:"1+1",pendiente:"3c en camino",ultimoPedido:"04/05",ultimoCant:"3c"},
   {nombre:"UMC Malbec",categoria:"Casa",stockUnidades:66,minimo:15,pedido:"8c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Vistalba",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"8c",entregado:"6c (04/05)"},
   {nombre:"UMC Blanco",categoria:"Casa",stockUnidades:30,minimo:6,pedido:"2c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Vistalba",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"2c->3c",entregado:"3c"},
   {nombre:"La Ridetto Tinto",categoria:"Tintos",stockUnidades:0,minimo:null,pedido:"-",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Dominio de Freneza",obs:"Blend tinto - mismo contacto que La Voja",pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
@@ -465,6 +469,94 @@ var precios = {
 function formatPesos(n) {
   return '$' + Math.round(n).toLocaleString('es-AR');
 }
+
+var nombreMapeo = {
+  "Laborum Torrontes": "Laborum Torrontes",
+  "La Marchigiana Moscatel": "La Marchigiana Moscatel",
+  "Eléctrico SB-Chardonnay": "Electrico SB-Chardonnay",
+  "Electrico SB - CH": "Electrico SB-Chardonnay",
+  "Electrico SB-CH": "Electrico SB-Chardonnay",
+  "Antro Chardonnay": "Antro Chardonnay",
+  "Esperando a Los Bárbaros": "Esperando a Los Barbaros SB",
+  "Esperando a Los Barbaros SB - S": "Esperando a Los Barbaros SB",
+  "Esperando a Los Barbaros": "Esperando a Los Barbaros SB",
+  "H.C. Riesling": "Humberto Canale Riesling",
+  "HC Riesling": "Humberto Canale Riesling",
+  "Humberto Canale Riesling": "Humberto Canale Riesling",
+  "Polígonos Verdejo": "Poligonos Verdejo",
+  "Polígonos Semillon": "Poligonos Semillon",
+  "Polígonos Semillón": "Poligonos Semillon",
+  "Contra Corriente Chardonnay": "Contra Corriente Chardonnay",
+  "Livverá Chenin": "Livvera Chenin",
+  "Livverá Chenín": "Livvera Chenin",
+  "Verum Naranjo": "Verum Naranjo",
+  "Verum Chardonnay Naranjo": "Verum Naranjo",
+  "Solito Va": "Solito Va Naranjo",
+  "Solito Va Pedro Jiménez Naranjo": "Solito Va Naranjo",
+  "Petit Mara Naranjo": "Petit Mara Naranjo 375ml",
+  "LIAP Flower Merlot": "L.I.A.P. Flower Merlot",
+  "Rocamadre Rose PN": "Rocamadre Pinot Noir Rose",
+  "Rocamadre Rosé Pinot Noir": "Rocamadre Pinot Noir Rose",
+  "El Afinador Rose Cabernet Franc": "El Afinador Rose CF",
+  "El Afinador Cabernet Franc": "El Afinador Rose CF",
+  "Inconsciente Merlot Rose": "Inconsciente Merlot Rose",
+  "Incosciente Merlot": "Inconsciente Merlot Rose",
+  "Humberto Canale Rosé Noir": "Humberto Canale Rose",
+  "Humberto Canale Rose Pinot Noir": "Humberto Canale Rose",
+  "Araucana Malbec Rosé": "Araucana Malbec Rose",
+  "Araucana Malbec": "Araucana Malbec Rose",
+  "Cara Sur Pergolas Criollas Tintas": "Cara Sur Pergolas Criollas Tintas",
+  "Finca La Catalina": "Finca La Catalina Malbec",
+  "Elephant Gun Malbec": "Elephant Gun Malbec",
+  "Ver Sacrum Monastrell": "Ver Sacrum Monastrell",
+  "Nat'Cool Bonarda": "Nat Cool Bonarda",
+  "Nat Cool Bonarda": "Nat Cool Bonarda",
+  "La Voja Pinot Noir": "La Voja Pinot Noir",
+  "Negra Margen Bonarda": "Negra Margen Bonarda",
+  "Les Astronautes Malbec": "Les Astronautes Malbec",
+  "Naciente Cab. Franc": "Naciente CF y M",
+  "Naciente Cabernet Franc / Malbec": "Naciente CF y M",
+  "El Raro Nebbiolo": "El Raro Nebbiolo",
+  "Angélica Zapata CF": "Angelica Zapata CF",
+  "Angélica Zapata Alta CF": "Angelica Zapata CF",
+  "A Lisa": "A Lisa Malbec",
+  "A Lisa Malbec": "A Lisa Malbec",
+  "Chacra 55 Pinot Noir": "Chacra 55 Pinot Noir",
+  "Las Cuerdas Cota 1500 Malbec-CF": "Las Cuerdas Cota 1500",
+  "Las Cuerdas Cota 1500 M - CF": "Las Cuerdas Cota 1500",
+  "Petit Maremmano Syrah-CS": "Petit Maremmano Syrah-CS 375ml",
+  "Petit Maremmano Syrah": "Petit Maremmano Syrah-CS 375ml",
+  "Nox Malbec": "Nox Malbec",
+  "Alma 4": "Alma 4 Pinot-Chardonnay",
+  "Alma 4 PN - CH": "Alma 4 Pinot-Chardonnay",
+  "Alma Negra Blanc de Blancs": "Alma Negra Chardonnay",
+  "Alma Negra BdB": "Alma Negra Chardonnay",
+  "Zuccardi Blanc de Blancs": "Zuccardi Blanc de Blancs",
+  "Zuccardi Bdb": "Zuccardi Blanc de Blancs",
+  "Terrazas Petit Manseng": "Terrazas Petit Manseng",
+  "Terrazas de los Andes Petit Manseng": "Terrazas Petit Manseng",
+  "Mara Bonarda": "Mara de Uco Bonarda",
+  "Mara de Uco Bonarda": "Mara de Uco Bonarda",
+  "Elephant Gun Merlot": "Elephant Gun Merlot Rose",
+  "Tilia Chardonnay": "Tilia Chardonnay",
+  "Un Mundo Chiquito Malbec": "Un Mundo Chiquito Malbec",
+  "Un Mundo Chiquito C y CB": "Un Mundo Chiquito C y CB",
+  "Un Mundo Chiquito Rose": "Un Mundo Chiquito Rose",
+  "Tilia Malbec": "Tilia Malbec",
+  "Mara Semillon": "Mara Semillon",
+  "Vertebrado Cabernet Franc": "Vertebrado Cabernet Franc",
+  "LIAP Power Merlot": "L.I.A.P. Power Merlot",
+  "L.I.A.P Power Merlot": "L.I.A.P. Power Merlot",
+  "Humberto Canale Semillon": "HC Semillon",
+  "HC Semillon": "HC Semillon",
+  "Eléctrico Rosé Pinot Noir": "Electrico Rosado",
+  "Eléctrico Rosé": "Electrico Rosado",
+  "Les Astronautes Blend de Criollas": "Les Astronautes Criollas Blancas",
+  "Casa Tano PetNat - CH": "Casa Tano PetNat",
+  "Pielihueso Malbec / Torrontés Claranjo": "Pielihueso",
+  "Paso a Paso Orange Blend criollas": "Paso a Paso Orange",
+  "La Marchigiana Bonarda": "La Marchigiana Bonarda",
+};
 
 var currentFilter = 'all';
 var currentSearch = '';
@@ -768,8 +860,208 @@ function showMain() {
 
 function showBevinco(btn) {} // stub - removed
 
-// ── STORAGE PERSISTENTE (localStorage) ───────
-function saveStorage(key, value) {
+// ── LIVE SYNC DESDE GOOGLE SHEETS ────────────
+var CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQTgDP41sew2bAFWFun8c3LDURV5TUD1psJ0m45AKFv5suElAJPwQ6CWlgyi0v1rPpeH-pCRqZ7m62d/pub?gid=1269736153&single=true&output=csv';
+
+// Mapeo de nombres: CSV → nombre en dashboard
+var nombreMapeo = {
+  "Laborum Torrontes": "Laborum Torrontes",
+  "La Marchigiana Moscatel": "La Marchigiana Moscatel",
+  "Eléctrico SB-Chardonnay": "Electrico SB-Chardonnay",
+  "Electrico SB - CH": "Electrico SB-Chardonnay",
+  "Eléctrico SB - CH": "Electrico SB-Chardonnay",
+  "Antro Chardonnay": "Antro Chardonnay",
+  "Esperando a Los Bárbaros": "Esperando a Los Barbaros SB",
+  "Esperando a Los Barbaros SB - S": "Esperando a Los Barbaros SB",
+  "Esperando a Los Barbaros": "Esperando a Los Barbaros SB",
+  "H.C. Riesling": "Humberto Canale Riesling",
+  "HC Riesling": "Humberto Canale Riesling",
+  "Humberto Canale Riesling": "Humberto Canale Riesling",
+  "Polígonos Verdejo": "Poligonos Verdejo",
+  "Polígonos Semillón": "Poligonos Semillon",
+  "Polígonos Semillon": "Poligonos Semillon",
+  "Contra Corriente Chardonnay": "Contra Corriente Chardonnay",
+  "Livverá Chenin": "Livvera Chenin",
+  "Livverá Chenín": "Livvera Chenin",
+  "Verum Naranjo": "Verum Naranjo",
+  "Verum Chardonnay Naranjo": "Verum Naranjo",
+  "Solito Va": "Solito Va Naranjo",
+  "Solito Va Pedro Jiménez Naranjo": "Solito Va Naranjo",
+  "Petit Mara Naranjo": "Petit Mara Naranjo 375ml",
+  "LIAP Flower Merlot": "L.I.A.P. Flower Merlot",
+  "Rocamadre Rose PN": "Rocamadre Pinot Noir Rose",
+  "Rocamadre Rosé Pinot Noir": "Rocamadre Pinot Noir Rose",
+  "El Afinador Rose Cabernet Franc": "El Afinador Rose CF",
+  "El Afinador Cabernet Franc": "El Afinador Rose CF",
+  "Incosciente Merlot": "Inconsciente Merlot Rose",
+  "Inconsciente Merlot Rose": "Inconsciente Merlot Rose",
+  "Humberto Canale Rosé Noir": "Humberto Canale Rose",
+  "Humberto Canale Rose Pinot Noir": "Humberto Canale Rose",
+  "Araucana Malbec Rosé": "Araucana Malbec Rose",
+  "Araucana Malbec": "Araucana Malbec Rose",
+  "Cara Sur Pergolas Criollas Tintas": "Cara Sur Pergolas Criollas Tintas",
+  "Elephant Gun Malbec": "Elephant Gun Malbec",
+  "Ver Sacrum Monastrell": "Ver Sacrum Monastrell",
+  "Nat'Cool Bonarda": "Nat Cool Bonarda",
+  "Nat Cool Bonarda": "Nat Cool Bonarda",
+  "La Voja Pinot Noir": "La Voja Pinot Noir",
+  "Negra Margen Bonarda": "Negra Margen Bonarda",
+  "Les Astronautes Malbec": "Les Astronautes Malbec",
+  "Naciente Cab. Franc": "Naciente CF y M",
+  "Naciente Cabernet Franc / Malbec": "Naciente CF y M",
+  "El Raro Nebbiolo": "El Raro Nebbiolo",
+  "Angélica Zapata CF": "Angelica Zapata CF",
+  "Angélica Zapata Alta CF": "Angelica Zapata CF",
+  "A Lisa Malbec": "A Lisa Malbec",
+  "A Lisa": "A Lisa Malbec",
+  "Chacra 55 Pinot Noir": "Chacra 55 Pinot Noir",
+  "Las Cuerdas Cota 1500 Malbec-CF": "Las Cuerdas Cota 1500",
+  "Las Cuerdas Cota 1500 M - CF": "Las Cuerdas Cota 1500",
+  "Petit Maremmano Syrah-CS": "Petit Maremmano Syrah-CS 375ml",
+  "Petit Maremmano Syrah": "Petit Maremmano Syrah-CS 375ml",
+  "Nox Malbec": "Nox Malbec",
+  "Alma 4 PN - CH": "Alma 4 Pinot-Chardonnay",
+  "Alma 4": "Alma 4 Pinot-Chardonnay",
+  "Alma Negra BdB": "Alma Negra Chardonnay",
+  "Alma Negra Blanc de Blancs": "Alma Negra Chardonnay",
+  "Zuccardi Bdb": "Zuccardi Blanc de Blancs",
+  "Zuccardi Blanc de Blancs": "Zuccardi Blanc de Blancs",
+  "Terrazas de los Andes Petit Manseng": "Terrazas Petit Manseng",
+  "Terrazas Petit Manseng": "Terrazas Petit Manseng",
+  "Mara de Uco Bonarda": "Mara de Uco Bonarda",
+  "Mara Bonarda": "Mara de Uco Bonarda",
+  "Elephant Gun Merlot": "Elephant Gun Merlot Rose",
+  "Tilia Chardonnay": "Tilia Chardonnay",
+  "Un Mundo Chiquito Malbec": "Un Mundo Chiquito Malbec",
+  "Un Mundo Chiquito C y CB": "Un Mundo Chiquito C y CB",
+  "Un Mundo Chiquito Rose": "Un Mundo Chiquito Rose",
+  "Tilia Malbec": "Tilia Malbec",
+  "Mara Semillon": "Mara Semillon",
+  "Vertebrado Cabernet Franc": "Vertebrado Cabernet Franc",
+  "LIAP Power Merlot": "L.I.A.P. Power Merlot",
+  "L.I.A.P Power Merlot": "L.I.A.P. Power Merlot",
+  "Eléctrico Rosé Pinot Noir": "Electrico Rosado",
+  "Eléctrico Rosé": "Electrico Rosado",
+  "Les Astronautes Blend de Criollas": "Les Astronautes Criollas Blancas",
+  "Pielihueso Malbec / Torrontés Claranjo": "Pielihueso",
+  "Paso a Paso Orange Blend criollas": "Paso a Paso Orange",
+  "Humberto Canale Semillon": "HC Semillon",
+  "Casa Tano PetNat - CH": "Casa Tano PetNat",
+  "Livverá Malvasía": "Livvera Malvasia Naranjo",
+  "Livvera Malvasía": "Livvera Malvasia Naranjo",
+};
+
+function resolverNombre(nombre) {
+  if (!nombre) return null;
+  var n = nombre.trim();
+  // Exact match first
+  if (nombreMapeo[n]) return nombreMapeo[n];
+  // Case-insensitive
+  var lower = n.toLowerCase();
+  for (var k in nombreMapeo) {
+    if (k.toLowerCase() === lower) return nombreMapeo[k];
+  }
+  // Fuzzy: check if dashboard item name contains key words
+  for (var k in nombreMapeo) {
+    var kw = k.toLowerCase().split(/[\s\-\/]+/).filter(function(w){ return w.length > 4; });
+    var match = kw.length > 0 && kw.every(function(w){ return lower.indexOf(w) !== -1; });
+    if (match) return nombreMapeo[k];
+  }
+  // Try direct match against items array
+  var directMatch = items.find(function(i){ return i.nombre.toLowerCase() === lower; });
+  if (directMatch) return directMatch.nombre;
+  return null;
+}
+
+function parseCSVLine(line) {
+  // Handle quoted fields
+  var result = [];
+  var cur = '';
+  var inQ = false;
+  for (var i = 0; i < line.length; i++) {
+    var c = line[i];
+    if (c === '"') { inQ = !inQ; }
+    else if ((c === ',' || c === ';') && !inQ) { result.push(cur.trim()); cur = ''; }
+    else { cur += c; }
+  }
+  result.push(cur.trim());
+  return result;
+}
+
+function parseTotalFromCSV(val) {
+  if (!val) return null;
+  var s = val.toString().replace(/[$ ]/g,'').replace(',','.');
+  var n = parseFloat(s);
+  return isNaN(n) ? null : Math.floor(n);
+}
+
+var syncStatus = 'idle'; // idle | loading | ok | error
+
+function syncFromSheets() {
+  if (syncStatus === 'loading') return;
+  syncStatus = 'loading';
+  updateSyncUI('⟳ Sincronizando...', '#d4a017');
+
+  fetch(CSV_URL + '&cachebust=' + Date.now())
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    })
+    .then(function(csv) {
+      var lines = csv.split(/\r?\n/);
+      var updated = 0;
+      var sinMapear = [];
+      var totalCol = -1;
+      var nombreCol = 0;
+      var inStock = false;
+
+      lines.forEach(function(line) {
+        if (!line.trim()) return;
+        var cols = parseCSVLine(line);
+        var first = (cols[0] || '').trim();
+
+        // Detect header row
+        if (first === '' && cols.some(function(c){ return /total/i.test(c); })) {
+          inStock = true;
+          cols.forEach(function(c, i){ if (/total/i.test(c)) totalCol = i; });
+          return;
+        }
+        // Skip category headers
+        if (/^(BLANCOS|NARANJOS|ROSADOS|TINTOS|ESPUMOSOS|VINO DULCE|VINOS DE LA CASA|VINOS POR FUERA)/i.test(first)) return;
+        if (!inStock || !first) return;
+
+        var total = parseTotalFromCSV(cols[totalCol > -1 ? totalCol : 3]);
+        if (total === null) return;
+
+        var dashNombre = resolverNombre(first);
+        if (dashNombre) {
+          var found = items.find(function(i){ return i.nombre === dashNombre; });
+          if (found) { found.stockUnidades = total; updated++; }
+        } else {
+          sinMapear.push(first);
+        }
+      });
+
+      syncStatus = 'ok';
+      var ts = new Date().toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit'});
+      updateSyncUI('✓ Sync ' + ts + ' (' + updated + ' vinos)', '#4a7c59');
+      saveStorage('chui-sin-mapear', sinMapear);
+      renderItems(currentFilter);
+      rKPIs();
+    })
+    .catch(function(e) {
+      syncStatus = 'error';
+      updateSyncUI('⚠ Sin conexión a Sheets', '#c0392b');
+      console.warn('Sync error:', e);
+    });
+}
+
+function updateSyncUI(text, color) {
+  var el = document.getElementById('sync-status');
+  if (el) { el.textContent = text; el.style.color = color; }
+}
+
+function initStorage() {
   try { localStorage.setItem(key, JSON.stringify(value)); } catch(e) { console.warn('Storage error:', e); }
 }
 
@@ -1121,6 +1413,8 @@ function copyMsg(btn,msg) {
 
 document.getElementById('fecha').textContent=new Date().toLocaleDateString('es-AR',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).toUpperCase();
 initStorage();
+// Auto-sync from Google Sheets on load
+syncFromSheets();
 </script>
 </body>
 </html>
