@@ -748,7 +748,39 @@ function showMain() {
 
 function showBevinco(btn) {} // stub - removed
 
-function agregarNuevoVino() {
+// ── STORAGE PERSISTENTE ──────────────────────
+async function saveStorage(key, value) {
+  try { await window.storage.set(key, JSON.stringify(value)); } catch(e) { console.warn('Storage error:', e); }
+}
+
+async function loadStorage(key) {
+  try {
+    var r = await window.storage.get(key);
+    return r ? JSON.parse(r.value) : null;
+  } catch(e) { return null; }
+}
+
+async function initStorage() {
+  // Load archived items
+  var saved_arch = await loadStorage('chui-archivados');
+  if (saved_arch && Array.isArray(saved_arch)) {
+    saved_arch.forEach(function(nombre) {
+      var found = items.find(function(i){ return i.nombre === nombre; });
+      if (found) { found.archivado = true; archivedItems.push(nombre); }
+    });
+  }
+  // Load custom items added via modal
+  var saved_items = await loadStorage('chui-items-custom');
+  if (saved_items && Array.isArray(saved_items)) {
+    saved_items.forEach(function(item) {
+      var exists = items.find(function(i){ return i.nombre === item.nombre; });
+      if (!exists) items.push(item);
+    });
+  }
+  renderItems(currentFilter);
+}
+
+async function agregarNuevoVino() {
   var nombre = document.getElementById('nv-nombre').value.trim();
   var cat = document.getElementById('nv-cat').value;
   var stock = parseInt(document.getElementById('nv-stock').value) || 0;
@@ -760,40 +792,49 @@ function agregarNuevoVino() {
 
   if (!nombre) { alert('El nombre es obligatorio'); return; }
 
-  items.push({
-    nombre: nombre,
-    categoria: cat,
-    stockUnidades: stock,
-    minimo: minimo,
-    pedido: pedido,
-    asesor: asesor,
-    contacto: tel,
-    razon: bodega,
-    obs: null,
-    pendiente: null,
-    ultimoPedido: null,
-    ultimoCant: null,
-    entregado: null
-  });
+  var nuevoItem = {
+    nombre: nombre, categoria: cat, stockUnidades: stock,
+    minimo: minimo, pedido: pedido, asesor: asesor,
+    contacto: tel, razon: bodega, obs: null,
+    pendiente: null, ultimoPedido: null, ultimoCant: null, entregado: null
+  };
 
-  // Clear fields
+  items.push(nuevoItem);
+
+  // Save to storage
+  var saved = await loadStorage('chui-items-custom') || [];
+  saved.push(nuevoItem);
+  await saveStorage('chui-items-custom', saved);
+
   ['nv-nombre','nv-stock','nv-minimo','nv-asesor','nv-telefono','nv-bodega','nv-pedido'].forEach(function(id){
     document.getElementById(id).value = '';
   });
 
-  document.getElementById('nv-msg').style.display = 'block';
-  setTimeout(function(){ document.getElementById('nv-msg').style.display = 'none'; }, 3000);
+  var msg = document.getElementById('nv-msg');
+  msg.textContent = '✓ "' + nombre + '" guardado permanentemente.';
+  msg.style.display = 'block';
+  setTimeout(function(){ msg.style.display = 'none'; }, 3000);
   renderItems(currentFilter);
 }
 
-function archivarVino(nombre) {
-  if (!confirm('¿Archivar "' + nombre + '"? Se ocultará del dashboard pero se conservan los datos.')) return;
+async function archivarVino(nombre) {
+  if (!confirm('¿Archivar "' + nombre + '"? Se ocultará del dashboard.')) return;
   var found = items.find(function(i){ return i.nombre === nombre; });
   if (found) {
     found.archivado = true;
-    archivedItems.push(nombre);
+    if (archivedItems.indexOf(nombre) === -1) archivedItems.push(nombre);
+    await saveStorage('chui-archivados', archivedItems);
     renderItems(currentFilter);
   }
+}
+
+async function desarchivarVino(nombre) {
+  var found = items.find(function(i){ return i.nombre === nombre; });
+  if (found) found.archivado = false;
+  archivedItems = archivedItems.filter(function(n){ return n !== nombre; });
+  await saveStorage('chui-archivados', archivedItems);
+  renderArchivados();
+  renderItems(currentFilter);
 }
 
 function filterFromStat(status) {
@@ -1060,7 +1101,7 @@ function copyMsg(btn,msg) {
 }
 
 document.getElementById('fecha').textContent=new Date().toLocaleDateString('es-AR',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).toUpperCase();
-renderItems('all');
+initStorage();
 </script>
 </body>
 </html>
