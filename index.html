@@ -1,213 +1,632 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CHUÍ · Cava & Stock</title>
-  <style>
-    :root {
-      --bg: #f3f0e9;
-      --surface: #ffffff;
-      --ink: #20362e;
-      --muted: #718078;
-      --line: #e7e3da;
-      --green: #24483a;
-      --wine: #722f37; /* Color borravino para acentos de cava */
-      --radius: 22px;
-    }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: Inter, sans-serif;
-      padding: 20px;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 25px;
-    }
-
-    .title h1 { margin: 0; font-size: 22px; font-weight: 800; }
-    .title p { margin: 0; color: var(--muted); font-size: 13px; }
-
-    /* Los 3 KPIs clave de la Cava */
-    .kpi-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 25px;
-    }
-
-    .kpi-card {
-      background: var(--surface);
-      padding: 15px;
-      border-radius: var(--radius);
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-
-    .kpi-card span { display: block; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; }
-    .kpi-card strong { display: block; font-size: 18px; margin-top: 5px; color: var(--wine); }
-
-    /* Barra de búsqueda / Filtro */
-    .search-bar {
-      background: #e9e5dc;
-      padding: 12px 18px;
-      border-radius: 14px;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    /* Lista de Vinos */
-    .wine-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .wine-card {
-      background: var(--surface);
-      padding: 16px;
-      border-radius: var(--radius);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    }
-
-    .wine-info { flex: 1; }
-    .wine-name { display: block; font-weight: 800; font-size: 15px; margin-bottom: 2px; }
-    .wine-meta { display: block; font-size: 12px; color: var(--muted); }
-    
-    .wine-stock {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .stock-control {
-      display: flex;
-      align-items: center;
-      background: var(--bg);
-      border-radius: 12px;
-      padding: 4px;
-    }
-
-    .btn-qty {
-      width: 32px;
-      height: 32px;
-      border: 0;
-      background: white;
-      border-radius: 8px;
-      font-weight: 800;
-      color: var(--wine);
-      cursor: pointer;
-    }
-
-    .qty-display {
-      width: 40px;
-      text-align: center;
-      font-weight: 800;
-      font-size: 16px;
-    }
-
-    .tag-low {
-      background: #fff0ee;
-      color: #e75a50;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 10px;
-      font-weight: 800;
-      margin-top: 5px;
-      display: inline-block;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHUI — Alertas de Stock</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#e8e4dc; --surface:#f5f2ec; --card:#ffffff; --border:#d4cfc5;
+    --red:#c0392b; --amber:#b8860b; --green:#1e3d2f; --blue:#3a5a8a;
+    --text:#1a1a1a; --muted:#7a7060; --dim:#a09880;
+    --accent:#1e3d2f; --accent-light:#e6f0ea;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','DM Mono',monospace; font-weight:400; min-height:100vh; padding:0 0 60px 0; }
+  header { max-width:900px; margin:0 auto 32px; display:flex; align-items:flex-end; justify-content:space-between; border-bottom:1px solid var(--border); padding:40px 20px 24px; }
+  .logo { font-family:'Playfair Display',serif; font-size:38px; font-style:italic; letter-spacing:-1px; line-height:1; color:var(--accent); }
+  .header-meta { text-align:right; color:var(--muted); font-size:11px; letter-spacing:0.08em; line-height:1.9; }
+  .stats-row { max-width:900px; margin:0 auto 28px; display:grid; grid-template-columns:repeat(4,1fr); gap:10px; padding:0 20px; }
+  .stat-box { background:var(--card); border:none; padding:18px 16px; border-radius:16px; box-shadow:0 1px 4px rgba(0,0,0,0.06); transition:transform 0.15s,box-shadow 0.15s; cursor:pointer; }
+  .stat-box:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,0.1); }
+  .stat-box .num { font-family:'Playfair Display',serif; font-size:34px; line-height:1; margin-bottom:5px; }
+  .stat-box .label { font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); }
+  .stat-box.red .num { color:var(--red); }
+  .stat-box.amber .num { color:var(--amber); }
+  .stat-box.green .num { color:var(--green); }
+  .stat-box.blue .num { color:var(--blue); }
+  .filters { max-width:900px; margin:0 auto 16px; display:flex; gap:6px; flex-wrap:wrap; padding:0 20px; }
+  .filter-btn { background:var(--card); border:1.5px solid var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.06em; padding:7px 14px; border-radius:20px; cursor:pointer; text-transform:uppercase; transition:all 0.2s; }
+  .filter-btn:hover,.filter-btn.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .filter-btn.red.active { background:var(--red); border-color:var(--red); color:#fff; }
+  .filter-btn.amber.active { background:var(--amber); border-color:var(--amber); color:#fff; }
+  #main-content.hidden { display:none; }
+  .cat-btn { background:var(--card); border:1.5px solid var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.05em; padding:6px 14px; border-radius:20px; cursor:pointer; transition:all 0.2s; }
+  .cat-btn:hover, .cat-btn.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .section { max-width:900px; margin:0 auto 28px; padding:0 20px; }
+  .section-title { font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; display:flex; align-items:center; gap:10px; font-weight:600; }
+  .section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+  .alert-card { background:var(--card); border:none; border-left:4px solid; padding:16px 18px; margin-bottom:10px; border-radius:0 16px 16px 0; box-shadow:0 1px 6px rgba(0,0,0,0.06); display:grid; grid-template-columns:1fr auto; gap:12px; align-items:start; animation:fadeIn 0.4s ease forwards; opacity:0; }
+  @keyframes fadeIn { to { opacity:1; } }
+  .alert-card.critica { border-left-color:var(--red); }
+  .alert-card.alerta { border-left-color:var(--amber); }
+  .alert-card.ok { border-left-color:var(--green); }
+  .wine-name { font-family:'Playfair Display',serif; font-size:17px; margin-bottom:6px; line-height:1.2; color:var(--text); }
+  .wine-meta { font-size:11px; color:var(--muted); display:flex; gap:16px; flex-wrap:wrap; margin-bottom:8px; }
+  .contact-info { font-size:11px; color:var(--muted); margin-top:6px; padding-top:8px; border-top:1px solid var(--border); display:flex; gap:16px; flex-wrap:wrap; }
+  .contact-info a { color:var(--accent); text-decoration:none; font-weight:500; }
+  .historial { margin-top:8px; padding-top:8px; border-top:1px solid var(--border); display:flex; gap:12px; flex-wrap:wrap; font-size:11px; color:var(--muted); }
+  .precio-section { overflow:hidden; max-height:0; transition: max-height 0.3s ease, opacity 0.3s ease; opacity:0; }
+  .precio-section.open { max-height:300px; opacity:1; }
+  .expand-btn { margin-top:8px; background:var(--surface); border:1.5px solid var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.06em; padding:5px 12px; border-radius:20px; cursor:pointer; text-transform:uppercase; transition:all 0.2s; display:inline-block; }
+  .expand-btn:hover { color:var(--accent); border-color:var(--accent); background:#fff; }
+  .right-panel { text-align:right; min-width:110px; }
+  .badge { display:inline-block; font-size:10px; letter-spacing:0.08em; padding:4px 10px; border-radius:20px; text-transform:uppercase; margin-bottom:10px; font-weight:600; }
+  .badge.critica { background:rgba(192,57,43,0.12); color:var(--red); }
+  .badge.alerta { background:rgba(184,134,11,0.12); color:var(--amber); }
+  .stock-display { font-size:30px; font-family:'Playfair Display',serif; line-height:1; margin-bottom:2px; }
+  .stock-label { font-size:10px; color:var(--muted); letter-spacing:0.08em; }
+  .pedido-tag { margin-top:10px; font-size:11px; color:var(--muted); background:var(--surface); padding:4px 10px; border-radius:20px; display:inline-block; border:1px solid var(--border); }
+  .pedido-tag strong { color:var(--accent); font-weight:600; }
+  .obs-tag { display:inline-block; font-size:10px; color:var(--blue); background:rgba(58,90,138,0.08); border:1px solid rgba(58,90,138,0.2); padding:2px 8px; border-radius:20px; margin-top:4px; margin-right:4px; }
+  .pendiente-tag { display:inline-block; font-size:10px; color:var(--blue); background:rgba(58,90,138,0.08); border:1px solid rgba(58,90,138,0.3); padding:2px 8px; border-radius:20px; margin-top:4px; margin-right:4px; }
+  .wa-fab { position:fixed; bottom:28px; right:24px; background:#25D366; color:#fff; border:none; border-radius:16px; font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; padding:14px 20px; cursor:pointer; z-index:100; box-shadow:0 4px 20px rgba(37,211,102,0.35); transition:transform 0.2s,box-shadow 0.2s; display:flex; align-items:center; gap:10px; }
+  .wa-fab:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(37,211,102,0.45); }
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:200; backdrop-filter:blur(6px); align-items:center; justify-content:center; padding:20px; }
+  .modal-overlay.open { display:flex; }
+  .modal { background:var(--surface); border:1px solid var(--border); border-radius:20px; width:100%; max-width:640px; max-height:85vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.15); }
+  .modal-header { padding:20px 24px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+  .modal-title { font-family:'Playfair Display',serif; font-size:20px; font-style:italic; color:var(--text); }
+  .modal-close { background:var(--surface); border:1.5px solid var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:11px; padding:5px 14px; cursor:pointer; border-radius:20px; transition:all 0.2s; }
+  .modal-close:hover { color:var(--text); border-color:var(--muted); }
+  .modal-body { overflow-y:auto; padding:20px 24px; display:flex; flex-direction:column; gap:14px; }
+  .wa-filter-row { display:flex; gap:8px; }
+  .wa-filter-btn { background:var(--card); border:1.5px solid var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.06em; padding:5px 14px; border-radius:20px; cursor:pointer; text-transform:uppercase; transition:all 0.2s; }
+  .wa-filter-btn.active,.wa-filter-btn:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .wa-provider-card { background:var(--card); border:none; border-radius:16px; overflow:hidden; box-shadow:0 1px 6px rgba(0,0,0,0.06); }
+  .wa-btn { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.06em; text-transform:uppercase; padding:6px 14px; border-radius:20px; cursor:pointer; border:none; transition:opacity 0.2s; }
+  .wa-btn:hover { opacity:0.85; }
+  .wa-btn.copy { background:var(--border); color:var(--text); }
+  .wa-btn.send { background:#25D366; color:#fff; }
+  .wa-btn.copied { background:var(--green); color:#fff; }
+  .wa-empty { text-align:center; color:var(--dim); font-size:12px; padding:30px; font-style:italic; }
+  footer { max-width:900px; margin:48px auto 0; padding:20px 20px 0; border-top:1px solid var(--border); font-size:10px; color:var(--dim); letter-spacing:0.08em; display:flex; justify-content:space-between; }
+  /* search bar */
+  .search-wrap { max-width:900px; margin:0 auto 28px; display:flex; gap:8px; flex-wrap:wrap; padding:0 20px; }
+  .search-wrap input { flex:1; min-width:200px; background:#fff; border:1.5px solid var(--border); color:var(--text); font-family:'DM Mono',monospace; font-size:12px; padding:9px 16px; border-radius:20px; outline:none; letter-spacing:0.05em; }
+  .search-wrap input:focus { border-color:var(--accent); }
+  .search-wrap button { background:#fff; border:1.5px solid var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:11px; padding:9px 16px; border-radius:20px; cursor:pointer; }
+  /* cat row */
+  .cat-row { max-width:900px; margin:0 auto 20px; display:flex; gap:6px; flex-wrap:wrap; padding:0 20px; }
+</style>
 </head>
 <body>
 
-  <header class="header">
-    <div class="title">
-      <h1>Cava Chuí</h1>
-      <p>Inventario de botellas</p>
+<header>
+  <div class="logo">chuí</div>
+  <div class="header-meta">
+    <div style="font-weight:600;color:#555;letter-spacing:0.12em">ALERTAS DE STOCK</div>
+    <div id="fecha"></div>
+    <div>DATOS: 03/07/2026</div>
+    <button onclick="document.getElementById('modal-nuevo').style.display='flex'" style="margin-top:8px;background:#1e3d2f;border:none;color:#fff;font-family:'DM Mono',monospace;font-size:10px;padding:7px 14px;border-radius:20px;cursor:pointer;letter-spacing:0.08em;text-transform:uppercase">+ Nuevo vino</button>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+      <button onclick="syncFromSheets()" style="background:#fff;border:1.5px solid #d4cfc5;color:#1e3d2f;font-family:'DM Mono',monospace;font-size:10px;padding:6px 12px;border-radius:20px;cursor:pointer;letter-spacing:0.08em;text-transform:uppercase">⟳ Sync Sheets</button>
+      <span id="sync-status" style="font-family:'DM Mono',monospace;font-size:9px;color:#7a7060;letter-spacing:0.05em"></span>
     </div>
-    <div style="background: var(--wine); color: white; padding: 8px 15px; border-radius: 12px; font-size: 13px; font-weight: 700;">
-      Cerrar Mes
-    </div>
-  </header>
-
-  <section class="kpi-row">
-    <div class="kpi-card">
-      <span>Etiquetas</span>
-      <strong>42</strong>
-    </div>
-    <div class="kpi-card">
-      <span>Total Bot.</span>
-      <strong>312</strong>
-    </div>
-    <div class="kpi-card" style="border: 1px solid rgba(114, 47, 55, 0.2);">
-      <span>Costo Inv.</span>
-      <strong>$2.4M</strong>
-    </div>
-  </section>
-
-  <div class="search-bar">
-    <span>🔍</span> Buscar por bodega, varietal o región...
   </div>
+</header>
 
-  <section class="wine-list">
-    <!-- ETIQUETA EN CARTA -->
-    <div class="wine-card">
-      <div class="wine-info">
-        <span class="wine-name">Piel de Lobo</span>
-        <span class="wine-meta">Malbec · Familia Millán · Mendoza</span>
-        <span class="tag-low">Quedan pocas</span>
-      </div>
-      <div class="wine-stock">
-        <div class="stock-control">
-          <button class="btn-qty">-</button>
-          <div class="qty-display">4</div>
-          <button class="btn-qty">+</button>
-        </div>
-      </div>
+<!-- MODAL NUEVO VINO -->
+<div id="modal-nuevo" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(6px)">
+  <div style="background:#f5f2ec;border:1px solid #d4cfc5;border-radius:20px;padding:24px;width:100%;max-width:420px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.15)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <div style="font-family:'Playfair Display',serif;font-size:20px;color:#1a1a1a;font-style:italic">Nuevo vino</div>
+      <button onclick="document.getElementById('modal-nuevo').style.display='none'" style="background:#fff;border:1.5px solid #d4cfc5;color:#7a7060;font-size:16px;cursor:pointer;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center">✕</button>
     </div>
-
-    <!-- ETIQUETA EN CARTA -->
-    <div class="wine-card">
-      <div class="wine-info">
-        <span class="wine-name">Livvera Corbeau</span>
-        <span class="wine-meta">Corbeau · Escala Humana · Valle de Uco</span>
-      </div>
-      <div class="wine-stock">
-        <div class="stock-control">
-          <button class="btn-qty">-</button>
-          <div class="qty-display">12</div>
-          <button class="btn-qty">+</button>
-        </div>
-      </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <input id="nv-nombre" placeholder="Nombre del vino *" style="background:#fff;border:1.5px solid #d4cfc5;color:#1a1a1a;font-family:'DM Mono',monospace;font-size:12px;padding:10px 14px;border-radius:12px;outline:none;width:100%">
+      <select id="nv-cat" style="background:#fff;border:1.5px solid #d4cfc5;color:#1a1a1a;font-family:'DM Mono',monospace;font-size:12px;padding:10px 14px;border-radius:12px;outline:none;width:100%">
+        <option value="Blancos">Blancos</option><option value="Naranjos">Naranjos</option><option value="Rosados">Rosados</option><option value="Tintos">Tintos</option><option value="Espumosos">Espumosos</option><option value="Casa">Casa</option><option value="Dulce">Dulce</option><option value="Otros">Otros</option>
+      </select>
+      <input id="nv-stock" type="number" placeholder="Stock inicial (u)" style="background:#fff;border:1.5px solid #d4cfc5;color:#1a1a1a;font-family:'DM Mono',monospace;font-size:12px;padding:10px 14px;border-radius:12px;outline:none;width:100%">
+      <input id="nv-minimo" type="number" placeholder="Stock mínimo (u)" style="background:#fff;border:1.5px solid #d4cfc5;color:#1a1a1a;font-family:'DM Mono',monospace;font-size:12px;padding:10px 14px;border-radius:12px;outline:none;width:100%">
+      <input id="nv-asesor" placeholder="Asesor / contacto" style="background:#fff;border:1.5px solid #d4cfc5;color:#1a1a1a;font-family:'DM Mono',monospace;font-size:12px;padding:10px 14px;border-radius:12px;outline:none;width:100%">
+      <input id="nv-telefono" placeholder="Teléfono WhatsApp" style="background:#fff;border:1.5px solid #d4cfc5;color:#1a1a1a;font-family:'DM Mono',monospace;font-size:12px;padding:10px 14px;border-radius:12px;outline:none;width:100%">
+      <input id="nv-bodega" placeholder="Bodega / razón social" style="background:#fff;border:1.5px solid #d4cfc5;color:#1a1a1a;font-family:'DM Mono',monospace;font-size:12px;padding:10px 14px;border-radius:12px;outline:none;width:100%">
+      <input id="nv-pedido" placeholder="Cantidad habitual de pedido (ej: 3c)" style="background:#fff;border:1.5px solid #d4cfc5;color:#1a1a1a;font-family:'DM Mono',monospace;font-size:12px;padding:10px 14px;border-radius:12px;outline:none;width:100%">
+      <button onclick="agregarNuevoVino()" style="background:#1e3d2f;border:none;color:#fff;font-family:'DM Mono',monospace;font-size:11px;padding:12px;border-radius:12px;cursor:pointer;letter-spacing:0.1em;text-transform:uppercase;margin-top:4px">✓ Agregar al dashboard</button>
+      <div id="nv-msg" style="font-size:11px;color:#1e3d2f;font-family:'DM Mono',monospace;text-align:center;display:none">¡Vino agregado!</div>
     </div>
+  </div>
+</div>
 
-    <!-- VINO DE LA CASA / COPEO -->
-    <div class="wine-card" style="background: #fdfaf4; border-left: 4px solid var(--wine);">
-      <div class="wine-info">
-        <span class="wine-name">Vino de la Casa (Bianchi)</span>
-        <span class="wine-meta">Blend · Bag in Box (15L) · San Rafael</span>
-      </div>
-      <div class="wine-stock">
-        <div class="stock-control">
-          <button class="btn-qty">-</button>
-          <div class="qty-display">3</div>
-          <button class="btn-qty">+</button>
-        </div>
-      </div>
+<div class="stats-row">
+  <div class="stat-box red" onclick="filterFromStat('critica')">
+    <div class="num" id="cnt-critica">0</div><div class="label">Criticas — pedir ya</div>
+  </div>
+  <div class="stat-box amber" onclick="filterFromStat('alerta')">
+    <div class="num" id="cnt-alerta">0</div><div class="label">En alerta</div>
+  </div>
+  <div class="stat-box green" onclick="filterFromStat('ok')">
+    <div class="num" id="cnt-ok">0</div><div class="label">Stock OK</div>
+  </div>
+  <div class="stat-box blue" onclick="filterFromStat('all')">
+    <div class="num" id="cnt-sin">0</div><div class="label">Sin proveedor</div>
+  </div>
+</div>
+
+<div class="filters">
+  <button class="filter-btn active" onclick="filter('all',this)">Todos</button>
+  <button class="filter-btn red" onclick="filter('critica',this)">Criticas</button>
+  <button class="filter-btn amber" onclick="filter('alerta',this)">En alerta</button>
+  <button class="filter-btn" onclick="filter('ok',this)">Stock OK</button>
+  <button class="filter-btn" style="border-color:#3a5a8a;color:#3a5a8a" onclick="filterPedidos(this)">🚚 Pedidos</button>
+  <button class="filter-btn" style="border-color:#1e3d2f;color:#1e3d2f" onclick="showVentas(this)">📈 Ventas</button>
+</div>
+
+<div class="cat-row">
+  <button class="cat-btn active" onclick="filterCat('all',this)">Todas</button>
+  <button class="cat-btn" onclick="filterCat('Blancos',this)">🟡 Blancos</button>
+  <button class="cat-btn" onclick="filterCat('Naranjos',this)">🟠 Naranjos</button>
+  <button class="cat-btn" onclick="filterCat('Rosados',this)">🌸 Rosados</button>
+  <button class="cat-btn" onclick="filterCat('Tintos',this)">🔴 Tintos</button>
+  <button class="cat-btn" onclick="filterCat('Espumosos',this)">🫧 Espumosos</button>
+  <button class="cat-btn" onclick="filterCat('Casa',this)">🏠 Casa</button>
+  <button class="cat-btn" onclick="filterCat('Otros',this)">☕ Otros</button>
+</div>
+
+<div class="search-wrap">
+  <input id="search-input" type="text" placeholder="Buscar por vino, proveedor o bodega..." oninput="applySearch()">
+  <button onclick="clearSearch()">✕ Limpiar</button>
+</div>
+
+<div id="main-content"></div>
+
+<div id="ventas-view" style="display:none;max-width:900px;margin:0 auto;padding:0 20px 40px">
+  <div style="margin-bottom:20px">
+    <div style="font-size:10px;letter-spacing:3px;color:#1e3d2f;font-family:'DM Mono',monospace;margin-bottom:6px">REGISTRO DE VENTAS</div>
+    <div style="font-family:'Playfair Display',serif;font-size:24px;color:#1a1a1a;margin-bottom:4px">Maxirest · <span style="color:#1e3d2f">22–28 Jun 2026</span></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
+    <div style="background:#fff;padding:18px;text-align:center;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+      <div style="font-family:'Playfair Display',serif;font-size:32px;color:#1e3d2f">57</div>
+      <div style="font-size:9px;letter-spacing:1px;color:#7a7060;font-family:'DM Mono',monospace;margin-top:4px">VINOS VENDIDOS</div>
     </div>
-  </section>
+    <div style="background:#fff;padding:18px;text-align:center;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+      <div style="font-family:'Playfair Display',serif;font-size:32px;color:#1a1a1a">28</div>
+      <div style="font-size:9px;letter-spacing:1px;color:#7a7060;font-family:'DM Mono',monospace;margin-top:4px">COPAS MARA</div>
+    </div>
+    <div style="background:#fff;padding:18px;text-align:center;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+      <div style="font-family:'Playfair Display',serif;font-size:32px;color:#b8860b">19</div>
+      <div style="font-size:9px;letter-spacing:1px;color:#7a7060;font-family:'DM Mono',monospace;margin-top:4px">ELEPHANT GUN</div>
+    </div>
+  </div>
+  <div style="background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06);overflow:hidden;margin-bottom:12px">
+    <div style="padding:12px 16px;border-bottom:1px solid #d4cfc5;font-size:10px;letter-spacing:2px;color:#7a7060;font-family:'DM Mono',monospace">TOP VENTAS · 22–28 MAYO</div>
+    <table style="width:100%;border-collapse:collapse">
+      <thead><tr style="background:#f5f2ec">
+        <th style="padding:8px 16px;text-align:left;font-size:9px;letter-spacing:1.5px;color:#7a7060;font-family:'DM Mono',monospace;font-weight:500">PRODUCTO</th>
+        <th style="padding:8px 12px;text-align:center;font-size:9px;letter-spacing:1.5px;color:#7a7060;font-family:'DM Mono',monospace;font-weight:500">UND</th>
+        <th style="padding:8px 12px;text-align:right;font-size:9px;letter-spacing:1.5px;color:#7a7060;font-family:'DM Mono',monospace;font-weight:500">NETO</th>
+      </tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid #d4cfc5"><td style="padding:9px 16px;font-family:'Playfair Display',serif;font-size:13px;color:#1a1a1a">Copa del Día Chuí</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:#1e3d2f">73</td><td style="padding:9px 12px;text-align:right;font-family:'DM Mono',monospace;font-size:11px;color:#7a7060">—</td></tr>
+        <tr style="border-bottom:1px solid #d4cfc5"><td style="padding:9px 16px;font-family:'Playfair Display',serif;font-size:13px;color:#1a1a1a">Copa de la Casa Chuí</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:#1e3d2f">64</td><td style="padding:9px 12px;text-align:right;font-family:'DM Mono',monospace;font-size:11px;color:#7a7060">—</td></tr>
+        <tr style="border-bottom:1px solid #d4cfc5"><td style="padding:9px 16px;font-family:'Playfair Display',serif;font-size:13px;color:#1a1a1a">Copa de Mara Bonarda</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:#1e3d2f">28</td><td style="padding:9px 12px;text-align:right;font-family:'DM Mono',monospace;font-size:11px;color:#7a7060">—</td></tr>
+        <tr style="border-bottom:1px solid #d4cfc5"><td style="padding:9px 16px;font-family:'Playfair Display',serif;font-size:13px;color:#1a1a1a">Elephant Gun Malbec</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:#1e3d2f">19</td><td style="padding:9px 12px;text-align:right;font-family:'DM Mono',monospace;font-size:11px;color:#7a7060">—</td></tr>
+        <tr style="border-bottom:1px solid #d4cfc5"><td style="padding:9px 16px;font-family:'Playfair Display',serif;font-size:13px;color:#b8860b">Copa La Ridetto Tinto</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:#b8860b">23</td><td style="padding:9px 12px;text-align:right;font-family:'DM Mono',monospace;font-size:11px;color:#c0392b">Sin mapear</td></tr>
+        <tr><td style="padding:9px 16px;font-family:'Playfair Display',serif;font-size:13px;color:#1a1a1a">La Voja Pinot Noir</td><td style="padding:9px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:#1e3d2f">8</td><td style="padding:9px 12px;text-align:right;font-family:'DM Mono',monospace;font-size:11px;color:#7a7060">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06);overflow:hidden">
+    <div style="padding:12px 16px;border-bottom:1px solid #d4cfc5;font-size:10px;letter-spacing:2px;color:#b8860b;font-family:'DM Mono',monospace">📦 ARCHIVAR VINO</div>
+    <div style="padding:16px">
+      <div style="font-size:11px;color:#7a7060;font-family:'DM Mono',monospace;margin-bottom:12px">Los vinos archivados se ocultan del dashboard pero se conservan los datos.</div>
+      <div style="display:flex;gap:8px">
+        <input id="archivar-input" type="text" placeholder="Nombre del vino a archivar..." style="flex:1;background:#f5f2ec;border:1.5px solid #d4cfc5;color:#1a1a1a;font-family:'DM Mono',monospace;font-size:11px;padding:8px 14px;border-radius:12px;outline:none">
+        <button onclick="archivarVinoInput()" style="background:#fff0f0;border:1.5px solid #c0392b;color:#c0392b;font-family:'DM Mono',monospace;font-size:10px;padding:8px 14px;border-radius:12px;cursor:pointer;letter-spacing:0.08em;text-transform:uppercase">Archivar</button>
+      </div>
+      <div id="archivados-list" style="margin-top:12px;font-size:11px;color:#7a7060;font-family:'DM Mono',monospace"></div>
+    </div>
+  </div>
+</div>
 
+<footer>
+  <span>CHUI — Sistema de alertas de stock</span>
+  <span>Generado automaticamente</span>
+</footer>
+
+<button class="wa-fab" onclick="openWAModal()">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+  Pedidos por proveedor
+</button>
+
+<div class="modal-overlay" id="waModal" onclick="closeOnOverlay(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Pedidos por proveedor</div>
+      <button class="modal-close" onclick="closeWAModal()">✕ Cerrar</button>
+    </div>
+    <div class="modal-body" id="waModalBody"></div>
+  </div>
+</div>
+
+<script>
+var items = [
+  {nombre:"Un Mundo Chiquito Malbec",categoria:"Casa",stockUnidades:18,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Un Mundo Chiquito C y CB",categoria:"Casa",stockUnidades:12,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Un Mundo Chiquito Rose",categoria:"Casa",stockUnidades:12,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Animal Extra Brut",categoria:"Espumosos",stockUnidades:16,minimo:2,pedido:"2c",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Ribera del Cuarzo Merlot",categoria:"Tintos",stockUnidades:2,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Cara Sur Criolla Chica",categoria:"Tintos",stockUnidades:1,minimo:null,pedido:"-",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"La Marchigiana Bonarda",categoria:"Tintos",stockUnidades:3,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Tilia Malbec",categoria:"Tintos",stockUnidades:20,minimo:null,pedido:"-",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"El Raro Sauvignon Blanc",categoria:"Blancos",stockUnidades:2,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Poligonos Semillon",categoria:"Blancos",stockUnidades:19,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"La Marchigiana Chardonnay",categoria:"Blancos",stockUnidades:8,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Cara Sur Moscatel Blanco",categoria:"Blancos",stockUnidades:3,minimo:null,pedido:"-",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Verum Chardonnay",categoria:"Blancos",stockUnidades:9,minimo:null,pedido:"-",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Tino Slow",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"La Marchigiana Rose",categoria:"Rosados",stockUnidades:18,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"N7",categoria:"Espumosos",stockUnidades:12,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Mara Semillon",categoria:"Blancos",stockUnidades:18,minimo:null,pedido:"-",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:"Nuevo",pendiente:null,ultimoPedido:"28/04",ultimoCant:"3c",entregado:"3c (28/04)"},
+  {nombre:"Laborum Torrontes",categoria:"Blancos",stockUnidades:19,minimo:10,pedido:"5c",asesor:"Daniela Davila",contacto:"+54 9 11 3039-1384",razon:"Uvas del Valle",obs:"5+1 copa dia",pendiente:null,ultimoPedido:"06/04",ultimoCant:"6c",entregado:"6c"},
+  {nombre:"La Marchigiana Moscatel",categoria:"Blancos",stockUnidades:3,minimo:null,pedido:"-",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Electrico SB-Chardonnay",categoria:"Blancos",stockUnidades:27,minimo:8,pedido:"3c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"1c",entregado:"1c (14/04)"},
+  {nombre:"Antro Chardonnay",categoria:"Blancos",stockUnidades:30,minimo:15,pedido:"5c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:"4c en camino",ultimoPedido:"04/05",ultimoCant:"4c"},
+  {nombre:"Esperando a Los Barbaros SB",categoria:"Blancos",stockUnidades:17,minimo:8,pedido:"3c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"1c",entregado:"1c (28/04)"},
+  {nombre:"Humberto Canale Riesling",categoria:"Blancos",stockUnidades:37,minimo:12,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Humberto Canale",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"3c",entregado:"3c (15/04)"},
+  {nombre:"Poligonos Verdejo",categoria:"Blancos",stockUnidades:9,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Contra Corriente Chardonnay",categoria:"Blancos",stockUnidades:17,minimo:1,pedido:"3c",asesor:"Juan Molano Mesa",contacto:"+54 9 11 2842-4015",razon:"Patagonia River Guides",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Livvera Chenin",categoria:"Blancos",stockUnidades:27,minimo:6,pedido:"2c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Paso a Paso Criolla Blanco",categoria:"Blancos",stockUnidades:12,minimo:null,pedido:"2c",asesor:"Micaela Baum",contacto:"+54 9 11 5823-6823",razon:"Aurea",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"2c",entregado:"2c (07/04)"},
+  {nombre:"Verum Naranjo",categoria:"Naranjos",stockUnidades:12,minimo:12,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Verum",obs:null,pendiente:null,ultimoPedido:"07/04",ultimoCant:"4c",entregado:"4c (07/04)"},
+  {nombre:"Solito Va Naranjo",categoria:"Naranjos",stockUnidades:14,minimo:15,pedido:"6c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:"6c en camino",ultimoPedido:"04/05",ultimoCant:"6c"},
+  {nombre:"Petit Mara Naranjo 375ml",categoria:"Naranjos",stockUnidades:47,minimo:10,pedido:"24u",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:"quiebre bodega"},
+  {nombre:"Livvera Malvasia Naranjo",categoria:"Naranjos",stockUnidades:0,minimo:3,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:"3c en camino",ultimoPedido:"04/05",ultimoCant:"3c"},
+  {nombre:"Paso a Paso Orange",categoria:"Naranjos",stockUnidades:0,minimo:null,pedido:"2c",asesor:"Micaela Baum",contacto:"+54 9 11 5823-6823",razon:"Aurea",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"2c",entregado:"3c (04/05)"},
+  {nombre:"L.I.A.P. Flower Merlot",categoria:"Rosados",stockUnidades:0,minimo:4,pedido:"4c",asesor:"Mauro Villarejo",contacto:"+54 9 2616 10-5500",razon:"LIAP",obs:null,pendiente:"1c en camino",ultimoPedido:"04/05",ultimoCant:"1c"},
+  {nombre:"L.I.A.P. Power Merlot",categoria:"Tintos",stockUnidades:0,minimo:null,pedido:"3c",asesor:"Mauro Villarejo",contacto:"+54 9 2616 10-5500",razon:"LIAP",obs:"Vino nuevo",pendiente:null,ultimoPedido:"04/05",ultimoCant:"3c",entregado:"1c (04/05)"},
+  {nombre:"LIAP Noir de Blanc",categoria:"Rosados",stockUnidades:3,minimo:4,pedido:"1c",asesor:"Mauro Villarejo",contacto:"+54 9 2616 10-5500",razon:"?",obs:"Vino nuevo",pendiente:null,ultimoPedido:"06/04",ultimoCant:"1c",entregado:"1c (08/04)"},
+  {nombre:"Rocamadre Pinot Noir Rose",categoria:"Rosados",stockUnidades:47,minimo:12,pedido:"5c",asesor:"Emilia",contacto:"vinosrocamadre@gmail.com",razon:"Rocamadre",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"El Afinador Rose CF",categoria:"Rosados",stockUnidades:37,minimo:15,pedido:"5c",asesor:"Carolina Biga",contacto:"+54 9 3472 55-0464",razon:"Don Agustin",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Inconsciente Merlot Rose",categoria:"Rosados",stockUnidades:34,minimo:15,pedido:"5c",asesor:"Juan Cano",contacto:"+54 9 11 4563-4899",razon:"Sophenia",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Humberto Canale Rose",categoria:"Rosados",stockUnidades:21,minimo:6,pedido:"2c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Humberto Canale",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Araucana Malbec Rose",categoria:"Rosados",stockUnidades:13,minimo:4,pedido:"3c",asesor:"Juan Pablo Flores",contacto:"+54 9 11 3566-7785",razon:"Casa Pirque",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Cara Sur Pergolas Criollas Tintas",categoria:"Tintos",stockUnidades:20,minimo:18,pedido:"6c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:"2c en camino",ultimoPedido:"04/05",ultimoCant:"2c"},
+  {nombre:"Elephant Gun Malbec",categoria:"Tintos",stockUnidades:34,minimo:20,pedido:"7c",asesor:"Felipe Azcona",contacto:"+54 9 2645 64-8795",razon:"Azcona",obs:null,pendiente:"6c en camino",ultimoPedido:"27/04",ultimoCant:"6c"},
+  {nombre:"Ver Sacrum Monastrell",categoria:"Tintos",stockUnidades:9,minimo:8,pedido:"4c",asesor:"Micaela Baum",contacto:"+54 9 11 5823-6823",razon:"Aurea",obs:"Combinar con PAP Naranjo",pendiente:null,ultimoPedido:"06/04",ultimoCant:"4c",entregado:"6c (04/05)"},
+  {nombre:"Nat Cool Bonarda",categoria:"Tintos",stockUnidades:25,minimo:12,pedido:"5c",asesor:"Alejandro Chacon",contacto:"+54 9 11 7365-5676",razon:"Jarilla Wines",obs:null,pendiente:"5c en camino",ultimoPedido:"04/05",ultimoCant:"5c"},
+  {nombre:"La Voja Pinot Noir",categoria:"Tintos",stockUnidades:10,minimo:12,pedido:"5c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Aper",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"4+1c",entregado:"5c (30/04)"},
+  {nombre:"Negra Margen Bonarda",categoria:"Tintos",stockUnidades:7,minimo:12,pedido:"4c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"1c",entregado:"1c (28/04)"},
+  {nombre:"Les Astronautes Malbec",categoria:"Tintos",stockUnidades:28,minimo:20,pedido:"5c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Tino Slow",obs:null,pendiente:null,ultimoPedido:"28/04",ultimoCant:"6+1c",entregado:"7c (28/04)"},
+  {nombre:"Naciente CF y M",categoria:"Tintos",stockUnidades:21,minimo:12,pedido:"3c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:"2c en camino",ultimoPedido:"04/05",ultimoCant:"2c"},
+  {nombre:"El Raro Nebbiolo",categoria:"Tintos",stockUnidades:14,minimo:3,pedido:"3c",asesor:"Gabriel Campana",contacto:"+54 9 3525 64-4693",razon:"Campana",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:"2c (04/05)"},
+  {nombre:"Angelica Zapata CF",categoria:"Tintos",stockUnidades:13,minimo:6,pedido:"4c",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"A Lisa Malbec",categoria:"Tintos",stockUnidades:16,minimo:5,pedido:"3c",asesor:"Belen Fretes",contacto:"+54 9 2984 66-1071",razon:"Noemia",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Chacra 55 Pinot Noir",categoria:"Tintos",stockUnidades:5,minimo:1,pedido:"1c",asesor:"Rodrigo Calderon",contacto:"+54 9 11 6901-2375",razon:"Calderon",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Las Cuerdas Cota 1500",categoria:"Tintos",stockUnidades:5,minimo:3,pedido:"2c",asesor:"Meli Montse",contacto:"+54 9 2214 37-0690",razon:"-",obs:null,pendiente:"3c en camino",ultimoPedido:"04/05",ultimoCant:"3c"},
+  {nombre:"Petit Maremmano Syrah-CS 375ml",categoria:"Tintos",stockUnidades:16,minimo:15,pedido:"12u",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"12u",entregado:"3c (04/05)"},
+  {nombre:"Vertebrado Cabernet Franc",categoria:"Tintos",stockUnidades:11,minimo:8,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:null,pendiente:"2c en camino",ultimoPedido:"04/05",ultimoCant:"2c"},
+  {nombre:"Verum Malbec",categoria:"Tintos",stockUnidades:18,minimo:null,pedido:"4c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Verum",obs:"Evento",pendiente:null,ultimoPedido:"13/04",ultimoCant:"4c",entregado:"2c (04/05)"},
+  {nombre:"Electrico Rosado",categoria:"Rosados",stockUnidades:0,minimo:null,pedido:"1c",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:"Evento",pendiente:"2c en camino",ultimoPedido:"04/05",ultimoCant:"2c"},
+  {nombre:"Nox Malbec",categoria:"Espumosos",stockUnidades:10,minimo:4,pedido:"3c",asesor:"Alma Cabral",contacto:"+54 9 11 3357-8389",razon:"Punto Novisa",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:"2c (04/05)"},
+  {nombre:"Alma 4 Pinot-Chardonnay",categoria:"Espumosos",stockUnidades:17,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"4c",entregado:"5c (15/04)"},
+  {nombre:"Alma Negra Chardonnay",categoria:"Espumosos",stockUnidades:26,minimo:4,pedido:"3c",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Zuccardi Blanc de Blancs",categoria:"Espumosos",stockUnidades:7,minimo:4,pedido:"3c",asesor:"Gabriela Biscay",contacto:"+54 9 11 4164-9001",razon:"La Agricola",obs:null,pendiente:null,ultimoPedido:"13/04",ultimoCant:"3c",entregado:"3c (15/04)"},
+  {nombre:"Terrazas Petit Manseng",categoria:"Dulce",stockUnidades:5,minimo:4,pedido:"3c",asesor:"Camila Pacheco",contacto:"+54 9 11 5035-8041",razon:"Chandon",obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Mara de Uco Bonarda",categoria:"Casa",stockUnidades:45,minimo:18,pedido:"3+3c",asesor:"Joaquin Sastre",contacto:"+54 9 11 3660-4557",razon:"Nakbe",obs:"1+1",pendiente:null,ultimoPedido:"13/04",ultimoCant:"6c",entregado:"8c (28/04)"},
+  {nombre:"Elephant Gun Merlot Rose",categoria:"Casa",stockUnidades:46,minimo:15,pedido:"3c",asesor:"Felipe Azcona",contacto:"+54 9 2645 64-8795",razon:"Azcona",obs:null,pendiente:null,ultimoPedido:"10/04",ultimoCant:"3c",entregado:"3c (14/04)"},
+  {nombre:"Tilia Chardonnay",categoria:"Casa",stockUnidades:15,minimo:18,pedido:"3+3c",asesor:"Ornella Bresciani",contacto:"+54 9 11 4175-9655",razon:"Catena Zapata",obs:"1+1",pendiente:"3c en camino",ultimoPedido:"04/05",ultimoCant:"3c"},
+  {nombre:"UMC Malbec",categoria:"Casa",stockUnidades:66,minimo:15,pedido:"8c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Vistalba",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"8c",entregado:"6c (04/05)"},
+  {nombre:"UMC Blanco",categoria:"Casa",stockUnidades:30,minimo:6,pedido:"2c",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Vistalba",obs:null,pendiente:null,ultimoPedido:"06/04",ultimoCant:"2c->3c",entregado:"3c"},
+  {nombre:"La Ridetto Tinto",categoria:"Tintos",stockUnidades:0,minimo:null,pedido:"-",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Dominio de Freneza",obs:"Blend tinto",pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Livvera Chenin Blanc",categoria:"Blancos",stockUnidades:0,minimo:null,pedido:"-",asesor:"Camila Sciaini",contacto:"+54 9 11 4980-7377",razon:"Vinos Andinos",obs:"Blanco",pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Vino por el Arte Naranjo",categoria:"Naranjos",stockUnidades:0,minimo:null,pedido:"-",asesor:"Casa Tano",contacto:null,razon:"Casa Tano",obs:"Naranjo",pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"LIAP Naranjo Mecanico",categoria:"Naranjos",stockUnidades:0,minimo:null,pedido:"-",asesor:"Mauro Villarejo",contacto:"+54 9 2616 10-5500",razon:"La Imaginacion al Poder",obs:"Naranjo",pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Les Astronautes Criollas Blancas",categoria:"Blancos",stockUnidades:18,minimo:null,pedido:"-",asesor:"Catalina Uriburu",contacto:"+54 9 11 5095-1600",razon:"Tino Slow",obs:"Blend criollas blancas",pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Ancon Chardonnay",categoria:"Blancos",stockUnidades:28,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"La Voja Chardonnay",categoria:"Blancos",stockUnidades:12,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Puercovin Puercoespín",categoria:"Blancos",stockUnidades:6,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Rocamadre Criolla Blanca",categoria:"Rosados",stockUnidades:11,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Alpamanta Breva Syrah",categoria:"Rosados",stockUnidades:30,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Finca La Catalina Malbec",categoria:"Tintos",stockUnidades:2,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Oír ese río CF",categoria:"Tintos",stockUnidades:20,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Raquis Las Bases",categoria:"Tintos",stockUnidades:5,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Canopus Tempranillo",categoria:"Tintos",stockUnidades:31,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Yanay GSM",categoria:"Tintos",stockUnidades:14,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Solito Va Cabernet Franc",categoria:"Tintos",stockUnidades:0,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"LIAP Sauvignon Kong",categoria:"Blancos",stockUnidades:7,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"LIAP V de Vonarda",categoria:"Tintos",stockUnidades:3,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Macollo Sangiovese",categoria:"Tintos",stockUnidades:8,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Casa Tano PetNat",categoria:"Espumosos",stockUnidades:10,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Altar Uco Edad Moderna",categoria:"Tintos",stockUnidades:8,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Proyectos Circulares Malbec",categoria:"Tintos",stockUnidades:18,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Pielihueso",categoria:"Naranjos",stockUnidades:15,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Moscato di Cardenale",categoria:"Naranjos",stockUnidades:0,minimo:null,pedido:"-",asesor:null,contacto:null,razon:null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null},
+  {nombre:"Kombucha",categoria:"Otros",stockUnidades:131,minimo:30,pedido:"7p",asesor:"Elda",contacto:"+54 9 11 5596-7259",razon:"Sueno Verde",obs:"min. 7p",pendiente:null,ultimoPedido:"28/04",ultimoCant:"7p",entregado:"7p (28/04)"},
+  {nombre:"Jugo de Tomate (Bloody)",categoria:"Otros",stockUnidades:24,minimo:6,pedido:"3p",asesor:"Adriana",contacto:"+54 9 11 6558-1113",razon:"-",obs:"min y max 3p",pendiente:null,ultimoPedido:"06/04",ultimoCant:"3 packs",entregado:"3 packs = 24u (08/04)"},
+  {nombre:"Cafe Samba",categoria:"Otros",stockUnidades:6,minimo:3,pedido:"6kg",asesor:null,contacto:"tostadero@cuervocafe.com",razon:"Cuervo",obs:"min. 6kg",pendiente:null,ultimoPedido:"14/04",ultimoCant:"6kg",entregado:"6kg (14/04)"},
+];
+
+var precios = {
+  "Laborum Torrontes":{costo:14000,venta:39200},"Electrico SB-Chardonnay":{costo:13750,venta:38500},
+  "Antro Chardonnay":{costo:9400,venta:28200},"Esperando a Los Barbaros SB":{costo:12500,venta:35000},
+  "Humberto Canale Riesling":{costo:15750,venta:44100},"Poligonos Verdejo":{costo:18000,venta:46800},
+  "Livvera Chenin":{costo:14750,venta:41300},"Solito Va Naranjo":{costo:13300,venta:37128},
+  "L.I.A.P. Flower Merlot":{costo:16250,venta:42000},"Rocamadre Pinot Noir Rose":{costo:16335,venta:42471},
+  "El Afinador Rose CF":{costo:10000,venta:30000},"Inconsciente Merlot Rose":{costo:11900,venta:28500},
+  "Araucana Malbec Rose":{costo:21000,venta:54600},"Cara Sur Pergolas Criollas Tintas":{costo:8264,venta:30000},
+  "Elephant Gun Malbec":{costo:6000,venta:18000},"Ver Sacrum Monastrell":{costo:16000,venta:44800},
+  "Nat Cool Bonarda":{costo:11550,venta:32340},"La Voja Pinot Noir":{costo:16000,venta:46800},
+  "Negra Margen Bonarda":{costo:12500,venta:35000},"Les Astronautes Malbec":{costo:8600,venta:25800},
+  "Naciente CF y M":{costo:16000,venta:44800},"El Raro Nebbiolo":{costo:25000,venta:65000},
+  "Angelica Zapata CF":{costo:20835,venta:51610},"A Lisa Malbec":{costo:26406,venta:63374},
+  "Chacra 55 Pinot Noir":{costo:59500,venta:119000},"Las Cuerdas Cota 1500":{costo:24000,venta:62400},
+  "Nox Malbec":{costo:15500,venta:43400},"Alma 4 Pinot-Chardonnay":{costo:14750,venta:41300},
+  "Alma Negra Chardonnay":{costo:18000,venta:46800},"Zuccardi Blanc de Blancs":{costo:27000,venta:64800},
+  "Terrazas Petit Manseng":{costo:18815,venta:48919},"Electrico Rosado":{costo:11364,venta:38500},
+  "Vertebrado Cabernet Franc":{costo:19500,venta:46800},"Tilia Chardonnay":{costo:7000,venta:8100},
+};
+
+function formatPesos(n){return '$'+Math.round(n).toLocaleString('es-AR');}
+
+var currentFilter='all', currentSearch='', currentCat='all';
+var archivedItems=[], mapeos={};
+
+function clasificar(item){
+  if(item.minimo===null) return "sin-minimo";
+  if(item.stockUnidades===0) return "critica";
+  if(item.stockUnidades<=item.minimo) return "critica";
+  if(item.stockUnidades<=item.minimo*1.4) return "alerta";
+  return "ok";
+}
+
+function saveStorage(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function loadStorage(k){try{var r=localStorage.getItem(k);return r?JSON.parse(r):null;}catch(e){return null;}}
+
+function initStorage(){
+  var sa=loadStorage('chui-archivados');
+  if(sa&&Array.isArray(sa)){sa.forEach(function(n){var f=items.find(function(i){return i.nombre===n;});if(f){f.archivado=true;archivedItems.push(n);}});}
+  var si=loadStorage('chui-items-custom');
+  if(si&&Array.isArray(si)){si.forEach(function(item){var e=items.find(function(i){return i.nombre===item.nombre;});if(!e)items.push(item);});}
+  renderItems(currentFilter);
+}
+
+function matchesSearch(item){
+  if(!currentSearch)return true;
+  return item.nombre.toLowerCase().includes(currentSearch)||(item.asesor&&item.asesor.toLowerCase().includes(currentSearch))||(item.razon&&item.razon.toLowerCase().includes(currentSearch));
+}
+
+function renderItems(filterStatus){
+  var container=document.getElementById('main-content');
+  container.innerHTML='';
+  var categorias=[];
+  items.forEach(function(i){if(categorias.indexOf(i.categoria)===-1)categorias.push(i.categoria);});
+  var cC=0,cA=0,cO=0,cS=0;
+  items.forEach(function(i){var s=clasificar(i);if(s==='critica')cC++;else if(s==='alerta')cA++;else if(s==='ok')cO++;else cS++;});
+  document.getElementById('cnt-critica').textContent=cC;
+  document.getElementById('cnt-alerta').textContent=cA;
+  document.getElementById('cnt-ok').textContent=cO;
+  document.getElementById('cnt-sin').textContent=cS;
+
+  categorias.forEach(function(cat){
+    var catItems=items.filter(function(i){
+      if(i.archivado)return false;
+      if(i.categoria!==cat)return false;
+      if(currentCat!=='all'&&i.categoria!==currentCat)return false;
+      if(!matchesSearch(i))return false;
+      if(filterStatus==='all')return true;
+      return clasificar(i)===filterStatus;
+    }).sort(function(a,b){var ord={critica:0,alerta:1,ok:2,'sin-minimo':3};return ord[clasificar(a)]-ord[clasificar(b)];});
+    if(catItems.length===0)return;
+
+    var section=document.createElement('div');section.className='section';
+    var title=document.createElement('div');title.className='section-title';title.textContent=cat.toUpperCase();
+    section.appendChild(title);
+
+    catItems.forEach(function(item,idx){
+      var estado=clasificar(item);
+      var card=document.createElement('div');
+      card.className='alert-card '+(estado==='sin-minimo'?'ok':estado);
+      card.style.animationDelay=(idx*0.04)+'s';
+
+      var col=estado==='critica'?'#c0392b':estado==='alerta'?'#b8860b':'#1e3d2f';
+      var badge=estado==='critica'?'<div class="badge critica">Pedir ya</div>':estado==='alerta'?'<div class="badge alerta">En alerta</div>':'';
+
+      var ct='';
+      if(item.asesor)ct+='<span>👤 '+item.asesor+'</span>';
+      if(item.contacto){var isEm=item.contacto.indexOf('@')!==-1;ct+='<span>'+(isEm?'✉':'📱')+' <a href="'+(isEm?'mailto:':'https://wa.me/')+item.contacto.replace(/[\s\+\-]/g,'')+'">'+item.contacto+'</a></span>';}
+      if(item.razon&&item.razon!=='?'&&item.razon!=='-')ct+='<span>🏢 '+item.razon+'</span>';
+
+      var obsH=item.obs?'<span class="obs-tag">'+item.obs+'</span>':'';
+      var penH=item.pendiente?'<span class="pendiente-tag">🚚 '+item.pendiente+'</span>':'';
+      var minL=item.minimo!==null?'min: '+item.minimo+'u':'sin minimo';
+      var pedH=item.pedido!=='-'?'<div class="pedido-tag">Pedir: <strong>'+item.pedido+'</strong></div>':'';
+
+      var histH='';
+      if(item.ultimoPedido){
+        var entH=item.entregado?'<span>✅ <strong style="color:#1e3d2f">'+item.entregado+'</strong></span>':'<span style="color:#b8860b">⏳ Pendiente</span>';
+        histH='<div class="historial"><span>🗓 '+item.ultimoPedido+'</span><span>📋 '+item.ultimoCant+'</span>'+entH+'</div>';
+      }
+
+      var precioH='';
+      var p=precios[item.nombre];
+      if(p){
+        var margen=Math.round((p.venta-p.costo)/p.venta*100);
+        var mColor=margen>=65?'#1e3d2f':margen>=60?'#b8860b':'#c0392b';
+        var uid='precio-'+idx+'-'+cat.replace(/\s/g,'');
+        precioH='<button class="expand-btn" onclick="togglePrecio(\''+uid+'\',this)">💲 Ver precios</button>'
+          +'<div class="precio-section" id="'+uid+'">'
+          +'<div style="margin-top:8px;padding:10px 14px;background:#f5f2ec;border:1px solid #d4cfc5;border-radius:12px;display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:#7a7060">'
+          +'<span>💰 Costo: <strong style="color:#1a1a1a">'+formatPesos(p.costo)+'</strong></span>'
+          +'<span>🏷️ Venta: <strong style="color:#1a1a1a">'+formatPesos(p.venta)+'</strong></span>'
+          +'<span>📈 Margen: <strong style="color:'+mColor+'">'+margen+'%</strong></span>'
+          +'</div></div>';
+      }
+
+      card.innerHTML=
+        '<div>'+
+          '<div class="wine-name">'+item.nombre+'</div>'+
+          '<div class="wine-meta"><span>📦 '+minL+'</span><span>🗂 '+item.categoria+'</span></div>'+
+          obsH+penH+
+          '<div class="contact-info">'+ct+'</div>'+
+          histH+precioH+
+          '<button onclick="archivarVino(\''+item.nombre.replace(/'/g,"\\'")+'\',true)" style="margin-top:8px;background:none;border:1.5px solid #d4cfc5;color:#a09880;font-family:DM Mono,monospace;font-size:10px;padding:4px 12px;border-radius:20px;cursor:pointer;letter-spacing:0.06em">📦 Archivar</button>'+
+        '</div>'+
+        '<div class="right-panel">'+
+          badge+
+          '<div class="stock-display" style="color:'+col+'">'+item.stockUnidades+'</div>'+
+          '<div class="stock-label">'+(item.stockUnidades===0?'SIN STOCK':'unidades')+'</div>'+
+          pedH+
+        '</div>';
+
+      section.appendChild(card);
+    });
+    container.appendChild(section);
+  });
+}
+
+function togglePrecio(id,btn){
+  var el=document.getElementById(id);
+  if(el.classList.contains('open')){el.classList.remove('open');btn.textContent='💲 Ver precios';}
+  else{el.classList.add('open');btn.textContent='💲 Ocultar precios';}
+}
+
+function filter(status,btn){
+  showMain();currentFilter=status;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');renderItems(status);
+}
+
+function filterFromStat(status){
+  showMain();currentFilter=status;currentCat='all';
+  document.querySelectorAll('.filter-btn,.cat-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.cat-btn')[0].classList.add('active');
+  renderItems(status);
+}
+
+function filterCat(cat,btn){
+  showMain();currentCat=cat;
+  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');renderItems(currentFilter);
+}
+
+function applySearch(){currentSearch=document.getElementById('search-input').value.toLowerCase().trim();renderItems(currentFilter);}
+function clearSearch(){document.getElementById('search-input').value='';currentSearch='';renderItems(currentFilter);}
+
+function showMain(){
+  document.getElementById('ventas-view').style.display='none';
+  document.getElementById('main-content').classList.remove('hidden');
+}
+
+function showVentas(btn){
+  document.querySelectorAll('.filter-btn,.cat-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('main-content').classList.add('hidden');
+  document.getElementById('ventas-view').style.display='block';
+  renderArchivados();
+}
+
+function filterPedidos(btn){
+  showMain();
+  document.querySelectorAll('.filter-btn,.cat-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.querySelectorAll('.cat-btn')[0].classList.add('active');
+  var container=document.getElementById('main-content');
+  container.innerHTML='';
+  var pendientes=items.filter(function(i){return i.pendiente;});
+  if(pendientes.length===0){container.innerHTML='<div style="text-align:center;color:#a09880;padding:40px;font-style:italic">No hay pedidos pendientes.</div>';return;}
+  var porAsesor={};
+  pendientes.forEach(function(item){var key=item.asesor||'Sin contacto';if(!porAsesor[key])porAsesor[key]={asesor:item.asesor,contacto:item.contacto,razon:item.razon,items:[]};porAsesor[key].items.push(item);});
+  Object.keys(porAsesor).sort().forEach(function(key){
+    var grupo=porAsesor[key];
+    var section=document.createElement('div');section.className='section';
+    var title=document.createElement('div');title.className='section-title';title.textContent=(grupo.razon&&grupo.razon!=='-'?grupo.razon:key).toUpperCase();
+    section.appendChild(title);
+    grupo.items.forEach(function(item,idx){
+      var card=document.createElement('div');
+      card.className='alert-card ok';card.style.borderLeftColor='#3a5a8a';card.style.animationDelay=(idx*0.05)+'s';
+      var isEmail=grupo.contacto&&grupo.contacto.indexOf('@')!==-1;
+      var contactHTML=grupo.contacto?'<a href="'+(isEmail?'mailto:':'https://wa.me/')+grupo.contacto.replace(/[\s\+\-]/g,'')+'">'+grupo.contacto+'</a>':'';
+      card.innerHTML='<div><div class="wine-name">'+item.nombre+'</div><div class="contact-info"><span>👤 '+(grupo.asesor||'')+'</span><span>'+contactHTML+'</span></div></div>'
+        +'<div class="right-panel"><div style="font-size:10px;color:#3a5a8a;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px">🚚 En camino</div><div class="stock-display" style="color:#3a5a8a">'+item.ultimoCant+'</div><div class="stock-label">pedido '+item.ultimoPedido+'</div><div style="font-size:11px;color:#a09880;margin-top:4px">Stock: '+item.stockUnidades+'u</div></div>';
+      section.appendChild(card);
+    });
+    container.appendChild(section);
+  });
+}
+
+function archivarVino(nombre,confirm_){
+  if(confirm_&&!confirm('¿Archivar "'+nombre+'"?'))return;
+  var found=items.find(function(i){return i.nombre===nombre;});
+  if(found){found.archivado=true;if(archivedItems.indexOf(nombre)===-1)archivedItems.push(nombre);saveStorage('chui-archivados',archivedItems);renderItems(currentFilter);renderArchivados();}
+}
+
+function archivarVinoInput(){
+  var nombre=document.getElementById('archivar-input').value.trim();
+  if(!nombre)return;
+  var found=items.find(function(i){return i.nombre.toLowerCase()===nombre.toLowerCase();});
+  if(!found){alert('Vino "'+nombre+'" no encontrado.');return;}
+  archivarVino(found.nombre,false);
+  document.getElementById('archivar-input').value='';
+}
+
+function desarchivarVino(nombre){
+  var found=items.find(function(i){return i.nombre===nombre;});
+  if(found)found.archivado=false;
+  archivedItems=archivedItems.filter(function(n){return n!==nombre;});
+  saveStorage('chui-archivados',archivedItems);renderArchivados();renderItems(currentFilter);
+}
+
+function renderArchivados(){
+  var el=document.getElementById('archivados-list');
+  if(!el)return;
+  if(archivedItems.length===0){el.innerHTML='Ningún vino archivado aún.';return;}
+  el.innerHTML='<div style="margin-bottom:6px;color:#a09880">Archivados:</div>'+archivedItems.map(function(n){return '<span style="display:inline-flex;align-items:center;gap:6px;margin:3px;padding:4px 12px;background:#f5f2ec;border:1px solid #d4cfc5;border-radius:20px;font-size:11px">'+n+'<button onclick="desarchivarVino(\''+n+'\')" style="background:none;border:none;color:#1e3d2f;cursor:pointer;font-size:11px;padding:0">↩</button></span>';}).join('');
+}
+
+function agregarNuevoVino(){
+  var nombre=document.getElementById('nv-nombre').value.trim();
+  if(!nombre){alert('El nombre es obligatorio');return;}
+  var nuevoItem={nombre:nombre,categoria:document.getElementById('nv-cat').value,stockUnidades:parseInt(document.getElementById('nv-stock').value)||0,minimo:parseInt(document.getElementById('nv-minimo').value)||null,pedido:document.getElementById('nv-pedido').value.trim()||'-',asesor:document.getElementById('nv-asesor').value.trim()||null,contacto:document.getElementById('nv-telefono').value.trim()||null,razon:document.getElementById('nv-bodega').value.trim()||null,obs:null,pendiente:null,ultimoPedido:null,ultimoCant:null,entregado:null};
+  items.push(nuevoItem);
+  var saved=loadStorage('chui-items-custom')||[];saved.push(nuevoItem);saveStorage('chui-items-custom',saved);
+  ['nv-nombre','nv-stock','nv-minimo','nv-asesor','nv-telefono','nv-bodega','nv-pedido'].forEach(function(id){document.getElementById(id).value='';});
+  var msg=document.getElementById('nv-msg');msg.style.display='block';setTimeout(function(){msg.style.display='none';},3000);
+  renderItems(currentFilter);
+}
+
+// WA Modal
+var waFilter='urgente';
+function buildWAMessage(asesor,productos){var fecha=new Date().toLocaleDateString('es-AR',{day:'numeric',month:'long',year:'numeric'});var msg='Hola '+(asesor||'')+'! 👋\n\nTe escribimos desde *CHUI* para hacer un pedido ('+fecha+'):\n\n';productos.forEach(function(p){msg+='• *'+p.nombre+'*'+(clasificar(p)==='critica'?' ⚠️':'')+' — '+p.pedido+'\n';if(p.obs)msg+='  _('+p.obs+')_\n';});msg+='\nMuchas gracias!';return msg;}
+function openWAModal(){waFilter='urgente';renderWAModal();document.getElementById('waModal').classList.add('open');}
+function closeWAModal(){document.getElementById('waModal').classList.remove('open');}
+function closeOnOverlay(e){if(e.target===document.getElementById('waModal'))closeWAModal();}
+function setWAFilter(f,btn){waFilter=f;document.querySelectorAll('.wa-filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');renderWAModal();}
+function renderWAModal(){
+  var body=document.getElementById('waModalBody');body.innerHTML='';
+  var fr=document.createElement('div');fr.className='wa-filter-row';
+  fr.innerHTML='<button class="wa-filter-btn '+(waFilter==='urgente'?'active':'')+'" onclick="setWAFilter(\'urgente\',this)">Solo urgentes</button><button class="wa-filter-btn '+(waFilter==='all'?'active':'')+'" onclick="setWAFilter(\'all\',this)">Todos</button>';
+  body.appendChild(fr);
+  var porAsesor={};
+  items.forEach(function(item){if(item.pedido==='-')return;var estado=clasificar(item);if(waFilter==='urgente'&&estado!=='critica'&&estado!=='alerta')return;var key=item.asesor||item.contacto||'Sin contacto';if(!porAsesor[key])porAsesor[key]={asesor:item.asesor,contacto:item.contacto,productos:[]};porAsesor[key].productos.push(item);});
+  var asesores=Object.keys(porAsesor);
+  if(asesores.length===0){var em=document.createElement('div');em.className='wa-empty';em.textContent='No hay pedidos urgentes.';body.appendChild(em);return;}
+  asesores.forEach(function(key){
+    var d=porAsesor[key];var mensaje=buildWAMessage(d.asesor,d.productos);
+    var isEm=d.contacto&&d.contacto.indexOf('@')!==-1;var ph=d.contacto?d.contacto.replace(/[\s\+\-]/g,''):null;
+    var waL=!isEm&&ph?'https://wa.me/'+ph+'?text='+encodeURIComponent(mensaje):null;
+    var card=document.createElement('div');card.className='wa-provider-card';
+    var btnWA=waL?'<button class="wa-btn send" onclick="window.open(\''+waL+'\',\'_blank\')">Abrir WA</button>':'<button class="wa-btn send" onclick="window.open(\'mailto:'+d.contacto+'\',\'_blank\')">Email</button>';
+    var msgE=mensaje.replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>');
+    var msgJ=JSON.stringify(mensaje);
+    card.innerHTML='<div style="background:#f5f2ec;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #d4cfc5;gap:10px"><div><div style="font-family:Playfair Display,serif;font-size:16px;color:#1a1a1a">'+(d.asesor||key)+'</div><div style="font-size:11px;color:#7a7060;margin-top:2px">'+(d.contacto||'')+'</div></div><div style="display:flex;gap:8px"><button class="wa-btn copy" onclick="copyMsg(this,'+msgJ+')">Copiar</button>'+btnWA+'</div></div><div style="padding:12px 16px;font-size:12px;line-height:1.8;color:#7a7060;white-space:pre-wrap;font-family:DM Mono,monospace;background:#faf8f4">'+msgE+'</div>';
+    body.appendChild(card);
+  });
+}
+function copyMsg(btn,msg){navigator.clipboard.writeText(msg).then(function(){btn.textContent='✓ Copiado';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copiar';btn.classList.remove('copied');},2000);});}
+
+// Sync
+var CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vRFbCxFHv_HDLC--FITM-Yh688o6qFPNKSY2wvTlR8S81UxFpcoWBeHBYJ3LJMq-EkoEQ1QaBzrqD0o/pub?output=csv';
+var syncStatus='idle';
+function syncFromSheets(){if(syncStatus==='loading')return;syncStatus='loading';updateSyncUI('⟳ Sincronizando...','#b8860b');fetch(CSV_URL,{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.text();}).then(function(csv){syncStatus='ok';var ts=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});updateSyncUI('✓ Sync '+ts,'#1e3d2f');}).catch(function(){syncStatus='error';updateSyncUI('⚠ Sin conexión','#c0392b');});}
+function updateSyncUI(text,color){var el=document.getElementById('sync-status');if(el){el.textContent=text;el.style.color=color;}}
+
+document.getElementById('fecha').textContent=new Date().toLocaleDateString('es-AR',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).toUpperCase();
+initStorage();
+syncFromSheets();
+</script>
 </body>
 </html>
